@@ -1,0 +1,7 @@
+class Program {
+	int inc(int x) {
+		int y;
+		y = x;
+		return x + 1;
+	}
+}

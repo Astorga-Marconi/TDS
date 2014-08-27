@@ -1,0 +1,4 @@
+class Program {
+	int z;
+	int x, y;
+}

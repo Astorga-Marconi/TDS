@@ -1,0 +1,215 @@
+terminal INT;
+terminal FLOAT;
+terminal BREAK;
+terminal CLASS;
+terminal CONTINUE;
+terminal IF,ELSE;
+terminal FOR;
+terminal WHILE;
+terminal RETURN;
+terminal VOID;
+terminal TRUE, FALSE;
+terminal ID;
+terminal INT_LITERAL, STRING_LITERAL, FLOAT_LITERAL, BOOLEAN_LITERAL;
+
+terminal
+		LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON,
+		LPAREN, RPAREN, EQ, COMMA, PLUSEQ, MINUSEQ,
+		EXTERNINVK, MINUS, NOT, PLUS, MULT, DIV, MOD,
+		LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
+
+non terminal	program,
+				set_decl,
+				field_decl,
+				id_field_decl,
+				list_id_field_decl,
+				set_field_decl,
+				method_decl,
+				set_method_decl,
+				zero_or_one_list_type_id_method_decl,
+				list_type_id_method_decl,
+				type_id_method_decl,
+				block,
+				type,
+				statement,
+				zero_or_one_else_block,
+				set_statement,
+				zero_or_one_expr,
+				assign_op,
+				method_call,
+				location,
+				list_expr,
+				zero_or_one_list_expr,
+				expr,
+				externinvk_arg,
+				list_externinvk_arg,
+				zero_or_one_list_externinvk_arg,
+				bin_op,
+				arith_op,
+				rel_op,
+				eq_op,
+				cond_op,
+				literal,
+				bool_literal;
+
+precedence left  EQ, ANDAND, NOT, NOTEQ;
+precedence left  OROR;
+precedence left  LT, GT, LTEQ, GTEQ, EQEQ;
+precedence left  PLUS, MINUS;
+precedence left  MULT, DIV, MOD;
+
+
+start with program;
+
+program ::= 
+		CLASS ID LBRACE set_decl RBRACE {:System.out.println("termino");:}
+	|	CLASS ID LBRACE RBRACE {:System.out.println("termino");:}
+	;
+
+set_decl ::= 
+		set_field_decl set_method_decl
+	|	set_method_decl
+	|	set_field_decl
+	;
+
+set_field_decl ::= 
+		set_field_decl field_decl 
+	|	field_decl
+	;
+
+field_decl ::= type list_id_field_decl SEMICOLON;
+
+id_field_decl ::= ID | ID LBRACK INT_LITERAL RBRACK;
+
+list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
+
+method_decl ::= 
+		type ID LPAREN zero_or_one_list_type_id_method_decl RPAREN block
+	|	VOID ID LPAREN zero_or_one_list_type_id_method_decl RPAREN block;
+
+// type_or_void ::= type | VOID;
+
+set_method_decl ::= method_decl set_method_decl | method_decl;
+
+zero_or_one_list_type_id_method_decl ::=
+		list_type_id_method_decl
+	|	/* empty */
+	;
+
+list_type_id_method_decl ::= type_id_method_decl COMMA list_type_id_method_decl | type_id_method_decl;
+
+type_id_method_decl ::= type ID;
+
+block ::= LBRACE set_field_decl set_statement RBRACE;
+
+type ::=
+		BOOLEAN_LITERAL
+	|	FLOAT
+	|	INT
+	;
+
+statement ::=
+		location assign_op expr SEMICOLON
+	|	method_call SEMICOLON
+	|	IF LPAREN expr RPAREN block zero_or_one_else_block
+	|	FOR ID EQ expr COMMA expr block
+	|	WHILE expr block
+	|	RETURN zero_or_one_expr SEMICOLON  {:System.out.println("t");:}
+	|	BREAK SEMICOLON
+	|	CONTINUE SEMICOLON
+	|	SEMICOLON
+	|	block
+	;
+
+	
+zero_or_one_else_block ::= ELSE block | /* empty */;
+	
+set_statement ::= statement set_statement | /* empty */;
+
+zero_or_one_expr ::= expr | /* empty */;
+
+assign_op ::=
+		EQ
+	|	PLUSEQ
+	|	MINUSEQ
+	;
+
+method_call ::= 
+		ID LPAREN zero_or_one_list_expr RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type zero_or_one_list_externinvk_arg RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID zero_or_one_list_externinvk_arg RPAREN
+	;
+
+location ::= ID | ID LBRACK expr RBRACK;
+
+list_expr ::= expr COMMA list_expr | expr;
+
+zero_or_one_list_expr ::= list_expr | /* empty */;
+
+expr ::=
+		location
+	|	method_call
+	|	literal
+	|	expr bin_op expr
+	|	MINUS expr
+	|	NOT expr
+	|	LPAREN expr RPAREN
+	;
+
+externinvk_arg ::=
+		expr
+	|	STRING_LITERAL
+	;
+	
+list_externinvk_arg ::= 
+		externinvk_arg COMMA list_externinvk_arg 
+	|	externinvk_arg
+	;
+
+zero_or_one_list_externinvk_arg ::= 
+		list_externinvk_arg 
+	|	/* empty */
+	;
+
+bin_op ::=
+		arith_op
+	|	rel_op
+	|	eq_op
+	|	cond_op
+	;
+
+arith_op ::=
+		PLUS
+	|	MINUS
+	|	MULT
+	|	DIV
+	|	MOD
+	;
+
+rel_op ::=
+		LT
+	|	GT
+	|	LTEQ
+	|	GTEQ
+	;
+
+eq_op ::=
+		EQEQ
+	|	NOTEQ
+	;
+
+cond_op ::=
+		ANDAND
+	|	OROR
+	;
+	
+literal ::=
+		INT_LITERAL
+	|	FLOAT_LITERAL
+	|	bool_literal
+	;
+
+bool_literal ::=
+		TRUE
+	|	FALSE
+	;
