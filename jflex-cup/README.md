@@ -1,6 +1,6 @@
-===================================
-Descrpcion para construir la salida
-===================================
+====================================
+Descripción para construir la salida
+====================================
 
 Para compilar:
 cup analyzerSyntax.cup
