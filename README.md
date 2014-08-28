@@ -1,4 +1,9 @@
-Proyecto 2014 - Taller De Diseño De Software (cod.3306)
-======================================================
-Etapa: Analizador Léxico y Sintáctico
-Grupo: Astorga Dario - Marconi Pablo
+Taller De Diseño De Software (cod.3306)
+=======================================
+
+###Autores: 
+* [Dario Astorga](https://github.com/dastorga) 
+* [Pablo Marconi](https://github.com/pmarconi) 
+
+###Etapa: 
+####Analizador Léxico y Sintáctico

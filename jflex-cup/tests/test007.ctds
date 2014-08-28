@@ -1,0 +1,7 @@
+class Program {
+	boolean y;
+  	boolean x;
+  	int j;
+  	int m, n;
+  	float k;
+}
