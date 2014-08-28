@@ -1,0 +1,7 @@
+// no anda
+class Program {
+	int x,y;
+	while (x < y) {
+		break;
+	}
+}
