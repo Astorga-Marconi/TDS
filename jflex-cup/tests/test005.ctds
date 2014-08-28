@@ -1,0 +1,9 @@
+// No anda
+class Program {
+	void main(int x) {
+		int z, y;
+		if (z == x) {
+			y = 3;
+		}
+	}
+}
