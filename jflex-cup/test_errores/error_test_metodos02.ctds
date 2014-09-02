@@ -1,0 +1,25 @@
+class test_metodos{
+   float c;
+
+   void (int x){ 
+      x=+ x + 1; // Error esta al reves la +=
+      return x;
+   }
+
+   alo2(int x){ //error la funcion no tiene tipo
+      alo(x);
+      x=  x + 1; 
+      return; 
+   }
+ 
+   void main(){
+        
+        y = 7;
+        c = y *8;
+        alo2(y);
+        alo2(c);
+        return;
+        int y; //error declaracion abajo de sentencias
+   }
+
+}

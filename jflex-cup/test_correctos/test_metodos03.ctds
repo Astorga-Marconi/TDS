@@ -1,0 +1,26 @@
+class Test_metodos {
+	
+	boolean res;
+
+	
+	int inc (int x) {
+		return x+1;
+	}
+	int resto(int x, float y) {
+		
+		int res;
+		
+		if (x > 3*2) {
+			res = x / 3;
+		}
+		else {
+			res = x%2;
+		}
+		return res;
+	}
+	int main() {
+                int A[1];
+                res = false;
+		A[0] = resto(inc(5),10.2);
+	}
+}

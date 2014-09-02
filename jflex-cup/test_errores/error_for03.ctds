@@ -1,0 +1,27 @@
+class test_for{
+
+int A[5] ;
+float B [56];
+boolean C[10];
+
+int pruArrreglos(int b, int c ){
+        int i;
+        A[0] = 2; 
+        
+        return A[1];
+ 
+        for i  , 10.0 { // error la incializacion tiene q ser una asignacion 
+               A[i] = i % 2;
+        }
+        
+}
+
+int main(){
+
+    externinvk("printf", int ,"%d resultado : ", pruArreglos(4,8 ));
+    
+    return 1;
+    
+}
+
+}

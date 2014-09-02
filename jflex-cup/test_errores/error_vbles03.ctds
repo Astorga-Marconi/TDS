@@ -1,0 +1,24 @@
+class pp //error falta llave
+
+int factorial(int n){
+
+	int i = n;  // no permite inicializar en las declaraciones
+	int total = 1; // no permite inicializar en las declaraciones
+ 
+
+	while(i > 0){
+
+		total += total * i; 
+		i = i - 1;
+
+	}
+	return total;
+
+} / // error simbolo / no puede aparecer fuera de un bloque
+
+
+void main(){
+   return ;
+}; // error los metodos no estan separados por ;
+
+} // end class pp

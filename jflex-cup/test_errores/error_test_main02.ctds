@@ -1,0 +1,15 @@
+class test_mainConParametros{
+   
+
+   void alo(int x){
+      x= x + 1;
+      return;
+   }
+
+   void main(int x){ 
+      alo();
+      return;
+   }
+
+   float c;  //error no deberia haber declaraciones al final
+}

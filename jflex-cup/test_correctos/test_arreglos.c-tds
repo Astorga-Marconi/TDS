@@ -1,0 +1,32 @@
+class test_arreglos{
+
+int A[5] ;
+float B [56];
+boolean C[10];
+boolean y;
+
+int pruArreglos(int b, int c ){
+         float y;
+         y = 8.87;
+
+         A[0] = 4; 
+         B[55] = 2.6 + y;
+         C[0] = ((b < c)) ;
+         C[1] = b >= c;
+	return A[0]; 
+
+}
+
+int main(){
+    y = true;
+     A[1] = 58 - (-6) ; 
+     B[0] = -2.6;
+     C[2] = !((4 < 6)) ;
+     C[3] = ( 5 >= A[ 7 -(3+3) ]) || true ;
+    externinvk("printf", int ,"%d resultado : ", pruArreglos(4, (8 * 6) / (7 % 2) ) );
+    
+    return 1;
+    
+}
+
+}

@@ -1,0 +1,31 @@
+class test_break{
+
+int breaks(int g){
+      int  i;
+      i = 0;
+
+      while(i < 10){
+	i = i + 1;
+	if(g < 0){
+	     break;
+        }
+	else{
+	   continue;
+        }
+      }
+
+	return i;
+
+
+
+
+}
+
+int main(){ 
+   externinvk("printf", float ,"%f resultado : ", breaks( 1) );
+   return 1;
+}
+
+
+
+}

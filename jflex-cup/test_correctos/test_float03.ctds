@@ -1,0 +1,120 @@
+class test_potencia{
+
+float w;
+float m;
+float res;
+
+
+
+/* funcion que calcula la x ^ n , x elevado a la n  */
+
+float potencia(float x, int n){
+
+	int i; 
+	boolean neg;
+	float prod;
+        neg = false;
+        i = 1;
+        prod = 1.0;
+
+	if (n < 0){
+		n = -n;
+		neg = true;
+	}
+
+	while(i < n || i == n){
+		prod = prod * x * 2; //Error 2 es entero, * pide q tengan todos el mismo tipo.
+		i = i + 1;
+	}
+	if (!(!neg)){ //neg true
+		return 1.0/prod;
+        }
+	else{
+		return prod;
+        }
+	return -100.1;
+}
+
+float multiples(float x, float y){
+
+	float a,z;
+	int b;	
+	float w;
+	float m;
+	float res;
+	int j,i,k,n;
+	
+        a = -2.0;
+        b = -2;
+        w = -3.0;
+        z = -3.0;
+        m = a * z - w;
+        j = 0;
+        i = 0;
+        k = 0;
+        n = 5;
+
+	if(x > y){
+		
+              
+              if (m < a) { 
+                 res = x;
+              }
+              else{
+                 res = y;
+              }
+        }
+	else{
+		while(j <= n){
+
+			while i <= n  {
+
+				while(((k < n || k == n))){
+					if( b == 3 ){ 
+						res = res + 2.0;
+                                        }
+					else{
+						res = res - (10.0 / 2.0);	
+                                        }
+					
+					k += 1;
+				}
+
+				if( a < x && 0.0 < x){ 
+					res = 35.0 + 4.0 * res - 498.0;
+                                }
+				else{
+					res = 3.2 - res - 12345.356;
+                                }
+				i = i + 1;	
+
+
+			}
+			
+ 			res = res * -x + 23.0*y + 2.0 / 4.0; 
+			j = j +1;
+		}
+
+
+	}
+
+		
+	return -res;
+
+
+
+}
+
+void main(){
+     float f;
+     float a;
+     a = 80.0;
+     res = -15.0;
+     w = 4.3;
+     m= -7.6;
+     f = potencia(a, 2);
+     externinvk("printf", void, "%f" ,multiples(a,f+2.0));
+     return;
+}
+
+}

@@ -1,0 +1,30 @@
+class test_metodos{
+   float c;
+
+   void alo(boolean b, int x){
+      if ( b ) {
+            x= x + 1;
+      }
+      else{
+          x =- x - 1; //error debe ser -=
+       } 
+      return ; 
+   }
+
+   int alo2(int x){
+      alo3(true, x); //alo3 no se encuentra definida.
+      x=  x + 1; 
+      return x; 
+    } //error llave de mas
+   }
+ 
+   void main(){
+        int y;
+        y = 7;
+        c = y *8;
+        y = alo2(y); 
+        alo(false, (c+3)*); //error debe ser una expresion
+        return;
+   }
+
+}

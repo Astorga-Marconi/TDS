@@ -1,0 +1,29 @@
+class probando_externinvk{
+
+void met(int n){
+
+        
+	int i;         
+        int total;
+
+        total = 1;
+        i = 4;
+	while(i > 0){
+
+		total += total * i;  
+		i = i - 1;
+
+	}
+	return;
+
+} 
+
+void  main (){
+  externinvk("printf", void ); 
+  externinvk(printf, void, "---------------------------" ); //error el nombre de la funcion tiene q ser un string
+  externinvk('s', void , "resultado = %d", met(5) + 4  ); //error el nombre de la funcion tiene q ser un string
+  return factorial(2);
+
+}
+
+} // end class pp

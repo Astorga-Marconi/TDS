@@ -1,0 +1,59 @@
+class test_float{
+
+float potencia(float x, int n){
+
+	int i; 
+	boolean neg;
+	float prod;
+        neg = false;
+        i = 1;
+        prod = 1.; // error ..si o si tiene q tener digitos a ambos lados del punto
+
+	if (n < 0){
+		n = -n;
+		neg = !neg;
+	}
+
+	while(i <= n){
+		prod = prod * x;
+		i = i + 1;
+	}
+	if (!(!neg)){
+		return 1.0.6/prod; //error el float lleva un unico punto 
+        }
+	else{
+		return prod;
+        }
+	return -100.1;
+}
+
+float sumatoria(float b){
+	float total;
+	float i;
+	float res;
+        total = .0;// error ..si o si tiene q tener digitos a ambos lados del punto
+        i = b;
+        
+	while(i > 0  || i > 0 )   {
+		if(i > 0){
+			total = total + i;
+                }
+		i -= 1;
+	} /* fin while */
+	res = total;
+	return res;
+
+}
+
+void main(){
+     float f;
+     float a;
+     int m;
+     a = 8..0; // error ..si o si tiene q tener un unico punto
+     f = potencia(a,2);
+     m = sumatoria(a); // Error sumatoria retorna un float
+     externinvk("printf", void , "%f", f);
+     return;
+}
+
+}

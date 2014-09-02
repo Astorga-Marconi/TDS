@@ -1,0 +1,32 @@
+class test_for{
+
+int A[5] ;
+float B [56];
+boolean C[10];
+
+float par(){
+   return 1.5;
+
+}
+
+int pruArrreglos(int b, int c ){
+        int i;
+        A[0] = 2; 
+        
+        return A[1];
+ 
+        for float i = par() , 5 {  //ERROR la inicializacion debe ser de tipo int
+               A[i] = i + 2;
+        }
+        
+}
+
+int main(){
+
+    externinvk("printf", int ,"%d resultado : ", pruArreglos(4,8 ));
+    
+    return 1;
+    
+}
+
+}

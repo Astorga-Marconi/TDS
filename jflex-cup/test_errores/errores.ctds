@@ -1,0 +1,18 @@
+class pp{
+
+int factorial(void n){ //error los parametros no pueden ser tipo VOID
+
+	int i = n;  // error no permite inicializar en las declaraciones
+	int total = 1; // error no permite inicializar en las declaraciones
+ 
+	while(i > 0){
+
+		total += total * + i; // operadores consecutivos * +
+		i = i - 1;
+
+	}
+	return total;
+
+} // end method factorial
+
+} // end class pp

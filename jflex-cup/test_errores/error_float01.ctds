@@ -1,0 +1,40 @@
+class test_potencia{
+
+/* funcion que calcula la x ^ n , x elevado a la n  */
+
+float potencia(float x, int n){
+
+	int i; 
+	boolean neg;
+	flotante prod; //error el tipo flotante no existe 
+        neg = false;
+        i = 1;
+        prod = 1.0;
+
+	if (n < 0){
+		n = -n;
+		neg = true;
+	}
+
+	while(i < n || i == n){
+		prod = prod * x * 2; 
+		i = i + 1;
+	}
+	if (!(!neg)){ //neg true
+		return 1.0/prod;
+        }
+	else{
+		return prod;
+        }
+	return -100,1; //Error el numero flotante es con punto y no coma
+}
+
+void main(){
+     Float f; // error el tipo float es con minuscula.
+     int a;
+     a = 8;
+     f = potencia(a, 2);
+     return;
+}
+
+}

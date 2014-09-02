@@ -1,0 +1,31 @@
+class test_prueba1{
+
+	int prueba ( int p) {
+		int a;
+		float f;
+		{
+			int b;
+			int c;
+			b=4;
+			c=5;
+			a= b*c;
+			p=a+p;
+		}
+		{
+			float pi;
+			pi=3.14;
+			f= 2*pi;
+		}
+		if ((a/f)>5){
+			return 1;
+		}
+		else{
+			return 0;	
+		}
+	}
+
+			int main(){
+		  externinvk("printf", float , prueba(6));
+	}
+
+}

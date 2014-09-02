@@ -1,0 +1,24 @@
+class test_metodos{
+   float c;
+
+   void alo(int x){
+      x= x + 1;
+      return ; 
+   }
+
+   int alo2(int x){
+      alo(x);
+      x=  x + 1; 
+      return x; 
+   }
+ 
+   void main(){
+        int y;
+        y = 7;
+        c = 8.0;
+        y = alo2(y);
+        y = alo2((3)*y);
+        return;
+   }
+
+}

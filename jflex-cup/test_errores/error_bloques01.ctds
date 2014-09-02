@@ -1,0 +1,47 @@
+class test_bloques{
+
+{
+  int a;
+} //error no puede haber bloques sueltos
+
+int breaks(int g){
+      int  i;
+      i = 0;
+
+      while(i < 10){
+	{ //bloque 1
+          i = i + 1;
+        
+             { //bloque 2
+                  boolean a;
+                  
+	          if(g < 0){
+	                break;
+                   }
+	           else{
+	                continue;
+                   }
+             } //fin bloque 2
+
+              { //bloque 2
+                  a =true;
+	         
+             } //fin bloque 2
+
+
+       // } error falta fin bloque 1
+
+     } //fin while
+
+	return i;
+
+}
+
+int main(){ 
+   externinvk("printf", float ,"%f resultado : ", breaks( 1) );
+   return 1;
+}
+
+
+
+}

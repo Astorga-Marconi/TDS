@@ -1,0 +1,27 @@
+class test_logicos{
+
+float promedio (float nota1, float nota2, float nota3){
+
+	if ((nota1 > nota3) & (nota2 > nota3)){ //error el and es &&
+		return (nota1 + nota2)/2.0;
+	}
+	if ((nota1 > nota2) && (FALSE)){ //error false es con minuscula
+		return (nota1 + nota3)/2.0;
+	}
+	if ((nota2 > true) | (nota3 > nota1)){ //error el or es ||
+		return (nota3 + nota2)/2.0;
+	}
+	if (!(nota1 = nota2) && (nota1 != nota3) && !(nota2) ){ //ERROR igualdad logica es ==
+		return nota1;
+	}
+}
+/*
+Saca el promedio entre las dos notas mas altas.
+*/
+
+int main(){ 
+ externinvk("printf", float ,"%f resultado : ", promedio( 3.3, 0.66 , 10.0) );
+ return 1;
+}
+
+}

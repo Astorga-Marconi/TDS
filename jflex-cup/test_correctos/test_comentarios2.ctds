@@ -1,0 +1,23 @@
+class test_comentarios{
+/* Esta es una prueba mas simple sin tantos simbolos raros en los comentarios.
+   Lo	 que si prueba es que permitan multiples lineas,
+   tabulaciones		y  muchos espacios blancos                 */
+int pruAritmetica(int b, int c ){
+	
+        float res;// tambien puede haber comentarios de una linea
+
+	if(b > c){ /* este es otro comentario */ 
+		res = b;
+        }
+	else{
+		res = c;
+        }
+	return res;
+		
+	}
+
+int main(){ // dentro de este comentario podria aparecer externinvk( 
+    externinvk("printf", int , pruAritmetica(4,8 ));
+}
+
+}

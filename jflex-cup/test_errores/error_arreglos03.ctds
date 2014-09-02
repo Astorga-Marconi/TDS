@@ -1,0 +1,28 @@
+class test_arreglos{
+
+int A[5] ;
+boolean C[10]; 
+boolean y;
+
+int[5] pruArrreglos(int a, int b ){ // error no se puede retornar arreglos
+         boolean c ;
+         c =  false && C[2];
+         c[0] = ; // error se debe asignar algo..
+
+	return A[1]; 
+
+}
+
+int main(){
+     
+     A[] = 58 - (-6) ; //error se debe acceder a una posicion.. 
+     C[2] = !((4 < 6)) ;
+     C[3] = ( 5 >= A[ 7 -(3+3) ]) || true ;
+     y= C; 
+     externinvk("printf", int ,"%d resultado : ", pruArreglos(4, 8 ) , B); 
+    
+    return 1;
+    
+}
+
+}

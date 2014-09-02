@@ -1,0 +1,28 @@
+class test_arreglos{
+
+int A[] ; //Error la definicion del size del arreglo toma un entero 
+float B [56][4]; //Error no se permiten definir arreglos bidimensionales
+boolean C[10.2]; //Error la definicion del size del arreglo toma un entero no un flotante
+
+int pruArrreglos(int b, int c ){
+	
+        int res[8];
+        int i;   
+
+	if(b > c){
+		C[ boolean ] = 1 - c; //Error el acceso al arreglo debe ser una expresion no un tipo..
+        }
+
+	return res[]; //Error el acceso al arreglo debe ser una expresion no vacia
+		
+	}
+
+int main(){
+
+    externinvk("printf", int ,"%d resultado : ", pruArreglos(4,8 ));
+    
+    return 1;
+    
+}
+
+}

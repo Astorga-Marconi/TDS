@@ -1,0 +1,30 @@
+class test_if{
+
+int pruif(int b, int c ){
+	
+        float res[8];
+        boolean i;   
+
+	if(    ){ // Error la expresion debe ser de tipo boolno vacia
+		res[0] = 1 - c;         
+        }
+        if ( i = true ){ //ERROr la asignacion no retorna valor
+           res [1] += 4.3;   
+        }
+        else{
+           res [1] -= 4.3;  
+       }
+
+	return return[0]; //Error el nombre del arreglo no debe ser palabra reservada
+		
+}
+
+int main(){
+
+    externinvk("printf", int , "%d", pruif(4,8 ) + 5 );
+    externinvk("printf", void);
+
+    
+}
+
+}

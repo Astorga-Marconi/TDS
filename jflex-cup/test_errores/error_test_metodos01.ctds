@@ -1,0 +1,19 @@
+class test_metodos{
+   float c;
+
+    int alo(void x){ //error void no se puede usar en parametros
+      x= x + 1;
+      return;
+   }
+
+   void 2alo2(int x){ //error los nombres de metodos no pueden empezar con nro
+      alo(x);
+      x=  alo(x) += 1; // error no se permiten asig multiples
+      return;
+   }
+ 
+   int main(){
+        return 1;
+   }
+
+}

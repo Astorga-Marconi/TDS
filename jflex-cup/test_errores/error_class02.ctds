@@ -1,0 +1,22 @@
+class test_class{
+   float c;
+   void alo(int x){
+      x= x + 1;
+   }
+
+   void alo2(int x){
+      alo();
+      x=  alo() + 1;
+   }
+
+  class test_class2{ //error no se pueden definir clases anidadas
+      float c;
+      void alo(int x){
+      x= x + 1;
+      }
+
+  }
+
+}
+
+

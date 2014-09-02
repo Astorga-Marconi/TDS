@@ -1,0 +1,23 @@
+class test_arreglos{
+
+int A[-5] ;// error la declaracion de un arreglo debe tener un entero mayor a CERO
+boolean C[0 +7];// error la declaracion de un arreglo debe tener un entero literal no una expresion
+
+int pruArrreglos(int a, int b ){
+         boolean c ;
+         c =  false && 25[2];
+         C[a + b] = ((a < b)) ; 
+         _C[0] = c; //error  no puede comenzar con guion bajo
+	return A[1]; 
+
+}
+
+int main(){
+     
+     A[0] =(-6) ; 
+     externinvk("printf", int ,"%d resultado : ", pruArreglos(4, 8 ) , A);     
+    return 1;
+    
+}
+
+}

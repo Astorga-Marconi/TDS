@@ -1,0 +1,24 @@
+class test_char{
+
+int A[5] ;
+char B [56];  //error  no existe el tipo char
+boolean C[10];
+
+int pruChar(int b, int c ){
+        int i;
+        A[0] = 'a'; //error  no existe el literal char
+        
+        if ('a' < 'b'){ //error  no existe el literal char
+              return A[1];
+        } 
+}
+
+int main(){
+
+    externinvk("printf", int ,"%d resultado : ", pruArreglos(4,8 )); 
+    
+    return 1;
+    
+}
+
+}

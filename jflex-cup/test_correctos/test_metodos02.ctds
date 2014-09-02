@@ -1,0 +1,33 @@
+class test_metodos{
+   float c;
+
+   void alo(boolean b, int x){
+      if ( b ) {
+            x= x + 1;
+      }
+      else{
+          x = x - 1;
+      }  
+      return ; 
+   }
+
+   void Alo(boolean b, int x){ //es case sensitive no deberia dar error
+      return ; 
+   }
+
+   int alo2(int x){
+      alo(true, x); 
+      x=  x + 1; 
+      return x; 
+   }
+ 
+   void main(){
+        int y;
+        y = 7;
+        c = 8.0;
+        y = alo2(y); 
+        alo(false, (3)*y); 
+        return;
+   }
+
+}

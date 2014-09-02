@@ -1,0 +1,24 @@
+class test_arreglos{
+
+int[5] ; //error falta el nombre
+boolean float[10]; //error no se puede llamar como un tipo
+
+int pruArrreglos(int a, int b ){
+         boolean c ;
+         c =  false && break[2]; //error no se puede llamar como una palabra reservada
+         while[a + b] = ((a < b)) ; //error no se puede llamar como una palabra reservada
+         return[c] = c; //error no se puede llamar como una palabra reservada
+
+	return A[1]; 
+
+}
+
+int main(){
+     
+     A[1.3 + 8.3] =(-6) ; 
+     externinvk("printf", int ,"%d resultado : ", pruArreglos(4, 8 ) , A);     
+    return 1;
+    
+}
+
+}

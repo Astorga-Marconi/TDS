@@ -1,0 +1,35 @@
+class test_break{
+
+int breaks(int g){
+      int  i;
+      i = 0;
+
+      while(i < 10){
+	i = i + 1;
+	if(g < 0){
+	     g += 1;
+        }
+	else{
+	   g -= 1;
+        }
+      }
+
+        break //error falta punto y coma
+
+        
+	return i;
+
+
+
+
+}
+
+int main(){
+   continue   //error falta punto y coma
+   externinvk("printf", int ,"%d resultado : ", breaks( 1) );
+   return 1;
+}
+
+
+
+}

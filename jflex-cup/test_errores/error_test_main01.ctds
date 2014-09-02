@@ -1,0 +1,21 @@
+class test_sinmain{
+   
+   
+   void alo2(int x){
+      alo(5);
+      return;
+   }
+
+
+
+   float c; //error declaraciones de atributos entre los metodos
+
+   void alo(int x){
+      x= x + 1;
+      return;
+   }
+
+
+}
+
+

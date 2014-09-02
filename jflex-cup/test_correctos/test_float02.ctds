@@ -1,0 +1,30 @@
+class test_float{
+
+float sumatoria(float b){
+	float total;
+	float i;
+	float res;
+        total = 0.0;
+        i = b;
+        
+	while(i > 0  || i > 0 )   {
+		if(i > 0){
+			total = total + i;
+                }
+		i -= 1.0;
+	} /* fin while */
+	res = total;
+	return res;
+
+}
+
+void main(){
+     float f;
+     float a;
+     a = 8.0;
+     f = sumatoria(a);
+     externinvk("printf", void , "%f", f);
+     return;
+}
+
+}

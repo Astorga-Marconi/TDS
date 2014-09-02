@@ -1,0 +1,51 @@
+class test_bloques{
+
+int breaks(int g){
+     
+      {
+
+      } //error no puede haber bloques antes de la declaracion 
+
+      int  i;
+      i = 0;
+
+      while(i < 10){
+	  float j;
+          i = i + 1;
+        
+             { //bloque 2
+                  j = 2.3;
+	          if(g < 0){
+	                break;
+                   }
+	           else{
+
+                        { //bloque 3
+                           { //bloque 4
+                              
+                              { //bloque 5
+                                   j = 2 *+ i; //error dos operadores seguidos
+	                  
+                              } //fin bloque 5      
+	                        
+                            } //fin bloque 4      
+	                  
+                        } //fin bloque 3                        
+	                continue;
+                   }
+             } //fin bloque 2
+       
+     } //fin while
+
+	return i;
+
+}
+
+int main(){ 
+   externinvk("printf", float ,"%f resultado : ", breaks( 1) );
+   return 1;
+}
+
+
+
+}

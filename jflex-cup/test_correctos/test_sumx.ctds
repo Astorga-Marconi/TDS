@@ -1,0 +1,25 @@
+class test_sumx{
+
+	/* Retorna x+x+x+x+x+x */
+
+	float sumx (float x, int n){
+
+		  float aux;
+		  int i;
+			aux=0;
+			i=0;
+
+		  while (i<n){
+		     aux = aux + x;
+		     i = i+1;
+		  } 
+
+		  return  aux;
+	}
+
+	
+		int main(){
+		  externinvk("printf", float , sumx(6));
+	}
+
+}

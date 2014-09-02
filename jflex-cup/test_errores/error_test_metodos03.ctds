@@ -1,0 +1,25 @@
+class test_metodos{
+   float c;
+
+   void alo(boolean b, int x){
+      x= x + 1;
+      return ; 
+   }
+
+   int alo2(int x){
+      alo(true, x);
+      x=  x + 1; 
+      return x; 
+   }
+ 
+   void main(){
+        int y;
+        y = 7;
+        c = y *8;
+        y = alo2(int s); // Error es una invocacion no una declaracion
+        y = alo2( ( )); // Error tiene q tener una expresion
+        alo((c+3)*y; false); // Error los argumentos se separan con coma no puntoycoma
+        return;
+   }
+
+}

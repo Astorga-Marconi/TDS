@@ -1,0 +1,30 @@
+class test_metodos{
+   float c;
+
+   void alo(boolean b, int x){
+      if ( b ) {
+            x= x + 1;
+      }
+      else{
+          x = x - 1;
+      }  
+      return ; 
+   }
+
+   int alo2(int x){
+      alo3((true, x); //error sobra parentesis
+      x=  x + 1; 
+      return x; 
+   }
+ 
+   void _main(){ //nombre de metodo no puede empezar con _
+        int y;
+        y = 7;
+        c = y *8;
+        alo2(y) = 4; //error no se puede asignar a un metodo (error semantico)
+        alo(false, (c+3)*y); 
+        return;
+   }
+
+    
+}

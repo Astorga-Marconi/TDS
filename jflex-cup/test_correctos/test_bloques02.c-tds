@@ -1,0 +1,36 @@
+class test_bloques{
+
+int breaks(int g){
+      int  i;
+      i = 0;
+
+      while(i < 10){
+	{ //bloque 1
+          float j;
+          i = i + 1;
+        
+             { //bloque 2
+                  j = 2.3;
+	          if(g < 0){
+	                break;
+                   }
+	           else{
+	                continue;
+                   }
+             } //fin bloque 2
+        }//fin bloque 1
+
+     } //fin while
+
+	return i;
+
+}
+
+int main(){ 
+   externinvk("printf", float ,"%f resultado : ", breaks( 1) );
+   return 1;
+}
+
+
+
+}

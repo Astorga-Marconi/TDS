@@ -1,0 +1,33 @@
+class test_comentarios3{
+	/* Esto es un comentario */
+	int prueba1(int num){
+		float a; 
+
+		a=3;
+				/* Este es un comentario que 
+
+
+
+	ocupa 5 lineas */
+		a = a + 3 ;
+		while ( a < 3) {
+			a = a +1 //aca hay error y tira linea de error 16
+
+
+
+
+
+			if ( a == 3) {
+				int c;
+				c=3;	
+				return a + c ;		
+				break; 	
+			}	
+		}
+	}
+
+	int main(){
+		  externinvk("printf", int , prueba1(4));
+	}
+
+}

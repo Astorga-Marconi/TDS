@@ -1,0 +1,19 @@
+class test_arreglos{
+
+int 358[5] // error el nombre del arreglo no puede ser un numero  ;
+float B {56}; // Error se define con corchetes
+boolean C(10]; // Error se define con corchetes
+
+int pruArrreglos(int b, int c ){ 
+       [0] = true;  // falta elnombre del arreglo 
+	return A(5); //Error el acceso a arreglo es con corchetes
+
+int main(){
+
+    externinvk("printf", int ,"%d resultado : ", pruArreglos(4,8 ));
+    
+    return 1;
+    
+}
+
+}

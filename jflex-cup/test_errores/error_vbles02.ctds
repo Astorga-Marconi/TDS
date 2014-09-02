@@ -1,0 +1,26 @@
+class pp{
+
+int factorial(int n){
+
+        
+	int _i;         
+        boolean 9while; //no puede comenzar con nro
+        int total;
+        total = 
+        i = 4;
+	while(i > 0){
+
+		float t += Total * i; //error no se puede declarar e inicializar
+		i = i - 1;
+
+	}
+	return total;
+
+} 
+
+void  main (){
+  return;
+
+}
+
+} // end class pp

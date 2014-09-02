@@ -1,0 +1,27 @@
+class test_prueba{
+	float prueba(int b){
+		int a;
+		float c;
+		int g;
+		g=50;
+		if (g>0){
+			a=4;
+			if(a==4){
+				while (a<4){
+					while (g>4){
+						g=g-1;
+						c=a*2;
+					}
+					a=a+1;
+					c=c/2;
+				}
+			} 
+		}
+		return c;
+	}
+
+		int main(){
+		  externinvk("printf", float , prueba(6));
+	}
+
+}

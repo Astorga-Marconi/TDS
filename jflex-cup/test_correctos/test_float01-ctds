@@ -1,0 +1,41 @@
+class test_potencia{
+
+/* funcion que calcula la x ^ n , x elevado a la n  */
+
+float potencia(float x, int n){
+
+	int i; 
+	boolean neg;
+	float prod;
+        neg = false;
+        i = 1;
+        prod = 1.0;
+
+	if (n < 0){
+		n = -n;
+		neg = !neg;
+	}
+
+	while(i <= n){
+		prod = prod * x;
+		i = i + 1;
+	}
+	if !(!neg){
+		return 1.0/prod;
+        }
+	else{
+		return prod;
+        }
+	return -100.1;
+}
+
+void main(){
+     float f;
+     float a;
+     a = 8.0;
+     f = potencia(a, 2);
+     externinvk("printf", void , "%f", f);
+     return;
+}
+
+}

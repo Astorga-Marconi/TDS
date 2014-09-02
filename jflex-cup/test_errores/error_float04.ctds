@@ -1,0 +1,60 @@
+class test_potencia{
+
+float w;
+float m;
+float res;
+
+
+
+/* funcion que calcula la x ^ n , x elevado a la n  */
+
+float potencia(float x, int n){
+
+	int i; 
+	boolean neg;
+	float prod;
+        neg = false;
+        i = 1;
+        prod = 1.0;
+
+	if (n < 0){
+		n = -n;
+		neg = true;
+	}
+
+	while(i < n || i == n){
+		prod = prod * x * 2.0; 
+		i = i + 1;
+	}
+	if (true){ 
+		return 1.0/prod;
+        }
+	else{
+		return prod;
+        }
+	return -100.1;
+}
+
+float  multRepeat(float b, float a){
+
+  
+  flota  c; //Error eltipo es float
+  c =  a * a * b * b * b * a;
+ 
+  return c;  
+  
+}
+
+void main(){
+     float f;
+     float a;
+     a = 80.0;
+     res = -15.0;
+     w = 4.3;
+     m= -7.6;
+     f = potencia(a, 2);
+     externinvk("printf", void, "%f" ,multRepeat(res,float+2)); //Error la suma tiene q ser entre expresiones no tipos
+     return;
+}
+
+}

@@ -1,0 +1,20 @@
+class test_suma{
+	/* Programa que realiza la suma de dos numeros enteros */
+	int suma ( int num1 , int num2 ) {
+		if ( num1 == 0 ){
+			return num2 ;
+		}
+		else {
+			if ( num2 == 0 ){
+				return num1;
+			}
+			else{
+				return num1 + num2 ;	
+			}
+		}
+	}
+
+		int main(){
+		  externinvk("printf", int , suma(4,9));
+	}
+}
