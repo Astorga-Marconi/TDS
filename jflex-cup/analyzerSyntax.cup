@@ -100,7 +100,10 @@ list_type_id_method_decl ::= type_id_method_decl COMMA list_type_id_method_decl 
 
 type_id_method_decl ::= type ID;
 
-block ::= LBRACE set_field_decl set_statement RBRACE;
+block ::= 
+		LBRACE set_field_decl set_statement RBRACE
+	|	LBRACE set_statement RBRACE
+	|	LBRACE set_field_decl RBRACE;
 
 type ::=
 		BOOLEAN_LITERAL
@@ -124,7 +127,7 @@ statement ::=
 	
 zero_or_one_else_block ::= ELSE block | /* empty */;
 	
-set_statement ::= statement set_statement | /* empty */;
+set_statement ::= statement set_statement | statement;
 
 zero_or_one_expr ::= expr | /* empty */;
 

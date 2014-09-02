@@ -60,22 +60,22 @@ StringCharacter = [^\r\n\"\\]
 <YYINITIAL> {
 
   /* keywords */
-   "if"   			 	 { return new Symbol(sym.IF); }
+   "if"   			 	 { System.out.println(yytext());return new Symbol(sym.IF); }
    "int"   			 	 { System.out.println(yytext());return symbol(sym.INT); }
-   "for"   			 	 { return symbol(sym.FOR); }
-   "else"   			 { return symbol(sym.ELSE); }
-   "void"   			 { return symbol(sym.VOID); }
-   "break"   			 { return symbol(sym.BREAK); }
+   "for"   			 	 { System.out.println(yytext());return symbol(sym.FOR); }
+   "else"   			 { System.out.println(yytext());return symbol(sym.ELSE); }
+   "void"   			 { System.out.println(yytext());System.out.println(yytext());return symbol(sym.VOID); }
+   "break"   			 { System.out.println(yytext());return symbol(sym.BREAK); }
    "class"   			 { System.out.println(yytext());return symbol(sym.CLASS); }
-   "float"   			 { return symbol(sym.FLOAT); }
-   "while"   			 { return symbol(sym.WHILE); }
+   "float"   			 { System.out.println(yytext());return symbol(sym.FLOAT); }
+   "while"   			 { System.out.println(yytext());return symbol(sym.WHILE); }
    "return"   		 	 { System.out.println(yytext());return symbol(sym.RETURN); }
-   "boolean"   		 	 { return symbol(sym.BOOLEAN_LITERAL); }
-   "continue"   		 { return symbol(sym.CONTINUE); }
+   "boolean"   		 	 { System.out.println(yytext());return symbol(sym.BOOLEAN_LITERAL); }
+   "continue"   		 { System.out.println(yytext());return symbol(sym.CONTINUE); }
 
   /* boolean literals */
-  "true"                         { return symbol(sym.BOOLEAN_LITERAL, true); }
-  "false"                        { return symbol(sym.BOOLEAN_LITERAL, false); }
+  "true"                         { System.out.println(yytext()); return symbol(sym.TRUE); }
+  "false"                        { System.out.println(yytext()); return symbol(sym.FALSE); }
   
   
   /* separators */
@@ -83,27 +83,29 @@ StringCharacter = [^\r\n\"\\]
   ")"                            { System.out.println(yytext());return symbol(sym.RPAREN); }
   "{"                            { System.out.println(yytext());return symbol(sym.LBRACE); }
   "}"                            { System.out.println(yytext());return symbol(sym.RBRACE); }
-  "["                            { return symbol(sym.LBRACK); }
-  "]"                            { return symbol(sym.RBRACK); }
+  "["                            { System.out.println(yytext());return symbol(sym.LBRACK); }
+  "]"                            { System.out.println(yytext());return symbol(sym.RBRACK); }
   ";"                            { System.out.println(yytext());return symbol(sym.SEMICOLON); }
-  ","                            { return symbol(sym.COMMA); }
+  ","                            { System.out.println(yytext());return symbol(sym.COMMA); }
   
   /* operators */
   "="                            { System.out.println(yytext());return symbol(sym.EQ); }
-  ">"                            { return symbol(sym.GT); }
-  "<"                            { return symbol(sym.LT); }
-  "!"                            { return symbol(sym.NOT); }
+  ">"                            { System.out.println(yytext());return symbol(sym.GT); }
+  "<"                            { System.out.println(yytext());return symbol(sym.LT); }
+  "!"                            { System.out.println(yytext());return symbol(sym.NOT); }
   "=="                           { System.out.println(yytext());return symbol(sym.EQEQ); }
-  "<="                           { return symbol(sym.LTEQ); }
-  ">="                           { return symbol(sym.GTEQ); }
-  "!="                           { return symbol(sym.NOTEQ); }
-  "&&"                           { return symbol(sym.ANDAND); }
-  "||"                           { return symbol(sym.OROR); }
+  "<="                           { System.out.println(yytext());return symbol(sym.LTEQ); }
+  ">="                           { System.out.println(yytext());return symbol(sym.GTEQ); }
+  "!="                           { System.out.println(yytext());return symbol(sym.NOTEQ); }
+  "&&"                           { System.out.println(yytext());return symbol(sym.ANDAND); }
+  "||"                           { System.out.println(yytext());return symbol(sym.OROR); }
   "+"                            { System.out.println(yytext());return symbol(sym.PLUS); }
-  "-"                            { return symbol(sym.MINUS); }
-  "*"                            { return symbol(sym.MULT); }
-  "/"                            { return symbol(sym.DIV); }
-  "%"                            { return symbol(sym.MOD); }
+  "-"                            { System.out.println(yytext());return symbol(sym.MINUS); }
+  "*"                            { System.out.println(yytext());return symbol(sym.MULT); }
+  "/"                            { System.out.println(yytext());return symbol(sym.DIV); }
+  "%"                            { System.out.println(yytext());return symbol(sym.MOD); }
+  
+  \"                            { System.out.println(yytext()); yybegin(STRING); string.setLength(0); }
   
   
   {DecIntegerLiteral}            { return symbol(sym.INT_LITERAL, new Integer(yytext())); }
