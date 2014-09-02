@@ -26,7 +26,7 @@ files=`ls test_correctos/*.ctds`
 
 for file in $files ; do 
 	echo "---------------- Test $file ... -------------------" 
-        java -jar $comp $file  
+        java $comp $file  
 	echo "---------------------------------------------------" 
         echo "  "
         echo "  "
@@ -38,7 +38,7 @@ files=`ls test_errores/*.ctds`
 
 for file in $files ; do 
 	echo "---------------- Test $file ... -------------------" 
-        java -jar $comp $file  
+        java $comp $file  
 	echo "---------------------------------------------------" 
         echo "  "
         echo "  "
