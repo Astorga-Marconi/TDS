@@ -39,7 +39,6 @@ non terminal	program,
 				method_call,
 				location,
 				list_expr,
-				zero_or_one_list_expr,
 				expr,
 				externinvk_arg,
 				list_externinvk_arg,
@@ -87,7 +86,6 @@ method_decl ::=
 		type ID LPAREN zero_or_one_list_type_id_method_decl RPAREN block
 	|	VOID ID LPAREN zero_or_one_list_type_id_method_decl RPAREN block;
 
-// type_or_void ::= type | VOID;
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
 
@@ -138,16 +136,17 @@ assign_op ::=
 	;
 
 method_call ::= 
-		ID LPAREN zero_or_one_list_expr RPAREN
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type zero_or_one_list_externinvk_arg RPAREN
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID zero_or_one_list_externinvk_arg RPAREN
+		ID LPAREN  RPAREN
+	|	ID LPAREN list_expr RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type COMMA list_externinvk_arg RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID COMMA list_externinvk_arg RPAREN
 	;
 
 location ::= ID | ID LBRACK expr RBRACK;
 
 list_expr ::= expr COMMA list_expr | expr;
-
-zero_or_one_list_expr ::= list_expr | /* empty */;
 
 expr ::=
 		location

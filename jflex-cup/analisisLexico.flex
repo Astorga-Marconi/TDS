@@ -36,19 +36,20 @@ WhiteSpace = {LineTerminator} | [ \t\f]
 
 Comment = {TraditionalComment} | {EndOfLineComment}  
 
-TraditionalComment = "/*" [^*] ~"*/" 
+TraditionalComment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 EndOfLineComment = "//" {InputCharacter}* {LineTerminator}?
 
 Identifier = [:jletter:][:jletterdigit:]*
 
 DecIntegerLiteral = 0 | [1-9][0-9]*
-    
-FloatLiteral  = ({FLit1}|{FLit2}|{FLit3}) {Exponent}? [fF]
 
-FLit1    = [0-9]+ \. [0-9]* 
-FLit2    = \. [0-9]+ 
-FLit3    = [0-9]+ 
-Exponent = [eE] [+-]? [0-9]+
+FloatLiteral = [0-9]*"."[0-9]*
+    
+//FloatLiteral  = ({FLit1}|{FLit2}|{FLit3}) {Exponent}? [fF]
+//FLit1    = [0-9]+ \. [0-9]* 
+//FLit2    = \. [0-9]+ 
+//FLit3    = [0-9]+ 
+//Exponent = [eE] [+-]? [0-9]+
 
 
 StringCharacter = [^\r\n\"\\]
@@ -58,6 +59,8 @@ StringCharacter = [^\r\n\"\\]
 %%
    
 <YYINITIAL> {
+
+  \"                            { System.out.println(yytext()); yybegin(STRING); string.setLength(0); }
 
   /* keywords */
    "if"   			 	 { System.out.println(yytext());return new Symbol(sym.IF); }
@@ -104,16 +107,19 @@ StringCharacter = [^\r\n\"\\]
   "*"                            { System.out.println(yytext());return symbol(sym.MULT); }
   "/"                            { System.out.println(yytext());return symbol(sym.DIV); }
   "%"                            { System.out.println(yytext());return symbol(sym.MOD); }
-  
-  \"                            { System.out.println(yytext()); yybegin(STRING); string.setLength(0); }
-  
+  "+="                            { System.out.println(yytext());return symbol(sym.PLUSEQ); }
+  "-="                            { System.out.println(yytext());return symbol(sym.MINUSEQ); }
+
+
+  "externinvk"                    {System.out.println(yytext());return new Symbol(sym.EXTERNINVK,yyline+1,yycolumn+1,yytext());}
+
   
   {DecIntegerLiteral}            { return symbol(sym.INT_LITERAL, new Integer(yytext())); }
   
-  {FloatLiteral}                 { return symbol(sym.FLOAT_LITERAL, new Float(yytext().substring(0,yylength()-1))); }
+  {FloatLiteral}                 { System.out.println(yytext());return symbol(sym.FLOAT_LITERAL, new Float(yytext().substring(0,yylength()-1))); }
   
   /* comments */
-  {Comment}                      { /* ignore */ }
+  {Comment}                      { System.out.println("COMMENT ");System.out.println(yytext()); }
 
   /* whitespace */
   {WhiteSpace}                   { /* ignore */ }
@@ -121,25 +127,10 @@ StringCharacter = [^\r\n\"\\]
   /* identifiers */ 
   {Identifier}                   { System.out.println(yytext());return symbol(sym.ID, yytext()); }  
 
-  .         { System.out.println("error");}
+  .         { System.out.println("NO RECONOCIDO");}
 }
 
 <STRING> {
-  \"                             { yybegin(YYINITIAL); return symbol(sym.STRING_LITERAL, string.toString()); }
-  
-  {StringCharacter}+             { string.append( yytext() ); }
-  
-  /* escape sequences */
-  "\\b"                          { string.append( '\b' ); }
-  "\\t"                          { string.append( '\t' ); }
-  "\\n"                          { string.append( '\n' ); }
-  "\\f"                          { string.append( '\f' ); }
-  "\\r"                          { string.append( '\r' ); }
-  "\\\""                         { string.append( '\"' ); }
-  "\\'"                          { string.append( '\'' ); }
-  "\\\\"                         { string.append( '\\' ); }
-  
-  /* error cases */
-  \\.                            { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\""); }
-  {LineTerminator}               { throw new RuntimeException("Unterminated string at end of line"); }
+  \" {yybegin(YYINITIAL);return new Symbol(sym.STRING_LITERAL,yyline+1,yycolumn+1,yytext());}
+  . {}
 }
