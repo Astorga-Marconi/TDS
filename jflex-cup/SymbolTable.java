@@ -1,21 +1,13 @@
+package Compiladores;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class SymbolTable{
 	
-	private class Descriptor{
-		private String name;
-		private String type;
-		
-		public String getName(){
-			return name;
-		}
-		
-	}
-	
 	private List<List<Descriptor>> levels;
 	
-	private int amountLevels;
+	public int amountLevels;
 	
 	public SymbolTable(){
 		// Constructor
@@ -28,7 +20,7 @@ public class SymbolTable{
 		levels.add(level);
 		amountLevels++;
 	}
-	
+		
 	public void closeBlock(){
 		amountLevels--;
 		levels.remove(amountLevels);
