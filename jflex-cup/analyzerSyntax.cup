@@ -1,3 +1,9 @@
+import java_cup.runtime.*;
+action code {:
+	SymbolTable table = new SymbolTable();
+	String currentType = "";
+:}
+
 terminal INT;
 terminal FLOAT;
 terminal BREAK;
@@ -61,8 +67,8 @@ precedence left  MULT, DIV, MOD;
 start with program;
 
 program ::= 
-		CLASS ID LBRACE set_decl RBRACE {:System.out.println("termino");:}
-	|	CLASS ID LBRACE RBRACE {:System.out.println("termino");:}
+		CLASS ID LBRACE {:table.insertNewBlock();:} set_decl RBRACE {:table.closeBlock();:} {:System.out.println("termino");:}
+	|	CLASS ID LBRACE {:table.insertNewBlock();:} RBRACE {:table.closeBlock();:} {:System.out.println("termino");:}
 	;
 
 set_decl ::= 
@@ -78,56 +84,61 @@ set_field_decl ::=
 
 field_decl ::= type list_id_field_decl SEMICOLON;
 
-id_field_decl ::= ID | ID LBRACK INT_LITERAL RBRACK;
+id_field_decl ::= 
+		ID:i {:table.insertSymbol(currentType, i.toString());:} 
+	|	ID:i {:table.insertSymbol(currentType, i.toString());:} LBRACK INT_LITERAL RBRACK
+	;
 
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
-		type ID LPAREN zero_or_one_list_type_id_method_decl RPAREN block
-	|	VOID ID LPAREN zero_or_one_list_type_id_method_decl RPAREN block;
+		type ID:i {:table.insertSymbol(currentType, i.toString());:} LPAREN zero_or_one_list_type_id_method_decl RPAREN {:table.insertNewBlock();:} block {:table.closeBlock();:}
+	|	VOID ID:i {:table.insertSymbol("Void", i.toString());:} LPAREN zero_or_one_list_type_id_method_decl RPAREN {:table.insertNewBlock();:} block {:table.closeBlock();:}
+	;
 
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
 
 zero_or_one_list_type_id_method_decl ::=
 		list_type_id_method_decl
-	|	/* empty */
+	|	/* LAMBDA */
 	;
 
 list_type_id_method_decl ::= type_id_method_decl COMMA list_type_id_method_decl | type_id_method_decl;
 
-type_id_method_decl ::= type ID;
+type_id_method_decl ::= type ID:i {:table.insertSymbol(currentType, i.toString());:};
 
 block ::= 
-		LBRACE set_field_decl set_statement RBRACE
-	|	LBRACE set_statement RBRACE
-	|	LBRACE set_field_decl RBRACE;
+		LBRACE  set_field_decl set_statement RBRACE
+	|	LBRACE set_statement RBRACE 
+	|	LBRACE set_field_decl RBRACE
+	;
 
 type ::=
-		BOOLEAN_LITERAL
-	|	FLOAT
-	|	INT
+		BOOLEAN_LITERAL {:currentType = "boolean";:}
+	|	FLOAT {:currentType = "float";:}
+	|	INT {:currentType = "int";:}
 	;
 
 statement ::=
 		location assign_op expr SEMICOLON
 	|	method_call SEMICOLON
-	|	IF LPAREN expr RPAREN block zero_or_one_else_block
-	|	FOR ID EQ expr COMMA expr block
-	|	WHILE expr block
-	|	RETURN zero_or_one_expr SEMICOLON  {:System.out.println("t");:}
+	|	IF LPAREN expr RPAREN {:table.insertNewBlock();:} block {:table.closeBlock();:} zero_or_one_else_block
+	|	FOR ID EQ expr COMMA expr {:table.insertNewBlock();:} block {:table.closeBlock();:}
+	|	WHILE expr {:table.insertNewBlock();:} block {:table.closeBlock();:}
+	|	RETURN zero_or_one_expr SEMICOLON
 	|	BREAK SEMICOLON
 	|	CONTINUE SEMICOLON
 	|	SEMICOLON
-	|	block
+	|	{:table.insertNewBlock();:} block {:table.closeBlock();:}
 	;
 
 	
-zero_or_one_else_block ::= ELSE block | /* empty */;
+zero_or_one_else_block ::= ELSE {:table.insertNewBlock();:} block {:table.closeBlock();:} | /* LAMBDA */;
 	
 set_statement ::= statement set_statement | statement;
 
-zero_or_one_expr ::= expr | /* empty */;
+zero_or_one_expr ::= expr | /* LAMBDA */;
 
 assign_op ::=
 		EQ

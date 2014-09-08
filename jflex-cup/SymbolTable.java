@@ -24,6 +24,11 @@ public class SymbolTable{
 		levels.remove(amountLevels);
 	}
 	
+	public void insertSymbol(String type, String name){
+		Descriptor d = new Descriptor(type, name);
+		insertNewDescriptor(d);
+	}
+
 	public void insertNewDescriptor(Descriptor descriptor){
 		// Level must exists.
 		// The descriptor's name must be unique.

@@ -2,6 +2,11 @@ public class Descriptor {
 
 		private String name;
 		private String type;
+
+		public Descriptor(String newType, String newName){
+			name = newName;
+			type = newType;
+		}
 		
 		public void setName(String n){
 			name = n;
