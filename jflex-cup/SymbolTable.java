@@ -1,5 +1,3 @@
-package Compiladores;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +9,7 @@ public class SymbolTable{
 	
 	public SymbolTable(){
 		// Constructor
-		levels = new LinkedList<>();
+		levels = new LinkedList<List<Descriptor>>();
 		amountLevels = 0;
 	}
 	
@@ -29,7 +27,7 @@ public class SymbolTable{
 	public void insertNewDescriptor(Descriptor descriptor){
 		// Level must exists.
 		// The descriptor's name must be unique.
-		levels.get(amountLevels).add(descriptor);
+		levels.get(amountLevels-1).add(descriptor);
 	}
 	
 	/**
@@ -38,9 +36,9 @@ public class SymbolTable{
 	 * @return The Descriptor found, or otherwise null.
 	 */
 	public Descriptor search(String id){
-		for (int i = amountLevels; i >= 0; i++)
+		for (int i = amountLevels-1; i >= 0; i--)
 		{
-			System.out.println("Level " + i + ": ");
+			System.out.println("Level " + (i + 1) + ": ");
 			for (int j = 0; j < levels.get(i).size(); j++)
 			{
 				if (levels.get(i).get(j).getName() == id) {
@@ -52,13 +50,12 @@ public class SymbolTable{
 	}
 	
 	public void showTable(){
-		System.out.println();
-		for (int i = 0; i < amountLevels; i++)
+		for (int i = 0; i < levels.size(); i++)
 		{
 			System.out.println("Level " + i + ": ");
 			for (int j = 0; j < levels.get(i).size(); j++)
 			{
-				System.out.print(levels.get(i).get(j) + ", ");
+				System.out.println(levels.get(i).get(j).toString());
 			}
 		}
 		
