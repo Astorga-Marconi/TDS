@@ -5,7 +5,7 @@ public class SymbolTable{
 	
 	private List<List<Descriptor>> levels;
 	
-	public int amountLevels;
+	private int amountLevels;
 	
 	public SymbolTable(){
 		// Constructor

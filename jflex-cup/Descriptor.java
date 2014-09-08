@@ -1,5 +1,3 @@
-package Compiladores;
-
 public class Descriptor {
 
 		private String name;
