@@ -45,12 +45,6 @@ DecIntegerLiteral = 0 | [1-9][0-9]*
 
 FloatLiteral = [0-9]*"."[0-9]*
     
-//FloatLiteral  = ({FLit1}|{FLit2}|{FLit3}) {Exponent}? [fF]
-//FLit1    = [0-9]+ \. [0-9]* 
-//FLit2    = \. [0-9]+ 
-//FLit3    = [0-9]+ 
-//Exponent = [eE] [+-]? [0-9]+
-
 
 StringCharacter = [^\r\n\"\\]
 
