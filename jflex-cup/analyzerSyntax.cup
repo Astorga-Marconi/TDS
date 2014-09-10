@@ -35,6 +35,7 @@ non terminal	program,
 				zero_or_one_list_type_id_method_decl,
 				list_type_id_method_decl,
 				type_id_method_decl,
+				_block,
 				block,
 				type,
 				statement,
@@ -48,7 +49,6 @@ non terminal	program,
 				expr,
 				externinvk_arg,
 				list_externinvk_arg,
-				zero_or_one_list_externinvk_arg,
 				bin_op,
 				arith_op,
 				rel_op,
@@ -92,10 +92,9 @@ id_field_decl ::=
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
-		type ID:i {:table.insertSymbol(currentType, i.toString());:} LPAREN zero_or_one_list_type_id_method_decl RPAREN {:table.insertNewBlock();:} block {:table.closeBlock();:}
-	|	VOID ID:i {:table.insertSymbol("Void", i.toString());:} LPAREN zero_or_one_list_type_id_method_decl RPAREN {:table.insertNewBlock();:} block {:table.closeBlock();:}
+		type ID:i {:table.insertSymbol(currentType, i.toString());:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
+	|	VOID ID:i {:table.insertSymbol("Void", i.toString());:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	;
-
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
 
@@ -108,7 +107,9 @@ list_type_id_method_decl ::= type_id_method_decl COMMA list_type_id_method_decl 
 
 type_id_method_decl ::= type ID:i {:table.insertSymbol(currentType, i.toString());:};
 
-block ::= 
+block ::= {:table.insertNewBlock();:} _block {:table.closeBlock();:};
+
+_block ::= 
 		LBRACE  set_field_decl set_statement RBRACE
 	|	LBRACE set_statement RBRACE 
 	|	LBRACE set_field_decl RBRACE
@@ -123,18 +124,17 @@ type ::=
 statement ::=
 		location assign_op expr SEMICOLON
 	|	method_call SEMICOLON
-	|	IF LPAREN expr RPAREN {:table.insertNewBlock();:} block {:table.closeBlock();:} zero_or_one_else_block
-	|	FOR ID EQ expr COMMA expr {:table.insertNewBlock();:} block {:table.closeBlock();:}
-	|	WHILE expr {:table.insertNewBlock();:} block {:table.closeBlock();:}
+	|	IF LPAREN expr RPAREN  block zero_or_one_else_block
+	|	FOR ID EQ expr COMMA expr block 
+	|	WHILE expr block 
 	|	RETURN zero_or_one_expr SEMICOLON
 	|	BREAK SEMICOLON
 	|	CONTINUE SEMICOLON
 	|	SEMICOLON
-	|	{:table.insertNewBlock();:} block {:table.closeBlock();:}
+	|	block 
 	;
 
-	
-zero_or_one_else_block ::= ELSE {:table.insertNewBlock();:} block {:table.closeBlock();:} | /* LAMBDA */;
+zero_or_one_else_block ::= ELSE block | /* LAMBDA */;
 	
 set_statement ::= statement set_statement | statement;
 
@@ -177,11 +177,6 @@ externinvk_arg ::=
 list_externinvk_arg ::= 
 		externinvk_arg COMMA list_externinvk_arg 
 	|	externinvk_arg
-	;
-
-zero_or_one_list_externinvk_arg ::= 
-		list_externinvk_arg 
-	|	/* empty */
 	;
 
 bin_op ::=
