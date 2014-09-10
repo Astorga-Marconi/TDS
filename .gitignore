@@ -2,6 +2,6 @@
 *.java~
 
 
-jflex-cup/Scanner.java
-jflex-cup/parser.java
-jflex-cup/sym.java
+src/Scanner.java
+src/parser.java
+src/sym.java
