@@ -29,11 +29,26 @@ public class SymbolTable{
 		insertNewDescriptor(d);
 	}
 
+	/**
+	 * Insert the descriptor in the current level at the table.
+	 * The name Id of the descriptor must be unique in the level.
+	 * @param descriptor
+	 */
 	public void insertNewDescriptor(Descriptor descriptor){
-		// Level must exists.
-		// The descriptor's name must be unique.
-		levels.get(amountLevels-1).add(descriptor);
+		boolean idExist = false;
+		for (int i = 0; i < levels.get(amountLevels-1).size() ; i++) {
+			if (levels.get(amountLevels-1).get(i).getName() == descriptor.getName()) {
+				idExist = true;
+				break;
+			}			
+		}
+		if (!idExist) {
+			levels.get(amountLevels-1).add(descriptor);
+		} else {
+			throw new IllegalArgumentException("There is already a Descriptor with the same ID");			
+		}
 	}
+
 	
 	/**
 	 * Search a descriptor in the levels.
