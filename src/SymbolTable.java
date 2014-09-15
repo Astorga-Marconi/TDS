@@ -2,6 +2,7 @@
  * Copyright (C) 2014
  * All rights reserved.
  *
+ * Tabla de simbolos, para matener la información de los simbolos (identificadores) de un programa.
  * File Name: SymbolTable.java
  * To Create: javac SymbolTable.java
  * Authors: Astorga Dario - Marconi Pablo
