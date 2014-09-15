@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: Main.java
+ * To Create: javac Main.java
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 import java.io.*;
    
 public class Main {
@@ -17,5 +26,4 @@ public class Main {
 
   }
 }
-
 
