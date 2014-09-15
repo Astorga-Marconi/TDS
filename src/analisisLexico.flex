@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: analisisLexico.flex
+ * To Create: jflex analisisLexico.flex
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 import java_cup.runtime.*;
 
 %%
