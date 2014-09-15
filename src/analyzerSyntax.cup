@@ -8,7 +8,7 @@
  * Version: 0.1 
  */
 import java_cup.runtime.*;
-import ir.*;
+import ir.ast.*;
 
 action code {:
 	SymbolTable table = new SymbolTable();
@@ -27,14 +27,15 @@ terminal WHILE;
 terminal RETURN;
 terminal VOID;
 terminal TRUE, FALSE;
-terminal ID;
 terminal INT_LITERAL, STRING_LITERAL, FLOAT_LITERAL, BOOLEAN_LITERAL;
 
 terminal
 		LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON,
 		LPAREN, RPAREN, EQ, COMMA, PLUSEQ, MINUSEQ,
-		EXTERNINVK, MINUS, NOT, PLUS, MULT, DIV, MOD,
-		LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
+		EXTERNINVK, NOT;
+
+terminal String ID;
+terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
 
 /* Non terminals */
 non terminal	program,
@@ -51,24 +52,18 @@ non terminal	program,
 				_block,
 				block,
 				type,
-				statement,
 				zero_or_one_else_block,
 				set_statement,
 				zero_or_one_expr,
-				assign_op,
-				method_call,
-				location,
 				list_expr,
-				expr,
 				externinvk_arg,
 				list_externinvk_arg,
-				bin_op,
-				arith_op,
-				rel_op,
-				eq_op,
-				cond_op,
-				literal,
 				bool_literal;
+
+non terminal	Expression expr, location, method_call, literal;
+non terminal 	AssignOpType assign_op;
+non terminal 	Statement statement;
+non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -99,15 +94,15 @@ set_field_decl ::=
 field_decl ::= type list_id_field_decl SEMICOLON;
 
 id_field_decl ::= 
-		ID:i {:table.insertSymbol(currentType, i.toString());:} 
-	|	ID:i {:table.insertSymbol(currentType, i.toString());:} LBRACK INT_LITERAL RBRACK
+		ID:i {:table.insertSymbol(currentType, i);:} 
+	|	ID:i {:table.insertSymbol(currentType, i);:} LBRACK INT_LITERAL RBRACK
 	;
 
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
-		type ID:i {:table.insertSymbol(currentType, i.toString());:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
-	|	VOID ID:i {:table.insertSymbol("Void", i.toString());:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
+		type ID:i {:table.insertSymbol(currentType, i);:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
+	|	VOID ID:i {:table.insertSymbol("Void", i);:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	;
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
@@ -119,7 +114,7 @@ zero_or_one_list_type_id_method_decl ::=
 
 list_type_id_method_decl ::= type_id_method_decl COMMA list_type_id_method_decl | type_id_method_decl;
 
-type_id_method_decl ::= type ID:i {:table.insertSymbol(currentType, i.toString());:};
+type_id_method_decl ::= type ID:i {:table.insertSymbol(currentType, i);:};
 
 block ::= {:table.insertNewBlock();:} _block {:table.closeBlock();:};
 
@@ -136,9 +131,10 @@ type ::=
 	;
 
 statement ::=
-		location assign_op expr SEMICOLON
+		location:l1 assign_op:ap1 expr:e1 SEMICOLON
+		{: RESULT = new AssignStmt((Location)l1, ap1, e1); :}
 	|	method_call SEMICOLON
-	|	IF LPAREN expr RPAREN  block zero_or_one_else_block
+	|	IF LPAREN expr RPAREN block zero_or_one_else_block
 	|	FOR ID EQ expr COMMA expr block 
 	|	WHILE expr block 
 	|	RETURN zero_or_one_expr SEMICOLON
@@ -169,18 +165,28 @@ method_call ::=
 	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID COMMA list_externinvk_arg RPAREN
 	;
 
-location ::= ID | ID LBRACK expr RBRACK;
+location ::= 
+		ID:id1
+		{: RESULT = new VarLocation(id1); :}
+	|	ID:id2 LBRACK expr RBRACK
+		{: RESULT = new VarLocation(id2); :}
+	;
 
 list_expr ::= expr COMMA list_expr | expr;
 
 expr ::=
-		location
-	|	method_call
-	|	literal
-	|	expr bin_op expr
+		location:l1
+		{: RESULT = l1; :}
+	|	method_call:m1
+		{: RESULT = m1; :}
+	|	literal:l1
+		{: RESULT = l1; :}
+	|	expr:el bin_op:bo1 expr:er
+		{: RESULT = new BinOpExpr(el, bo1, er); :}
 	|	MINUS expr
 	|	NOT expr
 	|	LPAREN expr RPAREN
+
 	;
 
 externinvk_arg ::=
@@ -194,35 +200,52 @@ list_externinvk_arg ::=
 	;
 
 bin_op ::=
-		arith_op
-	|	rel_op
-	|	eq_op
-	|	cond_op
+		arith_op:ao1
+		{: RESULT = ao1; :}
+	|	rel_op:ro1
+		{: RESULT = ro1; :}
+	|	eq_op:eo1
+		{: RESULT = eo1; :}
+	|	cond_op:co1
+		{: RESULT = co1; :}
 	;
 
 arith_op ::=
-		PLUS
-	|	MINUS
-	|	MULT
-	|	DIV
-	|	MOD
+		PLUS:op1
+		{: RESULT = op1; :}
+	|	MINUS:op2
+		{: RESULT = op2; :}
+	|	MULT:op3
+		{: RESULT = op3; :}
+	|	DIV:op4
+		{: RESULT = op4; :}
+	|	MOD:op5
+		{: RESULT = op5; :}
 	;
 
 rel_op ::=
-		LT
-	|	GT
-	|	LTEQ
-	|	GTEQ
+		LT:op1
+		{: RESULT = op1; :}
+	|	GT:op2
+		{: RESULT = op2; :}
+	|	LTEQ:op3
+		{: RESULT = op3; :}
+	|	GTEQ:op4
+		{: RESULT = op4; :}
 	;
 
 eq_op ::=
-		EQEQ
-	|	NOTEQ
+		EQEQ:op1
+		{: RESULT = op1; :}
+	|	NOTEQ:op2
+		{: RESULT = op2; :}
 	;
 
 cond_op ::=
-		ANDAND
-	|	OROR
+		ANDAND:op1
+		{: RESULT = op1; :}
+	|	OROR:op2
+		{: RESULT = op2; :}
 	;
 	
 literal ::=
