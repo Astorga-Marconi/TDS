@@ -16,8 +16,7 @@ action code {:
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */
-terminal INT;
-terminal FLOAT;
+
 terminal BREAK;
 terminal CLASS;
 terminal CONTINUE;
@@ -27,7 +26,7 @@ terminal WHILE;
 terminal RETURN;
 terminal VOID;
 terminal TRUE, FALSE;
-terminal INT_LITERAL, STRING_LITERAL, FLOAT_LITERAL, BOOLEAN_LITERAL;
+terminal STRING_LITERAL;
 
 terminal
 		LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON,
@@ -36,6 +35,9 @@ terminal
 
 terminal String ID;
 terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
+terminal Type INT, FLOAT, BOOLEAN_LITERAL;
+terminal IntLiteral INT_LITERAL;
+terminal FloatLiteral FLOAT_LITERAL;
 
 /* Non terminals */
 non terminal	program,
@@ -249,8 +251,10 @@ cond_op ::=
 	;
 	
 literal ::=
-		INT_LITERAL 
-	|	FLOAT_LITERAL 
+		INT_LITERAL:op1
+		{: RESULT = op1; :}
+	|	FLOAT_LITERAL:op2 
+		{: RESULT = op2; :}
 	|	bool_literal
 	;
 

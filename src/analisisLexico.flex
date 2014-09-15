@@ -8,6 +8,7 @@
  * Version: 0.1 
  */
 import java_cup.runtime.*;
+import ir.ast.*;
 
 %%
 
