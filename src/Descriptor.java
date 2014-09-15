@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: Descriptor.java
+ * To Create: javac Descriptor.java
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 public class Descriptor {
 
 		private String name;
