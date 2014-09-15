@@ -1,9 +1,21 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: analizerSyntax.cup
+ * To Create: cup analizerSyntax.cup
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 import java_cup.runtime.*;
+import ir.*;
+
 action code {:
 	SymbolTable table = new SymbolTable();
 	String currentType = "";
 :}
 
+/* Terminals (tokens obtained by the lexical analyzer) */
 terminal INT;
 terminal FLOAT;
 terminal BREAK;
@@ -24,6 +36,7 @@ terminal
 		EXTERNINVK, MINUS, NOT, PLUS, MULT, DIV, MOD,
 		LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
 
+/* Non terminals */
 non terminal	program,
 				set_decl,
 				field_decl,
@@ -57,13 +70,14 @@ non terminal	program,
 				literal,
 				bool_literal;
 
+/* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
 precedence left  OROR;
 precedence left  LT, GT, LTEQ, GTEQ, EQEQ;
 precedence left  PLUS, MINUS;
 precedence left  MULT, DIV, MOD;
 
-
+/* The grammar rules */
 start with program;
 
 program ::= 
@@ -212,8 +226,8 @@ cond_op ::=
 	;
 	
 literal ::=
-		INT_LITERAL
-	|	FLOAT_LITERAL
+		INT_LITERAL 
+	|	FLOAT_LITERAL 
 	|	bool_literal
 	;
 
