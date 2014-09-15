@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: SymbolTable.java
+ * To Create: javac SymbolTable.java
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 import java.util.LinkedList;
 import java.util.List;
 
