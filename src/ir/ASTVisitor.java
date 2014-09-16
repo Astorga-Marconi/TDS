@@ -8,6 +8,7 @@ public interface ASTVisitor<T> {
 	T visit(AssignStmt stmt);
 	T visit(ReturnStmt stmt);
 	T visit(IfStmt stmt);
+	T visit(ForStmt stmt);
 	
 // visit expressions
 	T visit(BinOpExpr expr);;

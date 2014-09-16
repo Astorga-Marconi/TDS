@@ -52,9 +52,7 @@ non terminal	program,
 				list_type_id_method_decl,
 				type_id_method_decl,
 				_block,
-				block,
 				type,
-				zero_or_one_else_block,
 				set_statement,
 				zero_or_one_expr,
 				list_expr,
@@ -64,7 +62,7 @@ non terminal	program,
 
 non terminal	Expression expr, location, method_call, literal;
 non terminal 	AssignOpType assign_op;
-non terminal 	Statement statement;
+non terminal 	Statement statement, block, zero_or_one_else_block;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 
 /* Precedences */
@@ -136,8 +134,10 @@ statement ::=
 		location:l1 assign_op:ap1 expr:e1 SEMICOLON
 		{: RESULT = new AssignStmt((Location)l1, ap1, e1); :}
 	|	method_call SEMICOLON
-	|	IF LPAREN expr RPAREN block zero_or_one_else_block
-	|	FOR ID EQ expr COMMA expr block 
+	|	IF LPAREN expr:e1 RPAREN block:b1 zero_or_one_else_block:b2
+		{: RESULT = new IfStmt(e1, (Block)b1, (Block)b2); :}
+	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 block:b1 
+		{: RESULT = new ForStmt(id1, e1, e2, (Block)b1); :}
 	|	WHILE expr block 
 	|	RETURN zero_or_one_expr SEMICOLON
 	|	BREAK SEMICOLON
@@ -146,7 +146,12 @@ statement ::=
 	|	block 
 	;
 
-zero_or_one_else_block ::= ELSE block | /* LAMBDA */;
+zero_or_one_else_block ::= 
+		ELSE block:b1
+		{: RESULT = b1; :}
+	|	/* LAMBDA */
+		{: RESULT = null; :}
+	;
 	
 set_statement ::= statement set_statement | statement;
 
