@@ -68,7 +68,7 @@ StringCharacter = [^\r\n\"\\]
    "int"   			 	              { System.out.println(yytext());return symbol(sym.TINT); }
    "for"   			 	              { System.out.println(yytext());return symbol(sym.FOR); }
    "else"   			              { System.out.println(yytext());return symbol(sym.ELSE); }
-   "void"   			              { System.out.println(yytext());System.out.println(yytext());return symbol(sym.VOID); }
+   "void"   			              { System.out.println(yytext());return symbol(sym.VOID); }
    "break"   			              { System.out.println(yytext());return symbol(sym.BREAK); }
    "class"   			              { System.out.println(yytext());return symbol(sym.CLASS); }
    "float"   			              { System.out.println(yytext());return symbol(sym.TFLOAT); }
@@ -110,10 +110,8 @@ StringCharacter = [^\r\n\"\\]
   "+="                           { System.out.println(yytext());return symbol(sym.PLUSEQ); }
   "-="                           { System.out.println(yytext());return symbol(sym.MINUSEQ); }
 
-
   "externinvk"                   {System.out.println(yytext());return new Symbol(sym.EXTERNINVK,yyline+1,yycolumn+1,yytext());}
 
-  
   {DecIntegerLiteral}            { return symbol(sym.INT_LITERAL, new Integer(yytext())); }
   
   {FloatLiteral}                 { System.out.println(yytext());return symbol(sym.FLOAT_LITERAL, new Float(yytext().substring(0,yylength()-1))); }
