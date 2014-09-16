@@ -16,7 +16,6 @@ action code {:
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */
-
 terminal BREAK;
 terminal CLASS;
 terminal CONTINUE;
@@ -51,8 +50,7 @@ non terminal	program,
 				zero_or_one_list_type_id_method_decl,
 				list_type_id_method_decl,
 				type_id_method_decl,
-				_block,
-				type,
+				_block,				
 				set_statement,
 				zero_or_one_expr,
 				list_expr,
@@ -62,8 +60,10 @@ non terminal	program,
 
 non terminal	Expression expr, location, method_call, literal;
 non terminal 	AssignOpType assign_op;
-non terminal 	Statement statement, block, zero_or_one_else_block;
+non terminal 	Statement statement, zero_or_one_else_block;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
+non terminal    Block block;
+non terminal    Type type;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -264,6 +264,8 @@ literal ::=
 	;
 
 bool_literal ::=
-		TRUE
-	|	FALSE
+		TRUE:op1
+		{: RESULT = op1; :}
+	|	FALSE:op2
+		{: RESULT = op2; :}
 	;
