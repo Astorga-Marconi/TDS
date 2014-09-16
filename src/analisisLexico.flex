@@ -37,12 +37,10 @@ import ir.ast.*;
   }
 %}
 
-
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 
 WhiteSpace = {LineTerminator} | [ \t\f]
-
 
 Comment = {TraditionalComment} | {EndOfLineComment}  
 
@@ -55,7 +53,6 @@ DecIntegerLiteral = 0 | [1-9][0-9]*
 
 FloatLiteral = [0-9]*"."[0-9]*
     
-
 StringCharacter = [^\r\n\"\\]
 
 %state STRING
@@ -67,23 +64,22 @@ StringCharacter = [^\r\n\"\\]
   \"                            { System.out.println(yytext()); yybegin(STRING); string.setLength(0); }
 
   /* keywords */
-   "if"   			 	 { System.out.println(yytext());return new Symbol(sym.IF); }
-   "int"   			 	 { System.out.println(yytext());return symbol(sym.INT); }
-   "for"   			 	 { System.out.println(yytext());return symbol(sym.FOR); }
-   "else"   			 { System.out.println(yytext());return symbol(sym.ELSE); }
-   "void"   			 { System.out.println(yytext());System.out.println(yytext());return symbol(sym.VOID); }
-   "break"   			 { System.out.println(yytext());return symbol(sym.BREAK); }
-   "class"   			 { System.out.println(yytext());return symbol(sym.CLASS); }
-   "float"   			 { System.out.println(yytext());return symbol(sym.FLOAT); }
-   "while"   			 { System.out.println(yytext());return symbol(sym.WHILE); }
-   "return"   		 	 { System.out.println(yytext());return symbol(sym.RETURN); }
-   "boolean"   		 	 { System.out.println(yytext());return symbol(sym.BOOLEAN_LITERAL); }
-   "continue"   		 { System.out.println(yytext());return symbol(sym.CONTINUE); }
+   "if"   			 	              { System.out.println(yytext());return new Symbol(sym.IF); }
+   "int"   			 	              { System.out.println(yytext());return symbol(sym.TINT); }
+   "for"   			 	              { System.out.println(yytext());return symbol(sym.FOR); }
+   "else"   			              { System.out.println(yytext());return symbol(sym.ELSE); }
+   "void"   			              { System.out.println(yytext());System.out.println(yytext());return symbol(sym.VOID); }
+   "break"   			              { System.out.println(yytext());return symbol(sym.BREAK); }
+   "class"   			              { System.out.println(yytext());return symbol(sym.CLASS); }
+   "float"   			              { System.out.println(yytext());return symbol(sym.TFLOAT); }
+   "while"   			              { System.out.println(yytext());return symbol(sym.WHILE); }
+   "return"   		 	            { System.out.println(yytext());return symbol(sym.RETURN); }
+   "boolean"   		 	            { System.out.println(yytext());return symbol(sym.TBOOLEAN); }
+   "continue"   		            { System.out.println(yytext());return symbol(sym.CONTINUE); }
 
   /* boolean literals */
   "true"                         { System.out.println(yytext()); return symbol(sym.TRUE); }
   "false"                        { System.out.println(yytext()); return symbol(sym.FALSE); }
-  
   
   /* separators */
   "("                            { System.out.println(yytext());return symbol(sym.LPAREN); }
@@ -111,11 +107,11 @@ StringCharacter = [^\r\n\"\\]
   "*"                            { System.out.println(yytext());return symbol(sym.MULT); }
   "/"                            { System.out.println(yytext());return symbol(sym.DIV); }
   "%"                            { System.out.println(yytext());return symbol(sym.MOD); }
-  "+="                            { System.out.println(yytext());return symbol(sym.PLUSEQ); }
-  "-="                            { System.out.println(yytext());return symbol(sym.MINUSEQ); }
+  "+="                           { System.out.println(yytext());return symbol(sym.PLUSEQ); }
+  "-="                           { System.out.println(yytext());return symbol(sym.MINUSEQ); }
 
 
-  "externinvk"                    {System.out.println(yytext());return new Symbol(sym.EXTERNINVK,yyline+1,yycolumn+1,yytext());}
+  "externinvk"                   {System.out.println(yytext());return new Symbol(sym.EXTERNINVK,yyline+1,yycolumn+1,yytext());}
 
   
   {DecIntegerLiteral}            { return symbol(sym.INT_LITERAL, new Integer(yytext())); }

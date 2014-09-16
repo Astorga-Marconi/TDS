@@ -35,7 +35,7 @@ terminal
 
 terminal String ID;
 terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
-terminal Type INT, FLOAT, BOOLEAN_LITERAL;
+terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal IntLiteral INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
 
@@ -125,9 +125,9 @@ _block ::=
 	;
 
 type ::=
-		BOOLEAN_LITERAL {:currentType = "boolean";:}
-	|	FLOAT {:currentType = "float";:}
-	|	INT {:currentType = "int";:}
+		TBOOLEAN {:currentType = "boolean";:}
+	|	TFLOAT {:currentType = "float";:}
+	|	TINT {:currentType = "int";:}
 	;
 
 statement ::=
