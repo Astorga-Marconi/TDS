@@ -22,6 +22,10 @@ public class SymbolTable{
 		levels = new LinkedList<List<Descriptor>>();
 		amountLevels = 0;
 	}
+
+	public int getCurrentLevel() {
+		return (amountLevels-1);
+	}
 	
 	public void insertNewBlock(){
 		List level = new LinkedList<Descriptor>();

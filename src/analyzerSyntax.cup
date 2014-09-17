@@ -9,6 +9,7 @@
  */
 import java_cup.runtime.*;
 import ir.ast.*;
+import java.util.*;
 
 action code {:
 	SymbolTable table = new SymbolTable();
@@ -49,8 +50,6 @@ non terminal	program,
 				zero_or_one_list_type_id_method_decl,
 				list_type_id_method_decl,
 				type_id_method_decl,
-				_block,				
-				set_statement,
 				list_expr,
 				externinvk_arg,
 				list_externinvk_arg;
@@ -59,9 +58,10 @@ non terminal	Expression expr, zero_or_one_expr, location, method_call_expr;
 non terminal 	AssignOpType assign_op;
 non terminal 	Statement statement, zero_or_one_else_block, method_call_stmt;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
-non terminal    Block block;
+non terminal    Block block, _block;
 non terminal    Type type;
 non terminal    Literal literal;
+non terminal 	LinkedList set_statement;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -85,7 +85,7 @@ set_decl ::=
 	;
 
 set_field_decl ::= 
-		set_field_decl field_decl 
+		set_field_decl field_decl
 	|	field_decl
 	;
 
@@ -114,12 +114,15 @@ list_type_id_method_decl ::= type_id_method_decl COMMA list_type_id_method_decl 
 
 type_id_method_decl ::= type ID:i {:table.insertSymbol(currentType, i);:};
 
-block ::= {:table.insertNewBlock();:} _block {:table.closeBlock();:};
+block ::= {:table.insertNewBlock();:} _block:b1 {:table.closeBlock();:} {: RESULT = b1; :};
 
 _block ::= 
-		LBRACE  set_field_decl set_statement RBRACE
-	|	LBRACE set_statement RBRACE 
+		LBRACE  set_field_decl set_statement:ss RBRACE
+		{: RESULT = new Block(table.getCurrentLevel(), ss); :}		// Usamos set_field_declaration??
+	|	LBRACE set_statement:ss RBRACE
+		{: RESULT = new Block(table.getCurrentLevel(), ss); :} 
 	|	LBRACE set_field_decl RBRACE
+		{: RESULT = new Block(table.getCurrentLevel(), null); :} 
 	;
 
 type ::=
@@ -147,7 +150,8 @@ statement ::=
 		{: RESULT = new ContinueStmt(); :}
 	|	SEMICOLON
 		{: RESULT = new SemicolonStmt(); :}
-	|	block 
+	|	block:b1
+		{: RESULT = b1; :}
 	;
 
 zero_or_one_else_block ::= 
@@ -157,7 +161,15 @@ zero_or_one_else_block ::=
 		{: RESULT = null; :}
 	;
 	
-set_statement ::= statement set_statement | statement;
+set_statement ::= 
+		statement:s set_statement:ss
+		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
+			set_st.add(s);
+			set_st.addAll(ss); :} 
+	|	statement:s
+		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
+			set_st.add(s); :}
+	;
 
 zero_or_one_expr ::= 
 		expr:e1
