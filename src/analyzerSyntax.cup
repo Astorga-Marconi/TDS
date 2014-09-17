@@ -52,13 +52,12 @@ non terminal	program,
 				type_id_method_decl,
 				_block,				
 				set_statement,
-				zero_or_one_expr,
 				list_expr,
 				externinvk_arg,
 				list_externinvk_arg,
 				bool_literal;
 
-non terminal	Expression expr, location, method_call, literal;
+non terminal	Expression expr, zero_or_one_expr, location, method_call, literal;
 non terminal 	AssignOpType assign_op;
 non terminal 	Statement statement, zero_or_one_else_block;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
@@ -139,10 +138,14 @@ statement ::=
 	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 block:b1 
 		{: RESULT = new ForStmt(id1, e1, e2, (Block)b1); :}
 	|	WHILE expr block 
-	|	RETURN zero_or_one_expr SEMICOLON
+	|	RETURN zero_or_one_expr:e1 SEMICOLON
+		{: RESULT = new ReturnStmt(e1); :}
 	|	BREAK SEMICOLON
+		{: RESULT = new BreakStmt(); :}
 	|	CONTINUE SEMICOLON
+		{: RESULT = new ContinueStmt(); :}
 	|	SEMICOLON
+		{: RESULT = new SemicolonStmt(); :}
 	|	block 
 	;
 
@@ -155,7 +158,12 @@ zero_or_one_else_block ::=
 	
 set_statement ::= statement set_statement | statement;
 
-zero_or_one_expr ::= expr | /* LAMBDA */;
+zero_or_one_expr ::= 
+		expr:e1
+		{: RESULT = e1; :}
+	|	/* LAMBDA */
+		{: RESULT = null; :}
+	;
 
 assign_op ::=
 		EQ
