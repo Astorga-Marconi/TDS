@@ -16,11 +16,8 @@ action code {:
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */
-terminal BREAK;
 terminal CLASS;
-terminal CONTINUE;
 terminal IF,ELSE;
-terminal FOR;
 terminal RETURN;
 terminal VOID;
 terminal STRING_LITERAL;
@@ -36,6 +33,9 @@ terminal IntLiteral INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
 terminal BoolLiteral BOOL_LITERAL;
 terminal WhileStmt WHILE;
+terminal ContinueStmt CONTINUE;
+terminal BreakStmt BREAK;
+terminal ForStmt FOR;
 
 /* Non terminals */
 non terminal	program,
