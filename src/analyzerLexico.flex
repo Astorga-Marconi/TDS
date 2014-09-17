@@ -78,9 +78,8 @@ StringCharacter = [^\r\n\"\\]
    "continue"   		            { System.out.println(yytext());return symbol(sym.CONTINUE); }
 
   /* boolean literals */
-  "true"                         { System.out.println(yytext()); return symbol(sym.TRUE); }
-  "false"                        { System.out.println(yytext()); return symbol(sym.FALSE); }
-  
+  "false" | "true"              { System.out.println(yytext()); return symbol(sym.BOOL_LITERAL); }
+
   /* separators */
   "("                            { System.out.println(yytext());return symbol(sym.LPAREN); }
   ")"                            { System.out.println(yytext());return symbol(sym.RPAREN); }
