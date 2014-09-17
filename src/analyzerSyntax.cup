@@ -24,9 +24,7 @@ terminal FOR;
 terminal WHILE;
 terminal RETURN;
 terminal VOID;
-terminal TRUE, FALSE;
 terminal STRING_LITERAL;
-
 terminal
 		LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON,
 		LPAREN, RPAREN, EQ, COMMA, PLUSEQ, MINUSEQ,
@@ -37,6 +35,7 @@ terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ,
 terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal IntLiteral INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
+terminal BoolLiteral BOOL_LITERAL;
 
 /* Non terminals */
 non terminal	program,
@@ -55,15 +54,15 @@ non terminal	program,
 				zero_or_one_expr,
 				list_expr,
 				externinvk_arg,
-				list_externinvk_arg,
-				bool_literal;
-
-non terminal	Expression expr, location, method_call, literal;
+				list_externinvk_arg;
+				
+non terminal	Expression expr, location, method_call;
 non terminal 	AssignOpType assign_op;
 non terminal 	Statement statement, zero_or_one_else_block;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 non terminal    Block block;
 non terminal    Type type;
+non terminal    Literal literal;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -260,12 +259,7 @@ literal ::=
 		{: RESULT = op1; :}
 	|	FLOAT_LITERAL:op2 
 		{: RESULT = op2; :}
-	|	bool_literal
+	|	BOOL_LITERAL:op3
+		{: RESULT = op3; :}
 	;
 
-bool_literal ::=
-		TRUE:op1
-		{: RESULT = op1; :}
-	|	FALSE:op2
-		{: RESULT = op2; :}
-	;
