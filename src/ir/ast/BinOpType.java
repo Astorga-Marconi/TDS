@@ -13,6 +13,7 @@ public enum BinOpType {
 	NEQ, // Equal
 	CEQ, 
 	AND, // Conditional
+	NOT,
 	OR;
 	
 	@Override
@@ -42,6 +43,8 @@ public enum BinOpType {
 				return "!=";
 			case AND:
 				return "&&";
+			case NOT:
+				return "!";
 			case OR:
 				return "||";
 		}

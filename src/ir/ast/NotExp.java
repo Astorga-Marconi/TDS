@@ -3,12 +3,20 @@ package ir.ast;
 import ir.ASTVisitor;
 
 public class NotExp extends Expression {
+	private BinOpType binOpType;
 	private Expression exp;
 
-	public NotExp(	, Expression e) {
-		//this.
+	public NotExp(BinOpType b, Expression e) {
+		this.binOpType = b;
 		this.exp = e;
+	}
 
+	public BinOpType  getBinOpType() {
+		return this.binOpType;
+	}
+
+	public Expression  getExpression() {
+		return this.exp; 
 	}
 
 	@Override

@@ -29,10 +29,10 @@ terminal STRING_LITERAL;
 terminal
 		LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON,
 		LPAREN, RPAREN, EQ, COMMA, PLUSEQ, MINUSEQ,
-		EXTERNINVK, NOT;
+		EXTERNINVK;
 
 terminal String ID;
-terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
+terminal BinOpType PLUS, MINUS, NOT, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
 terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal IntLiteral INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
@@ -236,7 +236,7 @@ expr ::=
 	|	MINUS:m1 expr:e1
 		{: RESULT = new NegativeExpr(m1, e1); :}
 	|	NOT:n1 expr:e1
-		//{: RESULT = new NotExp(n1, e1); :}
+		{: RESULT = new NotExp(n1, e1); :}
 	|	LPAREN expr RPAREN
 
 	;
