@@ -21,7 +21,6 @@ terminal CLASS;
 terminal CONTINUE;
 terminal IF,ELSE;
 terminal FOR;
-terminal WHILE;
 terminal RETURN;
 terminal VOID;
 terminal STRING_LITERAL;
@@ -36,6 +35,7 @@ terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal IntLiteral INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
 terminal BoolLiteral BOOL_LITERAL;
+terminal WhileStmt WHILE;
 
 /* Non terminals */
 non terminal	program,
@@ -136,7 +136,8 @@ statement ::=
 		{: RESULT = new IfStmt(e1, (Block)b1, (Block)b2); :}
 	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 block:b1 
 		{: RESULT = new ForStmt(id1, e1, e2, (Block)b1); :}
-	|	WHILE expr block 
+	|	WHILE:w expr:e block:b          
+		{:RESULT = new WhileStmt(e, (Block)b); :}
 	|	RETURN zero_or_one_expr:e1 SEMICOLON
 		{: RESULT = new ReturnStmt(e1); :}
 	|	BREAK SEMICOLON

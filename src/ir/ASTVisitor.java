@@ -12,6 +12,8 @@ public interface ASTVisitor<T> {
 	T visit(BreakStmt stmt);
 	T visit(ContinueStmt stmt);
 	T visit(SemicolonStmt stmt);
+	T visit(WhileStmt stmt);
+	T visit(CycleStmt stmt);
 	
 // visit expressions
 	T visit(BinOpExpr expr);;
