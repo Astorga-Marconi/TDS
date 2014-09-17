@@ -12,11 +12,11 @@ public class NotExp extends Expression {
 	}
 
 	public BinOpType  getBinOpType() {
-		return this.binOpType;
+		return binOpType;
 	}
 
 	public Expression  getExpression() {
-		return this.exp; 
+		return exp; 
 	}
 
 	@Override
