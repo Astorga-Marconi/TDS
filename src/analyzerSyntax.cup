@@ -21,6 +21,7 @@ terminal CLASS;
 terminal CONTINUE;
 terminal IF,ELSE;
 terminal FOR;
+terminal WHILE;
 terminal RETURN;
 terminal VOID;
 terminal STRING_LITERAL;
@@ -35,7 +36,6 @@ terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal IntLiteral INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
 terminal BoolLiteral BOOL_LITERAL;
-terminal WhileStmt WHILE;
 
 /* Non terminals */
 non terminal	program,
@@ -55,9 +55,9 @@ non terminal	program,
 				externinvk_arg,
 				list_externinvk_arg;
 				
-non terminal	Expression expr, zero_or_one_expr, location, method_call;
+non terminal	Expression expr, zero_or_one_expr, location, method_call_expr;
 non terminal 	AssignOpType assign_op;
-non terminal 	Statement statement, zero_or_one_else_block;
+non terminal 	Statement statement, zero_or_one_else_block, method_call_stmt;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 non terminal    Block block;
 non terminal    Type type;
@@ -131,7 +131,8 @@ type ::=
 statement ::=
 		location:l1 assign_op:ap1 expr:e1 SEMICOLON
 		{: RESULT = new AssignStmt((Location)l1, ap1, e1); :}
-	|	method_call SEMICOLON
+	|	method_call_stmt:mc SEMICOLON
+		{: RESULT = mc; :}
 	|	IF LPAREN expr:e1 RPAREN block:b1 zero_or_one_else_block:b2
 		{: RESULT = new IfStmt(e1, (Block)b1, (Block)b2); :}
 	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 block:b1 
@@ -171,14 +172,36 @@ assign_op ::=
 	|	MINUSEQ
 	;
 
-method_call ::= 
+method_call_stmt ::= 
 		ID LPAREN  RPAREN
+		//{: RESULT = new MethodCallStmt(); :}
 	|	ID LPAREN list_expr RPAREN
+		//{: RESULT = new MethodCallStmt(); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type RPAREN
+		//{: RESULT = new MethodCallStmt(); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type COMMA list_externinvk_arg RPAREN
+		//{: RESULT = new MethodCallStmt(); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID RPAREN
+		//{: RESULT = new MethodCallStmt(); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID COMMA list_externinvk_arg RPAREN
+		//{: RESULT = new MethodCallStmt(); :}
 	;
+
+method_call_expr ::= 
+		ID LPAREN  RPAREN
+		//{: RESULT = new MethodCallExpr(); :}
+	|	ID LPAREN list_expr RPAREN
+		//{: RESULT = new MethodCallExpr(); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type RPAREN
+		//{: RESULT = new MethodCallExpr(); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type COMMA list_externinvk_arg RPAREN
+		//{: RESULT = new MethodCallExpr(); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID RPAREN
+		//{: RESULT = new MethodCallExpr(); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID COMMA list_externinvk_arg RPAREN
+		//{: RESULT = new MethodCallExpr(); :}
+	;
+
 
 location ::= 
 		ID:id1
@@ -192,7 +215,7 @@ list_expr ::= expr COMMA list_expr | expr;
 expr ::=
 		location:l1
 		{: RESULT = l1; :}
-	|	method_call:m1
+	|	method_call_expr:m1
 		{: RESULT = m1; :}
 	|	literal:l1
 		{: RESULT = l1; :}

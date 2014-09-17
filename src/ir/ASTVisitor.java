@@ -14,9 +14,11 @@ public interface ASTVisitor<T> {
 	T visit(SemicolonStmt stmt);
 	T visit(WhileStmt stmt);
 	T visit(LoopStmt stmt);
+	T visit(MethodCallStmt stmt);
 	
 // visit expressions
-	T visit(BinOpExpr expr);;
+	T visit(BinOpExpr expr);
+	T visit(MethodCallExpr expr);
 	
 // visit literals	
 	T visit(IntLiteral lit);
