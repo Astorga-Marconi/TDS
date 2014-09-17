@@ -19,6 +19,8 @@ public interface ASTVisitor<T> {
 // visit expressions
 	T visit(BinOpExpr expr);
 	T visit(MethodCallExpr expr);
+	T visit(NegativeExpr expr);
+	T visit(NotExp expr);
 	
 // visit literals	
 	T visit(IntLiteral lit);

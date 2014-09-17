@@ -233,8 +233,10 @@ expr ::=
 		{: RESULT = l1; :}
 	|	expr:el bin_op:bo1 expr:er
 		{: RESULT = new BinOpExpr(el, bo1, er); :}
-	|	MINUS expr
-	|	NOT expr
+	|	MINUS:m1 expr:e1
+		{: RESULT = new NegativeExpr(m1, e1); :}
+	|	NOT:n1 expr:e1
+		//{: RESULT = new NotExp(n1, e1); :}
 	|	LPAREN expr RPAREN
 
 	;
