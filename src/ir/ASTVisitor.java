@@ -15,10 +15,13 @@ public interface ASTVisitor<T> {
 	T visit(WhileStmt stmt);
 	T visit(LoopStmt stmt);
 	T visit(MethodCallStmt stmt);
+	T visit(ExternInvkStmt stmt);
 	
 // visit expressions
 	T visit(BinOpExpr expr);
 	T visit(MethodCallExpr expr);
+	T visit(ExternInvkArgExpr expr);
+	T visit(ExternInvkArgStringLit expr);
 	
 // visit literals	
 	T visit(IntLiteral lit);

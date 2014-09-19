@@ -1,11 +1,20 @@
 package ir.ast;
 
 import ir.ASTVisitor;
+import java.util.*;
 
 public class MethodCallStmt extends Statement {
 
-	public MethodCallStmt() {
+	private String id;
+	private LinkedList<Expression> expressions;
 
+	public MethodCallStmt(String id) {
+		this.id = id;
+	}
+
+	public MethodCallStmt(String id, LinkedList<Expression> exprs) {
+		this.id = id;
+		expressions = exprs;
 	}
 
 	@Override

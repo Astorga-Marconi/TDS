@@ -25,7 +25,6 @@ terminal FOR;
 terminal WHILE;
 terminal RETURN;
 terminal VOID;
-terminal STRING_LITERAL;
 terminal
 		LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON,
 		LPAREN, RPAREN, EQ, COMMA, PLUSEQ, MINUSEQ,
@@ -37,6 +36,7 @@ terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal IntLiteral INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
 terminal BoolLiteral BOOL_LITERAL;
+terminal String STRING_LITERAL;
 
 /* Non terminals */
 non terminal	program,
@@ -49,19 +49,16 @@ non terminal	program,
 				set_method_decl,
 				zero_or_one_list_type_id_method_decl,
 				list_type_id_method_decl,
-				type_id_method_decl,
-				list_expr,
-				externinvk_arg,
-				list_externinvk_arg;
+				type_id_method_decl;
 				
-non terminal	Expression expr, zero_or_one_expr, location, method_call_expr;
+non terminal	Expression expr, zero_or_one_expr, location, method_call_expr, externinvk_arg;
 non terminal 	AssignOpType assign_op;
 non terminal 	Statement statement, zero_or_one_else_block, method_call_stmt;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 non terminal    Block block, _block;
 non terminal    Type type;
 non terminal    Literal literal;
-non terminal 	LinkedList set_statement;
+non terminal 	LinkedList set_statement, list_expr, list_externinvk_arg;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -185,18 +182,18 @@ assign_op ::=
 	;
 
 method_call_stmt ::= 
-		ID LPAREN  RPAREN
-		//{: RESULT = new MethodCallStmt(); :}
-	|	ID LPAREN list_expr RPAREN
-		//{: RESULT = new MethodCallStmt(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type RPAREN
-		//{: RESULT = new MethodCallStmt(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type COMMA list_externinvk_arg RPAREN
-		//{: RESULT = new MethodCallStmt(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID RPAREN
-		//{: RESULT = new MethodCallStmt(); :}
+		ID:id1 LPAREN  RPAREN
+		{: RESULT = new MethodCallStmt(id1); :}
+	|	ID:id1 LPAREN list_expr:le RPAREN
+		{: RESULT = new MethodCallStmt(id1, le); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t RPAREN
+		{: RESULT = new ExternInvkStmt(id1, t); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t COMMA list_externinvk_arg:l RPAREN
+		{: RESULT = new ExternInvkStmt(id1, t, l); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA VOID RPAREN
+		//{: RESULT = new ExternInvkStmt(id1); :}						// FALTA VOID!!!
 	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID COMMA list_externinvk_arg RPAREN
-		//{: RESULT = new MethodCallStmt(); :}
+		//{: RESULT = new ExternInvkStmt(id1, l); :}					// FALTA VOID!!!
 	;
 
 method_call_expr ::= 
@@ -222,7 +219,17 @@ location ::=
 		{: RESULT = new VarLocation(id2); :}
 	;
 
-list_expr ::= expr COMMA list_expr | expr;
+list_expr ::= 
+		expr:e1 COMMA list_expr:lexpr
+		{:	LinkedList<Expression> list_e = new LinkedList<Expression>();
+			list_e.add(e1);
+			list_e.addAll(lexpr);
+			RESULT = list_e; :}
+	|	expr:e1
+		{:	LinkedList<Expression> list_e = new LinkedList<Expression>();
+			list_e.add(e1);
+			RESULT = list_e; :}
+	;
 
 expr ::=
 		location:l1
@@ -240,13 +247,22 @@ expr ::=
 	;
 
 externinvk_arg ::=
-		expr
-	|	STRING_LITERAL
+		expr:e1
+		{: RESULT = new ExternInvkArgExpr(e1); :}
+	|	STRING_LITERAL:s1
+		{: RESULT = new ExternInvkArgStringLit(s1); :}
 	;
 	
 list_externinvk_arg ::= 
-		externinvk_arg COMMA list_externinvk_arg 
-	|	externinvk_arg
+		externinvk_arg:ei COMMA list_externinvk_arg:lei
+		{:	LinkedList<Expression> list_ei = new LinkedList<Expression>();
+			list_ei.add(ei);
+			list_ei.addAll(lei);
+			RESULT = list_ei; :}
+	|	externinvk_arg:e1
+		{:	LinkedList<Expression> list_ei = new LinkedList<Expression>();
+			list_ei.add(e1);
+			RESULT = list_ei; :}
 	;
 
 bin_op ::=
