@@ -49,7 +49,7 @@ non terminal	program,
 				list_type_id_method_decl,
 				type_id_method_decl,
 				list_expr,
-				externinvk_arg;
+				externinvk_arg,
 				list_externinvk_arg;
 				
 non terminal	Expression expr, zero_or_one_expr, method_call_expr;
