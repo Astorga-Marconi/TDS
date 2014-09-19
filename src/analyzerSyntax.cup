@@ -49,10 +49,10 @@ non terminal	program,
 				list_type_id_method_decl,
 				type_id_method_decl,
 				list_expr,
-				externinvk_arg,
+				externinvk_arg;
 				list_externinvk_arg;
 				
-non terminal	Expression expr, zero_or_one_expr, location, method_call_expr;
+non terminal	Expression expr, zero_or_one_expr, method_call_expr;
 non terminal 	AssignOpType assign_op;
 non terminal 	Statement statement, zero_or_one_else_block, method_call_stmt;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
@@ -60,6 +60,7 @@ non terminal    Block block, _block;
 non terminal    Type type;
 non terminal    Literal literal;
 non terminal 	LinkedList set_statement;
+non terminal 	Location location;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -72,8 +73,8 @@ precedence left  MULT, DIV, MOD;
 start with program;
 
 program ::= 
-		CLASS ID LBRACE {:table.insertNewBlock();:} set_decl RBRACE {:table.closeBlock();:} {:System.out.println("termino");:}
-	|	CLASS ID LBRACE {:table.insertNewBlock();:} RBRACE {:table.closeBlock();:} {:System.out.println("termino");:}
+		CLASS ID LBRACE {: table.insertNewBlock(); :} set_decl RBRACE {: table.closeBlock(); :} {:System.out.println("termino");:}
+	|	CLASS ID LBRACE {: table.insertNewBlock(); :} RBRACE {: table.closeBlock(); :} {:System.out.println("termino");:}
 	;
 
 set_decl ::= 
@@ -90,14 +91,14 @@ set_field_decl ::=
 field_decl ::= type list_id_field_decl SEMICOLON;
 
 id_field_decl ::= 
-		ID:i {:table.insertSymbol(currentType, i);:} 
-	|	ID:i {:table.insertSymbol(currentType, i);:} LBRACK INT_LITERAL RBRACK
+		ID:i {: table.insertSymbol(currentType, i); :} 
+	|	ID:i {: table.insertSymbol(currentType, i); :} LBRACK INT_LITERAL RBRACK
 	;
 
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
-		type ID:i {:table.insertSymbol(currentType, i);:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
+		type ID:i {:table.insertSymbol(currentType, i); :} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	|	VOID ID:i {:table.insertSymbol("Void", i);:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	;
 
