@@ -22,6 +22,8 @@ public interface ASTVisitor<T> {
 	T visit(MethodCallExpr expr);
 	T visit(ExternInvkArgExpr expr);
 	T visit(ExternInvkArgStringLit expr);
+	T visit(NegativeExpr expr);
+	T visit(NotExp expr);
 	
 // visit literals	
 	T visit(IntLiteral lit);

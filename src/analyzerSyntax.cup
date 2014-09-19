@@ -25,13 +25,11 @@ terminal FOR;
 terminal WHILE;
 terminal RETURN;
 terminal VOID;
-terminal
-		LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON,
-		LPAREN, RPAREN, EQ, COMMA, PLUSEQ, MINUSEQ,
-		EXTERNINVK, NOT;
-
+terminal LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON, LPAREN, RPAREN, COMMA, EXTERNINVK;
+			
 terminal String ID;
-terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
+terminal BinOpType PLUS, MINUS, NOT, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
+terminal AssignOpType PLUSEQ, MINUSEQ, EQ;
 terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal IntLiteral INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
@@ -71,8 +69,8 @@ precedence left  MULT, DIV, MOD;
 start with program;
 
 program ::= 
-		CLASS ID LBRACE {:table.insertNewBlock();:} set_decl RBRACE {:table.closeBlock();:} {:System.out.println("termino");:}
-	|	CLASS ID LBRACE {:table.insertNewBlock();:} RBRACE {:table.closeBlock();:} {:System.out.println("termino");:}
+		CLASS ID LBRACE {: table.insertNewBlock(); :} set_decl RBRACE {: table.closeBlock(); :} {:System.out.println("termino");:}
+	|	CLASS ID LBRACE {: table.insertNewBlock(); :} RBRACE {: table.closeBlock(); :} {:System.out.println("termino");:}
 	;
 
 set_decl ::= 
@@ -89,14 +87,14 @@ set_field_decl ::=
 field_decl ::= type list_id_field_decl SEMICOLON;
 
 id_field_decl ::= 
-		ID:i {:table.insertSymbol(currentType, i);:} 
-	|	ID:i {:table.insertSymbol(currentType, i);:} LBRACK INT_LITERAL RBRACK
+		ID:i {: table.insertSymbol(currentType, i); :} 
+	|	ID:i {: table.insertSymbol(currentType, i); :} LBRACK INT_LITERAL RBRACK
 	;
 
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
-		type ID:i {:table.insertSymbol(currentType, i);:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
+		type ID:i {:table.insertSymbol(currentType, i); :} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	|	VOID ID:i {:table.insertSymbol("Void", i);:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	;
 
@@ -176,9 +174,12 @@ zero_or_one_expr ::=
 	;
 
 assign_op ::=
-		EQ
-	|	PLUSEQ
-	|	MINUSEQ
+		EQ:op1
+		{: RESULT = op1; :}
+	|	PLUSEQ:op2
+		{: RESULT = op2; :}
+	|	MINUSEQ:op3
+		{: RESULT = op3; :}
 	;
 
 method_call_stmt ::= 
@@ -240,8 +241,10 @@ expr ::=
 		{: RESULT = l1; :}
 	|	expr:el bin_op:bo1 expr:er
 		{: RESULT = new BinOpExpr(el, bo1, er); :}
-	|	MINUS expr
-	|	NOT expr
+	|	MINUS:m1 expr:e1
+		{: RESULT = new NegativeExpr(m1, e1); :}
+	|	NOT:n1 expr:e1
+		{: RESULT = new NotExp(n1, e1); :}
 	|	LPAREN expr RPAREN
 
 	;
