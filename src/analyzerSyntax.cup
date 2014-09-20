@@ -87,8 +87,23 @@ set_field_decl ::=
 field_decl ::= type list_id_field_decl SEMICOLON;
 
 id_field_decl ::= 
-		ID:i {: table.insertSymbol(currentType, i); :} 
-	|	ID:i {: table.insertSymbol(currentType, i); :} LBRACK INT_LITERAL RBRACK
+		ID:id1
+		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
+				Descriptor d1 = new VarDescriptor(currentType, id1);
+				table.insertNewDescriptor(d1);
+			} else {
+				// Ya existe un descriptor declarado con ese nombre.
+			}
+		:}
+	|	ID:id1
+		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
+				Descriptor d1 = new VarDescriptor(currentType, id1);
+				table.insertNewDescriptor(d1);
+			} else {
+				// Ya existe un descriptor declarado con ese nombre.
+			}
+		:}
+		LBRACK INT_LITERAL RBRACK
 	;
 
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
@@ -123,7 +138,9 @@ zero_or_one_list_type_id_method_decl ::=
 
 list_type_id_method_decl ::= type_id_method_decl COMMA list_type_id_method_decl | type_id_method_decl;
 
-type_id_method_decl ::= type ID:i {:table.insertSymbol(currentType, i);:};
+type_id_method_decl ::= 
+		type ID:id1
+		{:table.insertSymbol(currentType, id1);:};
 
 block ::= {:table.insertNewBlock();:} _block:b1 {:table.closeBlock();:} {: RESULT = b1; :};
 
