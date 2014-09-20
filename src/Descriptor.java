@@ -7,12 +7,15 @@
  * Authors: Astorga Dario - Marconi Pablo
  * Version: 0.1 
  */
-public class Descriptor {
 
-		private String name;
-		private String type;
+import ir.ast.*;
 
-		public Descriptor(String newType, String newName){
+public abstract class Descriptor {
+
+		public String name;
+		public Type type;
+
+		public Descriptor(Type newType, String newName){
 			name = newName;
 			type = newType;
 		}
@@ -21,7 +24,7 @@ public class Descriptor {
 			name = n;
 		}
 		
-		public void setType(String t){
+		public void setType(Type t){
 			type = t;
 		}
 		
@@ -29,7 +32,7 @@ public class Descriptor {
 			return name;
 		}
 		
-		public String getType(){
+		public Type getType(){
 			return type;
 		}
 }

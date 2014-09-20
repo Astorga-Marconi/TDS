@@ -13,7 +13,7 @@ import java.util.*;
 
 action code {:
 	SymbolTable table = new SymbolTable();
-	String currentType = "";
+	Type currentType;
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */
@@ -24,7 +24,7 @@ terminal IF,ELSE;
 terminal FOR;
 terminal WHILE;
 terminal RETURN;
-terminal VOID;
+terminal Type VOID;
 terminal LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON, LPAREN, RPAREN, COMMA, EXTERNINVK;
 			
 terminal String ID;
@@ -94,8 +94,24 @@ id_field_decl ::=
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
-		type ID:i {:table.insertSymbol(currentType, i); :} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
-	|	VOID ID:i {:table.insertSymbol("Void", i);:} LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
+		type:t1 ID:id1
+		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
+				Descriptor m1 = new FunctionDescriptor(t1, id1);
+				table.insertNewDescriptor(m1);
+			} else {
+				// Ya existe un descriptor declarado con ese nombre.
+			}
+		:}
+		LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
+	|	VOID:t1 ID:id1
+		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
+				Descriptor m1 = new FunctionDescriptor(t1, id1);
+				table.insertNewDescriptor(m1);
+			} else {
+				// Ya existe un descriptor declarado con ese nombre.
+			}
+		:}
+		LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	;
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
@@ -121,9 +137,9 @@ _block ::=
 	;
 
 type ::=
-		TBOOLEAN {:currentType = "boolean";:}
-	|	TFLOAT {:currentType = "float";:}
-	|	TINT {:currentType = "int";:}
+		TBOOLEAN:t {:currentType = t;:}
+	|	TFLOAT:t {:currentType = t;:}
+	|	TINT:t {:currentType = t;:}
 	;
 
 statement ::=

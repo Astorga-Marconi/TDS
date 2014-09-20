@@ -8,6 +8,7 @@
  * Authors: Astorga Dario - Marconi Pablo
  * Version: 0.1 
  */
+import ir.ast.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class SymbolTable{
 		levels.remove(amountLevels);
 	}
 	
-	public void insertSymbol(String type, String name){
-		Descriptor d = new Descriptor(type, name);
+	public void insertSymbol(Type type, String name){
+		Descriptor d = new VarDescriptor(type, name);
 		insertNewDescriptor(d);
 	}
 
