@@ -193,10 +193,12 @@ set_statement ::=
 		statement:s set_statement:ss
 		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
 			set_st.add(s);
-			set_st.addAll(ss); :} 
+			set_st.addAll(ss);
+			RESULT = set_st; :} 
 	|	statement:s
 		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
-			set_st.add(s); :}
+			set_st.add(s);
+			RESULT = set_st; :}
 	;
 
 zero_or_one_expr ::= 
