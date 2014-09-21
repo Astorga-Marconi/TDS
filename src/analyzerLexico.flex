@@ -109,9 +109,9 @@ FloatLiteral = [0-9]*"."[0-9]*
 
   "externinvk"                   {System.out.println(yytext());return new Symbol(sym.EXTERNINVK,yyline+1,yycolumn+1,yytext());}
 
-  {DecIntegerLiteral}            { return symbol(sym.INT_LITERAL, new Integer(yytext())); }
+  {DecIntegerLiteral}            { System.out.println(yytext());return symbol(sym.INT_LITERAL); }
   
-  {FloatLiteral}                 { System.out.println(yytext());return symbol(sym.FLOAT_LITERAL, new Float(yytext().substring(0,yylength()-1))); }
+  {FloatLiteral}                 { System.out.println(yytext());return symbol(sym.FLOAT_LITERAL); }
   
   /* comments */
   {Comment}                      { System.out.println("COMMENT ");System.out.println(yytext()); }
