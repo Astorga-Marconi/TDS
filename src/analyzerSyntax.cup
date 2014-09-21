@@ -224,10 +224,10 @@ method_call_stmt ::=
 		{: RESULT = new ExternInvkStmt(id1, t); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t COMMA list_externinvk_arg:l RPAREN
 		{: RESULT = new ExternInvkStmt(id1, t, l); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA VOID RPAREN
-		//{: RESULT = new ExternInvkStmt(id1); :}						// FALTA VOID!!!
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID COMMA list_externinvk_arg RPAREN
-		//{: RESULT = new ExternInvkStmt(id1, l); :}					// FALTA VOID!!!
+	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA VOID:t RPAREN
+		{: RESULT = new ExternInvkStmt(id1, t); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA VOID:t COMMA list_externinvk_arg:l RPAREN
+		{: RESULT = new ExternInvkStmt(id1, t, l); :}
 	;
 
 method_call_expr ::= 
