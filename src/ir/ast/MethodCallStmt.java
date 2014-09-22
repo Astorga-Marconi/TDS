@@ -17,6 +17,10 @@ public class MethodCallStmt extends Statement {
 		expressions = exprs;
 	}
 
+	public String getId(){
+		return id;
+	}
+
 	@Override
 	public <T> T accept(ASTVisitor<T> v) {
 		return v.visit(this);

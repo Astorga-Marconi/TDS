@@ -55,7 +55,8 @@ non terminal 	AssignOpType assign_op;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 non terminal 	LinkedList set_statement, list_expr, list_externinvk_arg;
 non terminal 	Statement statement, zero_or_one_else_block, method_call_stmt;
-non terminal	Expression expr, zero_or_one_expr, location, method_call_expr, externinvk_arg;
+non terminal	Expression expr, zero_or_one_expr, method_call_expr, externinvk_arg;
+non terminal 	VarLocation location;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -174,14 +175,20 @@ type ::=
 
 statement ::=
 		location:l1 assign_op:ap1 expr:e1 SEMICOLON
-		{: RESULT = new AssignStmt((Location)l1, ap1, e1); :}
+		{: RESULT = new AssignStmt(l1, ap1, e1); :}
 	|	method_call_stmt:mc SEMICOLON
 		{: RESULT = mc; :}
 	|	IF LPAREN expr:e1 RPAREN block:b1 zero_or_one_else_block:b2
 		{: RESULT = new IfStmt(e1, (Block)b1, (Block)b2); :}
 	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 block:b1 
-		{: RESULT = new ForStmt(id1, e1, e2, (Block)b1); :}
-	|	WHILE:w expr:e block:b          
+		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
+				RESULT = new ForStmt(id1, e1, e2, (Block)b1);	// FALTA OBSERVAR SI DICHO DESCRIPTOR ES UNA VARIABLE Y NO OTRA COSA!!
+			} else {
+				// No exite un metodo declarado con ese Id.
+				RESULT = null;
+			}; :}
+		/*{: RESULT = new ForStmt(id1, e1, e2, (Block)b1); :}*/
+	|	WHILE expr:e block:b
 		{:RESULT = new WhileStmt(e, (Block)b); :}
 	|	RETURN zero_or_one_expr:e1 SEMICOLON
 		{: RESULT = new ReturnStmt(e1); :}
@@ -232,9 +239,19 @@ assign_op ::=
 
 method_call_stmt ::= 
 		ID:id1 LPAREN  RPAREN
-		{: RESULT = new MethodCallStmt(id1); :}
+		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
+				RESULT = new MethodCallStmt(id1);	// FALTA FIJARSE SI EL DESCRIPTOR ENCONTRADO ES UN METODO!!!!
+			} else {
+				// No exite un metodo declarado con ese Id.
+				RESULT = null;
+			}; :}
 	|	ID:id1 LPAREN list_expr:le RPAREN
-		{: RESULT = new MethodCallStmt(id1, le); :}
+		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
+				RESULT = new MethodCallStmt(id1, le);	// FALTA FIJARSE SI EL DESCRIPTOR ENCONTRADO ES UN METODO!!!!
+			} else {
+				// No exite un metodo declarado con ese Id.
+				RESULT = null;
+			}; :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t RPAREN
 		{: RESULT = new ExternInvkStmt(id1, t); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t COMMA list_externinvk_arg:l RPAREN
@@ -262,9 +279,19 @@ method_call_expr ::=
 
 location ::= 
 		ID:id1
-		{: RESULT = new VarLocation(id1); :}
-	|	ID:id2 LBRACK expr RBRACK
-		{: RESULT = new VarLocation(id2); :}
+		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
+				RESULT = new VarLocation(id1);	// FALTA! HAY Q CHEQUEAR  QUE DEBE SER VARIABLE!
+			} else {
+				// No exite un location declarado con ese Id.
+				RESULT = null;
+			}; :}
+	|	ID:id1 LBRACK expr RBRACK
+		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
+				RESULT = new VarLocation(id1);	// FALTA! DEBE SER DEL TIPO ARRAY!
+			} else {
+				// No exite un location declarado con ese Id.
+				RESULT = null;
+			}; :}
 	;
 
 list_expr ::= 
@@ -293,7 +320,6 @@ expr ::=
 	|	NOT:n1 expr:e1
 		{: RESULT = new NotExp(n1, e1); :}
 	|	LPAREN expr RPAREN
-
 	;
 
 externinvk_arg ::=

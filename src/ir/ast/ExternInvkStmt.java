@@ -24,6 +24,10 @@ public class ExternInvkStmt extends Statement {
 		largs = args;
 	}
 
+	public String getId(){
+		return idInvk;
+	}
+
 	@Override
 	public <T> T accept(ASTVisitor<T> v) {
 		return v.visit(this);
