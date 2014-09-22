@@ -1,5 +1,12 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: Block.java
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 package ir.ast;
-
 import java.util.ArrayList;
 import java.util.List;
 import ir.ASTVisitor;
