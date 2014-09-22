@@ -83,6 +83,8 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 		Type typeWhileStmtCondition = stmt.getCondition().accept(this);
 		if (typeWhileStmtCondition == Type.TBOOLEAN) {
 			return Type.TBOOLEAN;
+		}else {
+			// ERROR: 
 		}
 		return null;
 	}
