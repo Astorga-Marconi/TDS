@@ -125,7 +125,10 @@ id_field_decl ::=
 				// Ya existe un descriptor declarado con ese nombre.
 			}
 		:}
-		LBRACK INT_LITERAL RBRACK
+		LBRACK INT_LITERAL:il RBRACK
+		{:	if (il.getValue() == 0) {
+				//	ERROR: El tamaño de un arreglo no puede ser cero.
+			}; :}
 	;
 
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
