@@ -24,9 +24,8 @@ terminal IF,ELSE;
 terminal FOR;
 terminal WHILE;
 terminal RETURN;
-terminal Type VOID;
 terminal LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON, LPAREN, RPAREN, COMMA, EXTERNINVK;
-			
+terminal Type VOID;			
 terminal String ID;
 terminal BinOpType PLUS, MINUS, NOT, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
 terminal AssignOpType PLUSEQ, MINUSEQ, EQ;
@@ -41,22 +40,22 @@ non terminal	program,
 				set_decl,
 				field_decl,
 				id_field_decl,
-				list_id_field_decl,
-				set_field_decl,
 				method_decl,
+				set_field_decl,	
 				set_method_decl,
-				zero_or_one_list_type_id_method_decl,
+				list_id_field_decl,
+				type_id_method_decl,
 				list_type_id_method_decl,
-				type_id_method_decl;
-				
-non terminal	Expression expr, zero_or_one_expr, location, method_call_expr, externinvk_arg;
-non terminal 	AssignOpType assign_op;
-non terminal 	Statement statement, zero_or_one_else_block, method_call_stmt;
-non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
-non terminal    Block block, _block;
+				zero_or_one_list_type_id_method_decl;
+			
 non terminal    Type type;
 non terminal    Literal literal;
+non terminal    Block block, _block;
+non terminal 	AssignOpType assign_op;
+non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 non terminal 	LinkedList set_statement, list_expr, list_externinvk_arg;
+non terminal 	Statement statement, zero_or_one_else_block, method_call_stmt;
+non terminal	Expression expr, zero_or_one_expr, location, method_call_expr, externinvk_arg;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -260,7 +259,6 @@ method_call_expr ::=
 	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID COMMA list_externinvk_arg RPAREN
 		//{: RESULT = new MethodCallExpr(); :}
 	;
-
 
 location ::= 
 		ID:id1
