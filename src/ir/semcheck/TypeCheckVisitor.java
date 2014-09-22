@@ -21,6 +21,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	
 	private List<Error> errors;
 
+	//			visit statements
 	@Override
 	public Type visit(AssignStmt stmt) {
 		Type typeLocation = stmt.getLocation().getType();
@@ -31,7 +32,6 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 		}else { 
 			if (typeLocation == Type.TBOOLEAN){
 				// ERROR: No es permitida la asignacio entre booleanos      
-				
 			} else {
 				return typeExpr;
 			}
@@ -43,18 +43,6 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	public Type visit(ReturnStmt stmt) {
 		Type typeReturnExpr = stmt.getExpression().accept(this);
 		// Podriamos ver de hacerlo en una clace parte 
-		return null;
-	}
-
-	@Override
-	public Type visit(BinOpExpr expr) {
-		Type typeExprL = expr.getLeftOperand().accept(this);
-		Type typeExprR = expr.getRightOperand().accept(this);
-		if(typeExprL == typeExprR) {
-			return typeExprL;
-		}else {
-			// ERROR: No son del mismo tipo
-		}
 		return null;
 	}
 
@@ -77,6 +65,14 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	}
 
 	@Override
+	public Type visit(BreakStmt stmt) {
+	}
+
+	@Override
+	public Type visit(ContinueStmt stmt) {
+	}
+
+	@Override
 	public Type visit(WhileStmt stmt) {
 		// Hay q fijarse que la condicion sea boolean
 		// Hacer el accep del block
@@ -91,27 +87,67 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	}
 
 	@Override
-	public Type visit(BreakStmt stmt) {
+	public Type visit(LoopStmt stmt) {
 	}
 
 	@Override
-	public Type visit(ContinueStmt stmt) {
+	public Type visit(MethodCallStmt stmt) {
 	}
 
+	@Override
+	public Type visit(ExternInvkStmt stmt) {	
+	}
+
+	//			visit Expressions
+
+	@Override
+	public Type visit(BinOpExpr expr) {
+		Type typeExprL = expr.getLeftOperand().accept(this);
+		Type typeExprR = expr.getRightOperand().accept(this);
+		if(typeExprL == typeExprR) {
+			return typeExprL;
+		}else {
+			// ERROR: No son del mismo tipo
+		}
+		return null;
+	}
+
+	@Override
+	public Type visit(MethodCallExpr expr) {
+	}
+
+	@Override
+	public Type visit(ExternInvkArgExpr expr) {
+	}
+
+	@Override
+	public Type visit(ExternInvkArgStringLit expr) {
+	}
+
+	@Override
+	public Type visit(NegativeExpr expr) {
+	}
+
+	//			visit literals
 	@Override
 	public Type visit(IntLiteral lit) {
 		return lit.getType;
 	}
 
-
 	@Override
-	public Type T visit(FloatLiteral lit) {
+	public Type visit(FloatLiteral lit) {
 		return lit.getType;
 	}
 
 	@Override
-	public TypeT visit(BoolLiteral lit) {
+	public Type visit(BoolLiteral lit) {
 		return lit.getType;
+	}
+
+	//			visit locations	
+	@Override
+	public Type visit(VarLocation loc) {
+		return loc.;
 	}
 
 	private void addError(AST a, String desc) {
