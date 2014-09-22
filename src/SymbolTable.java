@@ -83,6 +83,22 @@ public class SymbolTable{
 		}
 		return null;
 	}
+
+	/**
+	 * Search a descriptor in the current level.
+	 * @param id 
+	 * @return The Descriptor found, or otherwise null.
+	 */
+	public Descriptor searchInCurrentLevel(String id){
+		int i = amountLevels-1;
+		for (int j = 0; j < levels.get(i).size(); j++)
+		{
+			if (levels.get(i).get(j).getName() == id) {
+				return levels.get(i).get(j);
+			}
+		}
+		return null;
+	}
 	
 	public void showTable(){
 		for (int i = 0; i < levels.size(); i++)
