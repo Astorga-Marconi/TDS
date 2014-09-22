@@ -24,7 +24,7 @@ public class BoolLiteral extends Literal {
 
 	@Override
 	public Type getType() {
-		return Type.BOOLEAN;
+		return Type.TBOOLEAN;
 	}
 
 	public String getStringValue() {

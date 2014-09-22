@@ -14,6 +14,7 @@ import java.util.*;
 action code {:
 	SymbolTable table = new SymbolTable();
 	Type currentType;
+	Boolean mainDeclared = false;
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */
@@ -124,22 +125,36 @@ list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
 		type:t1 ID:id1
-		{:	if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
-				Descriptor m1 = new FunctionDescriptor(t1, id1);
-				table.insertNewDescriptor(m1);
-			} else {
-				// Ya existe un descriptor declarado con ese nombre.
-			}
-		:}
+		{:	if (id1.toString().equals("main")) {
+				if (!mainDeclared) {
+					mainDeclared = true;					
+				}else {
+					//ERROR: el metodo main ya ha sido declarado.
+				}
+			} else {	// Para un id diferente del main.
+				if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
+					Descriptor m1 = new FunctionDescriptor(t1, id1);
+					table.insertNewDescriptor(m1);
+				} else {
+					// Ya existe un descriptor declarado con ese nombre.
+				};	
+			}; :}
 		LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	|	TVOID:t1 ID:id1
-		{:	if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
-				Descriptor m1 = new FunctionDescriptor(t1, id1);
-				table.insertNewDescriptor(m1);
-			} else {
-				// Ya existe un descriptor declarado con ese nombre.
-			}
-		:}
+		{:	if (id1.toString().equals("main")) {
+				if (!mainDeclared) {
+					mainDeclared = true;					
+				}else {
+					//ERROR: el metodo main ya ha sido declarado.
+				}
+			} else {	// Para un id diferente del main.
+				if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
+					Descriptor m1 = new FunctionDescriptor(t1, id1);
+					table.insertNewDescriptor(m1);
+				} else {
+					// Ya existe un descriptor declarado con ese nombre.
+				}	
+			}; :}
 		LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	;
 
