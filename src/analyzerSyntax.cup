@@ -97,7 +97,7 @@ id_field_decl ::=
 		:}
 	|	ID:id1
 		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
-				Descriptor d1 = new VarDescriptor(currentType, id1);
+				Descriptor d1 = new VarDescriptor(Type.INTARRAY, id1);
 				table.insertNewDescriptor(d1);
 			} else {
 				// Ya existe un descriptor declarado con ese nombre.
