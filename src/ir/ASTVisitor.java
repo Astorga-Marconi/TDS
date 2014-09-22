@@ -1,5 +1,13 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: ASTVisitor.java
+ * Project: Compilador
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 package ir;
-
 import ir.ast.*;
 
 // Abstract visitor
