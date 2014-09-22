@@ -66,10 +66,12 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(BreakStmt stmt) {
+		return null;
 	}
 
 	@Override
 	public Type visit(ContinueStmt stmt) {
+		return null;
 	}
 
 	@Override
