@@ -17,7 +17,7 @@ public class IntLiteral extends Literal {
 
 	@Override
 	public Type getType() {
-		return Type.INT;
+		return Type.TINT;
 	}
 
 	public String getStringValue() {

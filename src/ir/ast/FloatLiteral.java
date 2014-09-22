@@ -17,7 +17,7 @@ public class FloatLiteral extends Literal {
 
 	@Override
 	public Type getType() {
-		return Type.FLOAT;
+		return Type.TFLOAT;
 	}
 
 	public String getStringValue() {
