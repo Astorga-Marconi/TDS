@@ -65,7 +65,7 @@ FloatLiteral = [0-9]*"."[0-9]*
    "int"   			 	              { System.out.println(yytext());return symbol(sym.TINT); }
    "for"   			 	              { System.out.println(yytext());return symbol(sym.FOR); }
    "else"   			              { System.out.println(yytext());return symbol(sym.ELSE); }
-   "void"   			              { System.out.println(yytext());return symbol(sym.VOID); }
+   "void"   			              { System.out.println(yytext());return symbol(sym.TVOID); }
    "break"   			              { System.out.println(yytext());return symbol(sym.BREAK); }
    "class"   			              { System.out.println(yytext());return symbol(sym.CLASS); }
    "float"   			              { System.out.println(yytext());return symbol(sym.TFLOAT); }

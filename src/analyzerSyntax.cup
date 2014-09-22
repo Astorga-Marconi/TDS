@@ -25,7 +25,7 @@ terminal FOR;
 terminal WHILE;
 terminal RETURN;
 terminal LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON, LPAREN, RPAREN, COMMA, EXTERNINVK;
-terminal Type VOID;			
+terminal Type TVOID;			
 terminal String ID;
 terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, NOT, OROR;
 terminal AssignOpType PLUSEQ, MINUSEQ, EQ;
@@ -131,7 +131,7 @@ method_decl ::=
 			}
 		:}
 		LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
-	|	VOID:t1 ID:id1
+	|	TVOID:t1 ID:id1
 		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
 				Descriptor m1 = new FunctionDescriptor(t1, id1);
 				table.insertNewDescriptor(m1);
@@ -239,9 +239,9 @@ method_call_stmt ::=
 		{: RESULT = new ExternInvkStmt(id1, t); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t COMMA list_externinvk_arg:l RPAREN
 		{: RESULT = new ExternInvkStmt(id1, t, l); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA VOID:t RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA TVOID:t RPAREN
 		{: RESULT = new ExternInvkStmt(id1, t); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA VOID:t COMMA list_externinvk_arg:l RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA TVOID:t COMMA list_externinvk_arg:l RPAREN
 		{: RESULT = new ExternInvkStmt(id1, t, l); :}
 	;
 
@@ -254,9 +254,9 @@ method_call_expr ::=
 		//{: RESULT = new MethodCallExpr(); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type COMMA list_externinvk_arg RPAREN
 		//{: RESULT = new MethodCallExpr(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA TVOID RPAREN
 		//{: RESULT = new MethodCallExpr(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA VOID COMMA list_externinvk_arg RPAREN
+	|	EXTERNINVK LPAREN STRING_LITERAL COMMA TVOID COMMA list_externinvk_arg RPAREN
 		//{: RESULT = new MethodCallExpr(); :}
 	;
 
