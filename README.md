@@ -8,8 +8,8 @@ Autores:
 
 Etapas: 
 ------------------------
-#####Análizador Léxico y Sintáctico 
-#####Análizador Semantico           
+* Análizador Léxico y Sintáctico 
+* Análizador Semantico           
 
 Organizacion directorios
 ------------------------
