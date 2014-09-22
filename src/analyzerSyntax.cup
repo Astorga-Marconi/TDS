@@ -27,7 +27,7 @@ terminal RETURN;
 terminal LBRACE, RBRACE, LBRACK, RBRACK, SEMICOLON, LPAREN, RPAREN, COMMA, EXTERNINVK;
 terminal Type VOID;			
 terminal String ID;
-terminal BinOpType PLUS, MINUS, NOT, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, OROR;
+terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, NOT, OROR;
 terminal AssignOpType PLUSEQ, MINUSEQ, EQ;
 terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal IntLiteral INT_LITERAL;
