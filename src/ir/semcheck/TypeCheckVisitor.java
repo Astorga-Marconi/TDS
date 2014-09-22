@@ -30,7 +30,8 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 			// ERROR: TYPE
 		}else { 
 			if (typeLocation == Type.TBOOLEAN){
-				// ERROR: No es permitida la asignacio entre booleanos
+				// ERROR: No es permitida la asignacio entre booleanos      
+				
 			} else {
 				return typeExpr;
 			}
@@ -41,7 +42,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	@Override
 	public Type visit(ReturnStmt stmt) {
 		Type typeReturnExpr = stmt.getExpression().accept(this);
-
+		// Podriamos ver de hacerlo en una clace parte 
 		return null;
 	}
 
