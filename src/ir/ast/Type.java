@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: Type.java
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 package ir.ast;
 
 public enum Type {

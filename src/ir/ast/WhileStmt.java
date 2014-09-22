@@ -1,5 +1,12 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: WhileStmt.java
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 package ir.ast;
-
 import ir.ASTVisitor;
 
 public class WhileStmt extends LoopStmt {
