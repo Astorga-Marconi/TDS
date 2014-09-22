@@ -8,10 +8,12 @@
  * Version: 0.1 
  */
 package ir;
+
 import ir.ast.*;
 
 // Abstract visitor
 public interface ASTVisitor<T> {
+
 // visit statements
 	T visit(AssignStmt stmt);
 	T visit(ReturnStmt stmt);

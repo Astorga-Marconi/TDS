@@ -8,6 +8,7 @@
  * Version: 0.1 
  */
 package ir.semcheck;
+
 import java.util.ArrayList;
 import java.util.List;
 import ir.ASTVisitor;
@@ -76,7 +77,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	@Override
 	public Type visit(WhileStmt stmt) {
 		// Hay q fijarse que la condicion sea boolean
-		// Hacer el accep del block
+		// Hacer el accept del block
 		Type = stmt.
 		Type typeWhileStmtCondition = stmt.getCondition().accept(this);
 		if (typeWhileStmtCondition == Type.TBOOLEAN) {
