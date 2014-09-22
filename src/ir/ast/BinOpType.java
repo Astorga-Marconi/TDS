@@ -1,20 +1,20 @@
 package ir.ast;
 
 public enum BinOpType {
-	PLUS, // Arithmetic
+	PLUS, 
 	MINUS,
-	MULTIPLY,
-	DIVIDE,
+	MULT,
+	DIV,
 	MOD,
-	LE, // Relational
-	LEQ,
-	GE,
-	GEQ,
-	NEQ, // Equal
-	CEQ, 
-	AND, // Conditional
+	LT, 
+	GT,
+	LTEQ,
+	GTEQ,
+	EQEQ, 
+	NOTEQ, 
+	ANDAND,
 	NOT,
-	OR;
+	OROR;
 	
 	@Override
 	public String toString() {
@@ -23,29 +23,29 @@ public enum BinOpType {
 				return "+";
 			case MINUS:
 				return "-";
-			case MULTIPLY:
+			case MULT:
 				return "*";
-			case DIVIDE:
+			case DIV:
 				return "/";
 			case MOD:
 				return "%";
-			case LE:
+			case LT:
 				return "<";
-			case LEQ:
-				return "<=";
-			case GE:
+			case GT:
 				return ">";
-			case GEQ:
+			case LTEQ:
+				return "<=";
+			case GTEQ:
 				return ">=";
-			case CEQ:
+			case EQEQ:
 				return "==";
-			case NEQ:
+			case NOTEQ:
 				return "!=";
-			case AND:
+			case ANDAND:
 				return "&&";
 			case NOT:
 				return "!";
-			case OR:
+			case OROR:
 				return "||";
 		}
 		

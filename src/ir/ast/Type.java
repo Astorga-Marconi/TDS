@@ -4,11 +4,11 @@ public enum Type {
 	TINT,
 	TFLOAT,
 	TBOOLEAN,
+	TVOID,
+	UNDEFINED,
 	INTARRAY,
 	FLOATARRAY,
-	BOOLEANARRAY,
-	VOID,
-	UNDEFINED;
+	BOOLEANARRAY;
 	
 	@Override
 	public String toString() {
@@ -19,7 +19,7 @@ public enum Type {
 				return "float";
 			case TBOOLEAN:
 		        return "boolean";
-			case VOID:
+			case TVOID:
 				return "void";
 			case UNDEFINED:
 				return "undefined";
