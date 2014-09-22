@@ -87,7 +87,7 @@ field_decl ::= type list_id_field_decl SEMICOLON;
 
 id_field_decl ::= 
 		ID:id1
-		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
+		{:	if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 				Descriptor d1 = new VarDescriptor(currentType, id1);
 				table.insertNewDescriptor(d1);
 			} else {
@@ -95,7 +95,7 @@ id_field_decl ::=
 			}
 		:}
 	|	ID:id1
-		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
+		{:	if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 				Descriptor d1;
 				switch (currentType){
 					case TINT:
@@ -123,7 +123,7 @@ list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
 		type:t1 ID:id1
-		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
+		{:	if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 				Descriptor m1 = new FunctionDescriptor(t1, id1);
 				table.insertNewDescriptor(m1);
 			} else {
@@ -132,7 +132,7 @@ method_decl ::=
 		:}
 		LPAREN zero_or_one_list_type_id_method_decl RPAREN block 
 	|	VOID:t1 ID:id1
-		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
+		{:	if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 				Descriptor m1 = new FunctionDescriptor(t1, id1);
 				table.insertNewDescriptor(m1);
 			} else {
