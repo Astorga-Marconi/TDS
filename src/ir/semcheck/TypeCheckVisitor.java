@@ -3,14 +3,13 @@
  * All rights reserved.
  *
  * File Name: TypeEvaluationVisitor.java
+ * Project: Compilador
  * Authors: Astorga Dario - Marconi Pablo
  * Version: 0.1 
  */
 package ir.semcheck;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import ir.ASTVisitor;
 import ir.ast.*;
 import error.Error; // define class error
@@ -72,7 +71,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	@Override
 	public Type visit(ContinueStmt stmt) {
 		return null;
-	}
+	} 
 
 	@Override
 	public Type visit(WhileStmt stmt) {
