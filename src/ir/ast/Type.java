@@ -1,21 +1,23 @@
 package ir.ast;
 
 public enum Type {
-	INT,
-	FLOAT,
-	BOOLEAN,
+	TINT,
+	TFLOAT,
+	TBOOLEAN,
 	INTARRAY,
+	FLOATARRAY,
+	BOOLEANARRAY,
 	VOID,
 	UNDEFINED;
 	
 	@Override
 	public String toString() {
 		switch(this) {
-			case INT:
+			case TINT:
 				return "int";
-			case FLOAT:
+			case TFLOAT:
 				return "float";
-			case BOOLEAN:
+			case TBOOLEAN:
 		        return "boolean";
 			case VOID:
 				return "void";
@@ -23,6 +25,10 @@ public enum Type {
 				return "undefined";
 			case INTARRAY:
 				return "int[]";
+			case FLOATARRAY:
+				return "float[]";
+			case BOOLEANARRAY:
+				return "boolean[]";
 		}
 		
 		return null;
@@ -30,6 +36,12 @@ public enum Type {
 	
 	public boolean isArray() {
 		if (this == Type.INTARRAY) {
+			return true;
+		}
+		if (this == Type.FLOATARRAY) {
+			return true;
+		}
+		if (this == Type.BOOLEANARRAY) {
 			return true;
 		}
 		

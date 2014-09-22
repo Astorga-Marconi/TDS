@@ -97,7 +97,21 @@ id_field_decl ::=
 		:}
 	|	ID:id1
 		{:	if (table.search(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre.
-				Descriptor d1 = new VarDescriptor(Type.INTARRAY, id1);
+				Descriptor d1;
+				switch (currentType){
+					case TINT:
+						d1 = new VarDescriptor(Type.INTARRAY, id1);
+						break;
+					case TFLOAT:
+						d1 = new VarDescriptor(Type.FLOATARRAY, id1);
+						break;
+					case TBOOLEAN:
+						d1 = new VarDescriptor(Type.BOOLEANARRAY, id1);
+						break;
+					default:
+						d1 = new VarDescriptor(Type.UNDEFINED, id1);
+						break;
+				};
 				table.insertNewDescriptor(d1);
 			} else {
 				// Ya existe un descriptor declarado con ese nombre.
