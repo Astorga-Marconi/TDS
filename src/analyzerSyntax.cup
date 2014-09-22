@@ -67,8 +67,18 @@ precedence left  MULT, DIV, MOD;
 start with program;
 
 program ::= 
-		CLASS ID LBRACE {: table.insertNewBlock(); :} set_decl RBRACE {: table.closeBlock(); :} {:System.out.println("termino");:}
-	|	CLASS ID LBRACE {: table.insertNewBlock(); :} RBRACE {: table.closeBlock(); :} {:System.out.println("termino");:}
+		CLASS ID LBRACE {: table.insertNewBlock(); :} set_decl RBRACE {: table.closeBlock(); :}
+		{:	if (!mainDeclared) {
+				// ERROR: El metodo Main no ha sido declarado.
+			};
+			:}
+		{:System.out.println("Test finalizado");:}
+	|	CLASS ID LBRACE {: table.insertNewBlock(); :} RBRACE {: table.closeBlock(); :}
+		{:	if (!mainDeclared) {
+				// ERROR: El metodo Main no ha sido declarado.
+			};
+			:}
+		{:System.out.println("Test finalizado");:}
 	;
 
 set_decl ::= 
