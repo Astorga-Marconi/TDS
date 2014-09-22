@@ -73,7 +73,7 @@ FloatLiteral = [0-9]*"."[0-9]*
    "return"   		 	            { System.out.println(yytext());return symbol(sym.RETURN); }
    "boolean"   		 	            { System.out.println(yytext());return symbol(sym.TBOOLEAN); }
    "continue"   		            { System.out.println(yytext());return symbol(sym.CONTINUE); }
-  "false" | "true"              { System.out.println(yytext()); return symbol(sym.BOOL_LITERAL); }
+   "false" | "true"             { System.out.println(yytext()); return symbol(sym.BOOL_LITERAL); }
   
   "("                           { System.out.println(yytext());return symbol(sym.LPAREN); }
   ")"                           { System.out.println(yytext());return symbol(sym.RPAREN); }
