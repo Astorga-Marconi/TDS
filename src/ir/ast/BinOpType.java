@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: BinOpType.java
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 package ir.ast;
 
 public enum BinOpType {
