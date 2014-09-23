@@ -24,6 +24,7 @@ public interface ASTVisitor<T> {
 	T visit(SemicolonStmt stmt);
 	T visit(WhileStmt stmt);
 	T visit(LoopStmt stmt);
+	T visit(Block stmt);
 	T visit(MethodCallStmt stmt);
 	T visit(ExternInvkStmt stmt);
 	
@@ -42,7 +43,4 @@ public interface ASTVisitor<T> {
 
 // visit locations	
 	T visit(VarLocation loc);
-
-// Visit block
-	T visit(Block block);
 }

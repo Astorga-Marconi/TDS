@@ -25,11 +25,6 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 
 	}
 
-	@Override
-	public Type visit(Block stmt) {
-		return null;
-	}
-
 	//			visit statements
 	@Override
 	public Type visit(AssignStmt stmt) {
@@ -108,6 +103,11 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	}
 
 	@Override
+	public Type visit(Block stmt) {
+		return null;
+	}
+	
+	@Override
 	public Type visit(MethodCallStmt stmt) {
 		return null;
 	}
@@ -152,7 +152,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	if (typenegativeExpr != Type.TBOOLEAN){
     		// ERROR: La expresion que le sigue al "-" no deberia ser del tipo TBOOLEAN
     	}
-    return typenegativeExpr;
+    	return typenegativeExpr;
 	}
 
 	//			visit literals
