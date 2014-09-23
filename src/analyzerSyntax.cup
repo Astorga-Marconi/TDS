@@ -10,12 +10,14 @@
  */
 import java_cup.runtime.*;
 import ir.ast.*;
+import ir.semcheck.*;
 import java.util.*;
 
 action code {:
 	SymbolTable table = new SymbolTable();
 	Type currentType;
 	Boolean mainDeclared = false;
+	TypeCheckVisitor v;
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */

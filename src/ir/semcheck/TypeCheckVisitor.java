@@ -13,13 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 import ir.ASTVisitor;
 import ir.ast.*;
-import error.Error; // define class error
+//import error.Error; // define class error
 
 
 // type checker, concrete visitor 
-public class TypeEvaluationVisitor implements ASTVisitor<Type> {
+public class TypeCheckVisitor implements ASTVisitor<Type> {
 	
 	private List<Error> errors;
+
+	public TypeCheckVisitor() {
+
+	}
+
+	@Override
+	public Type visit(Block stmt) {
+		return null;
+	}
 
 	//			visit statements
 	@Override
@@ -78,7 +87,6 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	public Type visit(WhileStmt stmt) {
 		// Hay q fijarse que la condicion sea boolean
 		// Hacer el accept del block
-		Type = stmt.
 		Type typeWhileStmtCondition = stmt.getCondition().accept(this);
 		if (typeWhileStmtCondition == Type.TBOOLEAN) {
 			return Type.TBOOLEAN;
@@ -90,14 +98,17 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(LoopStmt stmt) {
+		return null;
 	}
 
 	@Override
 	public Type visit(MethodCallStmt stmt) {
+		return null;
 	}
 
 	@Override
-	public Type visit(ExternInvkStmt stmt) {	
+	public Type visit(ExternInvkStmt stmt) {
+		return null;
 	}
 
 	//			visit Expressions
@@ -116,14 +127,17 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(MethodCallExpr expr) {
+		return null;
 	}
 
 	@Override
 	public Type visit(ExternInvkArgExpr expr) {
+		return null;
 	}
 
 	@Override
 	public Type visit(ExternInvkArgStringLit expr) {
+		return null;
 	}
 
 	@Override
@@ -138,27 +152,37 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	//			visit literals
 	@Override
 	public Type visit(IntLiteral lit) {
-		return lit.getType;
+		return lit.getType();
 	}
 
 	@Override
 	public Type visit(FloatLiteral lit) {
-		return lit.getType;
+		return lit.getType();
 	}
 
 	@Override
 	public Type visit(BoolLiteral lit) {
-		return lit.getType;
+		return lit.getType();
 	}
 
 	//			visit locations	
 	@Override
 	public Type visit(VarLocation loc) {
-		return loc.;
+		return null;		
+	}
+
+	@Override
+	public Type visit(NotExp expr) {
+		return null;
+	}
+
+	@Override
+	public Type visit(SemicolonStmt stmt) {
+		return null;
 	}
 
 	private void addError(AST a, String desc) {
-		errors.add(new Error(a.getLineNumber(), a.getColumnNumber(), desc));
+		//errors.add(new Error(a.getLineNumber(), a.getColumnNumber(), desc));
 	}
 
 	public List<Error> getErrors() {
