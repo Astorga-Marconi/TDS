@@ -9,11 +9,11 @@
  */
 package ir.semcheck;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import ir.ASTVisitor;
 import ir.ast.*;
-//import error.Error; // define class error
+import error.Error;
 
 
 // type checker, concrete visitor 
@@ -22,7 +22,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	private List<Error> errors;
 
 	public TypeCheckVisitor() {
-
+		errors = new LinkedList<Error>();
 	}
 
 	//			visit statements
@@ -188,7 +188,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	}
 
 	private void addError(AST a, String desc) {
-		//errors.add(new Error(a.getLineNumber(), a.getColumnNumber(), desc));
+		errors.add(new Error(a.getLineNumber(), a.getColumnNumber(), desc));
 	}
 
 	public List<Error> getErrors() {
