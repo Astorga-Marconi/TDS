@@ -17,7 +17,6 @@ action code {:
 	SymbolTable table = new SymbolTable();
 	Type currentType;
 	Boolean mainDeclared = false;
-	TypeCheckVisitor v;
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */
@@ -156,7 +155,9 @@ method_decl ::=
 		{:	if (id1.toString().equals("main") && params.size() != 0){	// Si el metodo es main no debe tener parametros.
 				// ERROR: el metodo main no puede tener parametros.
 			}; :}
-		RPAREN block
+		RPAREN block:b
+		{:	TypeCheckVisitor v = new TypeCheckVisitor();
+			v.visit(b);	:}
 	|	TVOID:t1 ID:id1
 		{:	if (id1.toString().equals("main")) {
 				if (!mainDeclared) {
@@ -176,7 +177,9 @@ method_decl ::=
 		{:	if (id1.toString().equals("main") && params.size() != 0){	// Si el metodo es main no debe tener parametros.
 				// ERROR: el metodo main no puede tener parametros.
 			}; :}
-		RPAREN block
+		RPAREN block:b
+		{:	TypeCheckVisitor v = new TypeCheckVisitor();
+			v.visit(b);	:}
 	;
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
