@@ -130,7 +130,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	public Type visit(NegativeExpr expr) {
 		Type typenegativeExpr = expr.getExpression().accept(this);
     	if (typenegativeExpr != Type.TBOOLEAN){
-    		// ERROR: DEBE SER DE TIPO BOOLEAN 
+    		// ERROR: La expresion que le sigue al "-" no deberia ser del tipo TBOOLEAN
     	}
     return typenegativeExpr;
 	}
