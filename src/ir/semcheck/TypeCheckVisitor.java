@@ -149,11 +149,19 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	@Override
 	public Type visit(NegativeExpr expr) {
 		Type typenegativeExpr = expr.getExpression().accept(this);
-    	if (typenegativeExpr != Type.TBOOLEAN){
+    	if (typenegativeExpr != Type.TBOOLEAN) {
     		// ERROR: La expresion que le sigue al "-" no deberia ser del tipo TBOOLEAN
     	}
     return typenegativeExpr;
 	}
+
+  	public Type visit (NotExpr expr) {
+    	Type typeExpr = expr.getExpression().accept(this);
+    	if (typeExpr != Type.TBOOLEAN) {
+    		// ERROR: La condicion deberia ser de type TBOOLEAN  
+    	}
+    	return typeExpr;
+  	}
 
 	//			visit literals
 	@Override
@@ -175,11 +183,6 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	@Override
 	public Type visit(VarLocation loc) {
 		return null;		
-	}
-
-	@Override
-	public Type visit(NotExp expr) {
-		return null;
 	}
 
 	@Override
