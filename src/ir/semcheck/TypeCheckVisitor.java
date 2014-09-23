@@ -61,8 +61,14 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 	public Type visit(ForStmt stmt) {
 		// Hay q fijarse que la condicion sea boolean
 		// Y que initialValue sea INT
-		return null;
-	}
+	  	Type typeForStmtexpr1 = stmt.getInitialValue().accept(this);
+    	Type typeForStmtexpr2 = stmt.getCondition().accept(this);
+    	Type block = stmt.getBlock().accept(this);
+    	if ((typeForStmtexpr1 != Type.TINT) || (typeForStmtexpr2 != Type.TINT)) {
+    		//ERROR: Las expresiones del For debe ser de tipo TINT me parece
+    	}
+  	return null;
+  }
 
 	@Override
 	public Type visit(BreakStmt stmt) {
