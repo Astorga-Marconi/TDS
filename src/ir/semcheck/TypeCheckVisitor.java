@@ -63,7 +63,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 		// Y que initialValue sea INT
 	  	Type typeForStmtexpr1 = stmt.getInitialValue().accept(this);
     	Type typeForStmtexpr2 = stmt.getCondition().accept(this);
-    	Type block = stmt.getBlock().accept(this);
+    	Type block = stmt.getForBlock().accept(this);
     	if ((typeForStmtexpr1 != Type.TINT) || (typeForStmtexpr2 != Type.TINT)) {
     		//ERROR: Las expresiones del For debe ser de tipo TINT me parece
     	}
