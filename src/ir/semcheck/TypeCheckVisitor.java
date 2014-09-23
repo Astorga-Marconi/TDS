@@ -128,6 +128,11 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(NegativeExpr expr) {
+		Type typenegativeExpr = expr.getExpression().accept(this);
+    	if (typenegativeExpr != Type.TBOOLEAN){
+    		// ERROR: DEBE SER DE TIPO BOOLEAN 
+    	}
+    return typenegativeExpr;
 	}
 
 	//			visit literals

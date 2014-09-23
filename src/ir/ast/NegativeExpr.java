@@ -18,6 +18,15 @@ public class NegativeExpr extends Expression {
 		this.exp = e1;
 	}
 
+	public Expression getExpression() {
+        return expr;
+    }
+
+    @Override
+	public String toString() {
+		return "-" + expr;
+	}
+	
 	@Override
 	public <T> T accept(ASTVisitor<T> v) {
 		return v.visit(this);
