@@ -36,9 +36,7 @@ terminal String ID;
 terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, NOT, OROR;
 terminal AssignOpType PLUSEQ, MINUSEQ, EQ;
 terminal Type TINT, TFLOAT, TBOOLEAN;
-terminal String INT_LITERAL;
-terminal FloatLiteral FLOAT_LITERAL;
-terminal BoolLiteral BOOL_LITERAL;
+terminal String INT_LITERAL, FLOAT_LITERAL, BOOL_LITERAL;
 terminal String STRING_LITERAL;
 
 /* Non terminals */
@@ -461,8 +459,8 @@ literal ::=
 		INT_LITERAL:l
 		{:	RESULT = new IntLiteral(l);	:}
 	|	FLOAT_LITERAL:l
-		{:	RESULT = l;	:}
+		{:	RESULT = new FloatLiteral(l); :}
 	|	BOOL_LITERAL:l
-		{:	RESULT = l;	:}
+		{:	RESULT = new BoolLiteral(l); :}
 	;
 

@@ -19,7 +19,7 @@ public class BoolLiteral extends Literal {
 	 */
 	public BoolLiteral(String val){
 		rawValue = val; // Will convert to boolean value in semantic check
-		value = Boolean.valueOf(val);
+		value = null;
 	}
 
 	@Override
