@@ -30,16 +30,8 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	public Type visit(AssignStmt stmt) {
 		Type typeLocation = stmt.getLocation().accept(this);
 		Type typeExpr = stmt.getExpression().accept(this);
-
-		//System.out.println("esta aca");
 		if (typeLocation != typeExpr) {
-			System.out.println("error en AssignStmt");
-		}else { 
-			if (typeLocation == Type.TBOOLEAN){
-				// ERROR: No es permitida la asignacio entre booleanos      
-			} else {
-				return typeExpr;
-			}
+			addError(stmt, "Error de tipos en asignacion.");
 		}
 		return null;
 	}
@@ -54,25 +46,21 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	@Override
 	public Type visit(IfStmt stmt) {
 		Type typeIfStmt = stmt.getCondition().accept(this);
-		if (typeIfStmt == Type.TBOOLEAN) {
-			return Type.TBOOLEAN;
-		}else { 
-			//ERROR: Tipo
+		if (typeIfStmt != Type.TBOOLEAN) {
+			addError(stmt, "Error de tipos, la condicion del while no es booleana.");
 		}
 		return null;
 	}
 
 	@Override
 	public Type visit(ForStmt stmt) {
-		// Hay q fijarse que la condicion sea boolean
-		// Y que initialValue sea INT
-	  	Type typeForStmtexpr1 = stmt.getInitialValue().accept(this);
+	  	Type typeForStmtExpr = stmt.getInitialValue().accept(this);
     	Type typeForStmtCondition = stmt.getCondition().accept(this);
-    	Type block = stmt.getForBlock().accept(this);
-    	if ((typeForStmtexpr1 != Type.TINT) || (typeForStmtCondition != Type.TINT)) {
+    	Type tBlock = stmt.getForBlock().accept(this);
+    	if ((typeForStmtExpr != Type.TINT) && (typeForStmtCondition != Type.TINT)) {
     		addError(stmt,"Las expresiones del For deberian ser de tipo TINT");
     	}
-  	return null;
+  		return null;
   	}
 
 	@Override
@@ -87,13 +75,10 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(WhileStmt stmt) {
-		// Hay q fijarse que la condicion sea boolean
-		// Hacer el accept del block
 		Type typeWhileStmtCondition = stmt.getCondition().accept(this);
-		if (typeWhileStmtCondition == Type.TBOOLEAN) {
-			return Type.TBOOLEAN;
-		}else {
-			 addError(stmt,"La condicion de la sentencia While deberia ser de tipo TBOOLEAN"); 
+		Type tBlock = stmt.getBlock().accept(this);
+		if (typeWhileStmtCondition != Type.TBOOLEAN) {
+			addError(stmt,"La condicion de la sentencia While deberia ser de tipo TBOOLEAN"); 
 		}
 		return null;
 	}
