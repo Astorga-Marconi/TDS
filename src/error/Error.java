@@ -10,10 +10,9 @@
 package error;
 
 public class Error {
-    
-    private int line;
-    private int col;
-    private String desc;
+    int line;
+    int col;
+    String desc;
     
     public Error (int l, int c, String d) {
         line = l;
@@ -22,6 +21,6 @@ public class Error {
     }
     
     public String toString() {
-        return ("Error en la linea " + line + ", columna " + col + ": " + desc);
+        return ("Error en la linea "+line+", columna "+col+": "+desc);
     }
-} 
+}

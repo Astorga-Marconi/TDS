@@ -26,7 +26,7 @@ action code {:
 terminal BREAK;
 terminal CLASS;
 terminal CONTINUE;
-terminal IF,ELSE;
+//terminal IF,ELSE;
 terminal FOR;
 terminal WHILE;
 terminal RETURN;
@@ -38,6 +38,7 @@ terminal AssignOpType PLUSEQ, MINUSEQ, EQ;
 terminal Type TINT, TFLOAT, TBOOLEAN;
 terminal String INT_LITERAL, FLOAT_LITERAL, BOOL_LITERAL;
 terminal String STRING_LITERAL;
+terminal String IF,ELSE;
 
 /* Non terminals */
 non terminal	program,
@@ -55,10 +56,12 @@ non terminal    Block block, _block;
 non terminal 	AssignOpType assign_op;
 non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 non terminal 	LinkedList set_statement, list_expr, list_externinvk_arg, list_type_id_method_decl, zero_or_one_list_type_id_method_decl;
-non terminal 	Statement statement, zero_or_one_else_block, method_call_stmt;
+non terminal 	Statement statement, method_call_stmt; // zero_or_one_else_block,
 non terminal	Expression expr, zero_or_one_expr, method_call_expr, externinvk_arg;
 non terminal 	VarLocation location;
 non terminal 	VarDescriptor type_id_method_decl;
+non terminal    IfStmt if_stmt; 
+
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
 precedence left  OROR;
@@ -239,8 +242,11 @@ statement ::=
 		{:	RESULT = new AssignStmt(l1, ap1, e1); :}
 	|	method_call_stmt:mc SEMICOLON
 		{: RESULT = mc; :}
-	|	IF LPAREN expr:e1 RPAREN block:b1 zero_or_one_else_block:b2
-		{: RESULT = new IfStmt(e1, (Block)b1, (Block)b2); :}
+	|	if_stmt:a 
+		{: RESULT = a; :}	
+	//|	IF LPAREN expr:e1 RPAREN block:b1 zero_or_one_else_block:b2     //{:System.out.print("MENEM ACA ESTOY");:}
+	//	{: RESULT = new IfStmt(e1, (Block)b1, (Block)b2); :}
+
 	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 block:b1 
 		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 				RESULT = new ForStmt(id1, e1, e2, (Block)b1);	// FALTA OBSERVAR SI DICHO DESCRIPTOR ES UNA VARIABLE Y NO OTRA COSA!!
@@ -263,12 +269,16 @@ statement ::=
 		{: RESULT = b1; :}
 	;
 
-zero_or_one_else_block ::= 
-		ELSE block:b1
-		{: RESULT = b1; :}
-	|	/* LAMBDA */
-		{: RESULT = null; :}
-	;
+if_stmt ::= 
+		IF:w LPAREN expr:e RPAREN block:b1 ELSE block:b2 {:RESULT = new IfStmt(e, (Block)b1, (Block)b2);:}
+    |   IF:w LPAREN expr:e RPAREN block:b {:RESULT = new IfStmt(e, (Block)b);:} ;
+
+//zero_or_one_else_block ::= 
+	//	ELSE block:b1
+	//	{: RESULT = b1; :}
+	//|	/* LAMBDA */
+	//	{: RESULT = null; :}
+	//;
 	
 set_statement ::= 
 		statement:s set_statement:ss
