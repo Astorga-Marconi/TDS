@@ -12,11 +12,14 @@ import java_cup.runtime.*;
 import ir.ast.*;
 import ir.semcheck.*;
 import java.util.*;
+import error.Error;
+
 
 action code {:
 	SymbolTable table = new SymbolTable();
 	Type currentType;
 	Boolean mainDeclared = false;
+	TypeCheckVisitor typeVisitor = new TypeCheckVisitor();
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */
@@ -71,15 +74,19 @@ start with program;
 program ::= 
 		CLASS ID LBRACE {: table.insertNewBlock(); :} set_decl RBRACE {: table.closeBlock(); :}
 		{:	if (!mainDeclared) {
-				// ERROR: El metodo Main no ha sido declarado.
-			};
-			:}
+				System.out.println("El metodo Main no ha sido declarado.");
+			};	:}
+		{:	for (Error e: typeVisitor.getErrors()) {	// Imprimo por pantalla los errores del checkeo de tipos.
+				System.out.println(e.toString());
+			};	:}
 		{:System.out.println("Test finalizado");:}
 	|	CLASS ID LBRACE {: table.insertNewBlock(); :} RBRACE {: table.closeBlock(); :}
 		{:	if (!mainDeclared) {
-				// ERROR: El metodo Main no ha sido declarado.
-			};
-			:}
+				System.out.println("El metodo Main no ha sido declarado.");
+			};	:}
+		{:	for (Error e: typeVisitor.getErrors()) {	// Imprimo por pantalla los errores del checkeo de tipos.
+				System.out.println(e.toString());
+			};	:}
 		{:System.out.println("Test finalizado");:}
 	;
 
@@ -141,45 +148,47 @@ method_decl ::=
 				if (!mainDeclared) {
 					mainDeclared = true;					
 				}else {
-					//ERROR: el metodo main ya ha sido declarado.
+					System.out.println("El metodo main ya esta declarado.");
 				}
 			} else {	// Para un id diferente del main.
 				if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 					Descriptor m1 = new FunctionDescriptor(t1, id1);
 					table.insertNewDescriptor(m1);
 				} else {
-					// Ya existe un descriptor declarado con ese nombre.
+					System.out.println("Ya existe un descriptor declarado con ese nombre.");
 				};	
 			}; :}
+		{:	table.insertNewBlock(); :}
 		LPAREN zero_or_one_list_type_id_method_decl:params
 		{:	if (id1.toString().equals("main") && params.size() != 0){	// Si el metodo es main no debe tener parametros.
-				// ERROR: el metodo main no puede tener parametros.
+				System.out.println("El metodo main no puede tener parametros.");
 			}; :}
 		RPAREN block:b
-		{:	TypeCheckVisitor v = new TypeCheckVisitor();
-			v.visit(b);	:}
+		{:	table.closeBlock(); :}
+		{:	typeVisitor.visit(b);	:}
 	|	TVOID:t1 ID:id1
 		{:	if (id1.toString().equals("main")) {
 				if (!mainDeclared) {
 					mainDeclared = true;					
 				}else {
-					//ERROR: el metodo main ya ha sido declarado.
+					System.out.println("El metodo main ya esta declarado.");
 				}
 			} else {	// Para un id diferente del main.
 				if (table.searchInCurrentLevel(id1) == null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 					Descriptor m1 = new FunctionDescriptor(t1, id1);
 					table.insertNewDescriptor(m1);
 				} else {
-					// Ya existe un descriptor declarado con ese nombre.
+					System.out.println("Ya existe un descriptor declarado con ese nombre.");
 				}	
 			}; :}
+		{:	table.insertNewBlock(); :}
 		LPAREN zero_or_one_list_type_id_method_decl:params
 		{:	if (id1.toString().equals("main") && params.size() != 0){	// Si el metodo es main no debe tener parametros.
-				// ERROR: el metodo main no puede tener parametros.
+				System.out.println("El metodo main no puede tener parametros.");
 			}; :}
 		RPAREN block:b
-		{:	TypeCheckVisitor v = new TypeCheckVisitor();
-			v.visit(b);	:}
+		{:	table.closeBlock(); :}
+		{:	typeVisitor.visit(b);	:}
 	;
 
 set_method_decl ::= method_decl set_method_decl | method_decl;

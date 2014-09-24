@@ -191,6 +191,10 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		errors.add(new Error(a.getLineNumber(), a.getColumnNumber(), desc));
 	}
 
+	public void addError2(String desc) {	// Metodo momentáneo para realizar la prueba.
+		errors.add(new Error(0, 0, desc));
+	}
+
 	public List<Error> getErrors() {
 		return errors;
 	}

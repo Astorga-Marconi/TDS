@@ -76,7 +76,7 @@ public class SymbolTable{
 			System.out.println("Level " + (i + 1) + ": ");
 			for (int j = 0; j < levels.get(i).size(); j++)
 			{
-				if (levels.get(i).get(j).getName() == id) {
+				if (levels.get(i).get(j).getName().equals(id)) {
 					return levels.get(i).get(j);
 				}
 			}
@@ -93,7 +93,7 @@ public class SymbolTable{
 		int i = amountLevels-1;
 		for (int j = 0; j < levels.get(i).size(); j++)
 		{
-			if (levels.get(i).get(j).getName() == id) {
+			if (levels.get(i).get(j).getName().equals(id)) {
 				return levels.get(i).get(j);
 			}
 		}
