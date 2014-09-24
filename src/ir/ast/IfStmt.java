@@ -16,16 +16,16 @@ public class IfStmt extends Statement {
 	private Block ifBlock;
 	private Block elseBlock;
 	
-	public IfStmt(Expression cond, Block ifBl) {
-		this.condition = cond;
-		this.ifBlock = ifBl;
+	public IfStmt(Expression condi, Block ifBlo) {
+		this.condition = condi;
+		this.ifBlock = ifBlo;
 		this.elseBlock = null;
 	}
 	
-	public IfStmt(Expression cond, Block ifBl, Block elseBl) {
-		this.condition = cond;
-		this.ifBlock = ifBl;
-		this.elseBlock = elseBl;
+	public IfStmt(Expression condi, Block ifBlo, Block elseBlo) {
+		this.condition = condi;
+		this.ifBlock = ifBlo;
+		this.elseBlock = elseBlo;
 	}
 
 	public Expression getCondition() {
