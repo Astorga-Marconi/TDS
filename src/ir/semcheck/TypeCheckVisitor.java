@@ -92,7 +92,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		if (typeWhileStmtCondition == Type.TBOOLEAN) {
 			return Type.TBOOLEAN;
 		}else {
-			// ERROR: 
+			 addError(stmt,"La condicion de la sentencia While deberia ser de tipo TBOOLEAN"); 
 		}
 		return null;
 	}
