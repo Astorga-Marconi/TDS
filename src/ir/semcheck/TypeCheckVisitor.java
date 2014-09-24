@@ -45,11 +45,11 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(IfStmt stmt) {
-		Type typeIfStmt = stmt.getCondition().accept(this);
-		if (typeIfStmt != Type.TBOOLEAN) {
-			addError(stmt, "Error de tipos, la condicion del while no es booleana.");
+		Type typeIfConditionStmt = stmt.getCondition().accept(this);
+		if (typeIfConditionStmt != Type.TBOOLEAN) {
+			addError(stmt,"El tipo de la expresion deberia ser de booleana");
 		}
-		return null;
+		return null;	
 	}
 
 	@Override
