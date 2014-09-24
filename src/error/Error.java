@@ -1,4 +1,7 @@
 /**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
  * File Name: Error.java
  * Project: Compilador
  * Authors: Astorga Dario - Marconi Pablo

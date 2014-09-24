@@ -69,7 +69,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	Type typeForStmtCondition = stmt.getCondition().accept(this);
     	Type block = stmt.getForBlock().accept(this);
     	if ((typeForStmtexpr1 != Type.TINT) || (typeForStmtCondition != Type.TINT)) {
-    		//ERROR: Las expresiones del For debe ser de tipo TINT me parece
+    		addError(stmt,"Las expresiones del For deberian ser de tipo TINT");
     	}
   	return null;
   	}
@@ -150,7 +150,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	public Type visit(NegativeExpr expr) {
 		Type typenegativeExpr = expr.getExpression().accept(this);
     	if (typenegativeExpr != Type.TBOOLEAN){
-    		// ERROR: La expresion que le sigue al "-" no deberia ser del tipo TBOOLEAN
+    		 addError(expr,"La expresion despues del - no deberia ser de tipo TBOOLEAN");
     	}
     	return typenegativeExpr;
 	}
