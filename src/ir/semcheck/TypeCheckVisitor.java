@@ -150,6 +150,12 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	return typenegativeExpr;
 	}
 
+  	public Type visit (ParentExpr expr){
+    	Type typeParentExpr = expr.getExpression().accept(this);
+    	expr.setType(typeParentExpr);
+    	return type;
+  	}
+
 	//			visit literals
 	@Override
 	public Type visit(IntLiteral lit) {
