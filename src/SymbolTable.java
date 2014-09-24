@@ -73,7 +73,6 @@ public class SymbolTable{
 	public Descriptor search(String id){
 		for (int i = amountLevels-1; i >= 0; i--)
 		{
-			System.out.println("Level " + (i + 1) + ": ");
 			for (int j = 0; j < levels.get(i).size(); j++)
 			{
 				if (levels.get(i).get(j).getName().equals(id)) {

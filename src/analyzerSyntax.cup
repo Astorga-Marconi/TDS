@@ -36,7 +36,7 @@ terminal String ID;
 terminal BinOpType PLUS, MINUS, MULT, DIV, MOD, LT, GT, LTEQ, GTEQ, EQEQ, NOTEQ, ANDAND, NOT, OROR;
 terminal AssignOpType PLUSEQ, MINUSEQ, EQ;
 terminal Type TINT, TFLOAT, TBOOLEAN;
-terminal IntLiteral INT_LITERAL;
+terminal String INT_LITERAL;
 terminal FloatLiteral FLOAT_LITERAL;
 terminal BoolLiteral BOOL_LITERAL;
 terminal String STRING_LITERAL;
@@ -134,10 +134,7 @@ id_field_decl ::=
 				// Ya existe un descriptor declarado con ese nombre.
 			}
 		:}
-		LBRACK INT_LITERAL:il RBRACK
-		{:	if (il.getValue() == 0) {
-				//	ERROR: El tamaño de un arreglo no puede ser cero.
-			}; :}
+		LBRACK INT_LITERAL RBRACK
 	;
 
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
@@ -164,7 +161,7 @@ method_decl ::=
 				System.out.println("El metodo main no puede tener parametros.");
 			}; :}
 		RPAREN block:b
-		{:	table.closeBlock(); :}
+		//{:	table.closeBlock(); :}
 		{:	typeVisitor.visit(b);	:}
 	|	TVOID:t1 ID:id1
 		{:	if (id1.toString().equals("main")) {
@@ -187,7 +184,7 @@ method_decl ::=
 				System.out.println("El metodo main no puede tener parametros.");
 			}; :}
 		RPAREN block:b
-		{:	table.closeBlock(); :}
+		//{:	table.closeBlock(); :}
 		{:	typeVisitor.visit(b);	:}
 	;
 
@@ -217,26 +214,31 @@ type_id_method_decl ::=
 		{:	table.insertSymbol(currentType, id1);
 			RESULT = new VarDescriptor(currentType, id1); :};
 
-block ::= {:table.insertNewBlock();:} _block:b1 {:table.closeBlock();:} {: RESULT = b1; :};
+block ::= {:table.insertNewBlock();:} _block:b1 {:table.closeBlock(); RESULT = b1; :};
 
 _block ::= 
 		LBRACE  set_field_decl set_statement:ss RBRACE
-		{: RESULT = new Block(table.getCurrentLevel(), ss); :}		// Usamos set_field_declaration??
+		{:	/*for (Statement stt : ss) {
+				System.out.println("_BLOCK: UN STATEMENT");
+			}*/
+			//System.out.println("BLOCK: " + ss.size() + " STATEMENT");
+			RESULT = new Block(table.getCurrentLevel(), ss); :}		// Usamos set_field_declaration??
 	|	LBRACE set_statement:ss RBRACE
 		{: RESULT = new Block(table.getCurrentLevel(), ss); :} 
 	|	LBRACE set_field_decl RBRACE
-		{: RESULT = new Block(table.getCurrentLevel(), null); :} 
+		{:	LinkedList<Statement> ss = new LinkedList<Statement>();
+			RESULT = new Block(table.getCurrentLevel(), ss); :} 
 	;
 
 type ::=
-		TBOOLEAN:t {:currentType = t;:}
-	|	TFLOAT:t {:currentType = t;:}
-	|	TINT:t {:currentType = t;:}
+		TBOOLEAN:t {:currentType = Type.TBOOLEAN;:}
+	|	TFLOAT:t {:currentType = Type.TFLOAT;:}
+	|	TINT:t {:currentType = Type.TINT;:}
 	;
 
 statement ::=
 		location:l1 assign_op:ap1 expr:e1 SEMICOLON
-		{: RESULT = new AssignStmt(l1, ap1, e1); :}
+		{:	RESULT = new AssignStmt(l1, ap1, e1); :}
 	|	method_call_stmt:mc SEMICOLON
 		{: RESULT = mc; :}
 	|	IF LPAREN expr:e1 RPAREN block:b1 zero_or_one_else_block:b2
@@ -275,6 +277,7 @@ set_statement ::=
 		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
 			set_st.add(s);
 			set_st.addAll(ss);
+			//System.out.println("SET_STATEMENT: " + set_st.size() + " STATEMENT");
 			RESULT = set_st; :} 
 	|	statement:s
 		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
@@ -290,12 +293,12 @@ zero_or_one_expr ::=
 	;
 
 assign_op ::=
-		EQ:op1
-		{: RESULT = op1; :}
-	|	PLUSEQ:op2
-		{: RESULT = op2; :}
-	|	MINUSEQ:op3
-		{: RESULT = op3; :}
+		EQ
+		{: RESULT = AssignOpType.EQ; :}
+	|	PLUSEQ
+		{: RESULT = AssignOpType.PLUSEQ; :}
+	|	MINUSEQ
+		{: RESULT = AssignOpType.MINUSEQ; :}
 	;
 
 method_call_stmt ::= 
@@ -341,7 +344,10 @@ method_call_expr ::=
 location ::= 
 		ID:id1
 		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
-				RESULT = new VarLocation(id1);	// FALTA! HAY Q CHEQUEAR  QUE DEBE SER VARIABLE!
+				VarLocation loc = new VarLocation(id1);	// FALTA! HAY Q CHEQUEAR  QUE DEBE SER VARIABLE!
+				loc.setType(table.search(id1).getType());
+				//System.out.println( "CHECKEO EL TIPO EN LOCATION: " + table.search(id1).getType().toString() );
+				RESULT = loc;
 			} else {
 				// No exite un location declarado con ese Id.
 				RESULT = null;
@@ -452,11 +458,11 @@ cond_op ::=
 	;
 	
 literal ::=
-		INT_LITERAL:op1
-		{: RESULT = op1; :}
-	|	FLOAT_LITERAL:op2 
-		{: RESULT = op2; :}
-	|	BOOL_LITERAL:op3
-		{: RESULT = op3; :}
+		INT_LITERAL:l
+		{:	RESULT = new IntLiteral(l);	:}
+	|	FLOAT_LITERAL:l
+		{:	RESULT = l;	:}
+	|	BOOL_LITERAL:l
+		{:	RESULT = l;	:}
 	;
 

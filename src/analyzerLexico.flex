@@ -105,7 +105,7 @@ FloatLiteral = [0-9]*"."[0-9]*
 
   "externinvk"                  {System.out.println(yytext());return new Symbol(sym.EXTERNINVK,yyline+1,yycolumn+1,yytext());}
 
-  {DecIntegerLiteral}           { System.out.println(yytext());return symbol(sym.INT_LITERAL); }
+  {DecIntegerLiteral}           { System.out.println(yytext());return symbol(sym.INT_LITERAL, yytext()); }
   
   {FloatLiteral}                { System.out.println(yytext());return symbol(sym.FLOAT_LITERAL); }
  

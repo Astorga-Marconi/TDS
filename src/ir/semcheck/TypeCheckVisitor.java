@@ -28,11 +28,12 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	//			visit statements
 	@Override
 	public Type visit(AssignStmt stmt) {
-		Type typeLocation = stmt.getLocation().getType();
+		Type typeLocation = stmt.getLocation().accept(this);
 		Type typeExpr = stmt.getExpression().accept(this);
 
+		//System.out.println("esta aca");
 		if (typeLocation != typeExpr) {
-			// ERROR: TYPE
+			System.out.println("error en AssignStmt");
 		}else { 
 			if (typeLocation == Type.TBOOLEAN){
 				// ERROR: No es permitida la asignacio entre booleanos      
@@ -104,6 +105,15 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(Block stmt) {
+		if (stmt != null) {
+			System.out.println(stmt.toString());
+		}else {
+			System.out.println("stmt es null");
+		}
+		for (Statement s: stmt.getStatements()) {
+			//System.out.println("hola");
+			s.accept(this);
+		}
 		return null;
 	}
 	
@@ -174,7 +184,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	//			visit locations	
 	@Override
 	public Type visit(VarLocation loc) {
-		return null;		
+		return loc.getType();		
 	}
 
 	@Override
