@@ -35,6 +35,7 @@ public interface ASTVisitor<T> {
 	T visit(ExternInvkArgStringLit expr);
 	T visit(NegativeExpr expr);
 	T visit(NotExp expr);
+	T visit(ParentExpr expr);
 	
 // visit literals	
 	T visit(IntLiteral lit);
