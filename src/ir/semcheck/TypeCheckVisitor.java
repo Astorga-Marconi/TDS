@@ -153,7 +153,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
   	public Type visit (ParentExpr expr){
     	Type typeParentExpr = expr.getExpression().accept(this);
     	expr.setType(typeParentExpr);
-    	return type;
+    	return typeParentExpr;
   	}
 
 	//			visit literals
