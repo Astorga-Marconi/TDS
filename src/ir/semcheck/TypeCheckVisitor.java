@@ -156,6 +156,22 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	return typeParentExpr;
   	}
 
+  	public Type visit(ArithExpr expr) {
+  		return null;
+  	}
+
+  	public Type visit(RelExpr expr) {
+  		return null;
+  	}
+
+  	public Type visit(CondExpr expr) {
+  		return null;
+  	}
+
+  	public Type visit(EqExpr expr) {
+  		return null;
+  	}
+
 	//			visit literals
 	@Override
 	public Type visit(IntLiteral lit) {
