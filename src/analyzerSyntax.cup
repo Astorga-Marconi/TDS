@@ -59,7 +59,6 @@ non terminal	Expression expr, zero_or_one_expr, method_call_expr, externinvk_arg
 non terminal 	VarLocation location;
 non terminal 	VarDescriptor type_id_method_decl;
 non terminal    IfStmt if_stmt; 
-
 non terminal    BinOpExpr bin_op;
 non terminal    EqExpr eq_op;
 non terminal    RelExpr rel_op;
