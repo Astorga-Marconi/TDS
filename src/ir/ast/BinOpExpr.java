@@ -15,7 +15,6 @@ public abstract class BinOpExpr extends Expression {
 	protected Expression rOperand; //right expression
 
 	public BinOpExpr(){
-	
 	}
 	
 	public BinOpExpr(Expression l, Expression r){

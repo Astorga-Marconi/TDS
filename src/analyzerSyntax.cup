@@ -392,6 +392,7 @@ expr ::=
 	|	literal:l1
 		{: RESULT = l1; :}
 	|	expr:e1 bin_op:b expr:e2 
+		//{: RESULT = new BinOpExpr(e1,e2); :}
 	|	MINUS:m1 expr:e1
 		{: RESULT = new NegativeExpr(m1, e1); :}
 	|	NOT:n1 expr:e1
@@ -420,51 +421,51 @@ list_externinvk_arg ::=
 	;
 
 bin_op ::=
-		arith_op:ao1
-		{: RESULT = ao1; :}
-	|	rel_op:ro1
-		{: RESULT = ro1; :}
-	|	eq_op:eo1 
-		{: RESULT = eo1; :}
-	|	cond_op:co1
-		{: RESULT = co1; :}
+		arith_op:ao
+		{: RESULT = ao; :}
+	|	rel_op:ro
+		{: RESULT = ro; :}
+	|	eq_op:eo 
+		{: RESULT = eo; :}
+	|	cond_op:co
+		{: RESULT = co; :}
 	;
 
 arith_op ::=
-		PLUS:p
+		PLUS:plus
 		{:ArithExpr a=new ArithExpr(BinOpType.PLUS);RESULT=a;:} 
-	|	MINUS:m
+	|	MINUS:minus
 		{:ArithExpr a=new ArithExpr(BinOpType.MINUS);RESULT=a;:} 
-	|	MULT:m
+	|	MULT:mult
 		{:ArithExpr a=new ArithExpr(BinOpType.MULT);RESULT=a;:} 
-	|	DIV:d
+	|	DIV:did
 		{:ArithExpr a=new ArithExpr(BinOpType.DIV);RESULT=a;:} 
-	|	MOD:m
+	|	MOD:mod
 		{:ArithExpr a=new ArithExpr(BinOpType.MOD);RESULT=a;:}
 	;
 
 rel_op ::=
-		LT:l
+		LT:lt
 		{:RelExpr rel=new RelExpr(BinOpType.LT);RESULT=rel;:} 
-	|	GT:g
+	|	GT:gt
 		{:RelExpr rel=new RelExpr(BinOpType.GT);RESULT=rel;:}
-	|	LTEQ:l
+	|	LTEQ:lteq
 		{:RelExpr rel=new RelExpr(BinOpType.LTEQ);RESULT=rel;:}
-	|	GTEQ:g
+	|	GTEQ:gteq
 		{:RelExpr rel=new RelExpr(BinOpType.GTEQ);RESULT=rel;:} 
 	;
 
 eq_op ::=
-		EQEQ:e
+		EQEQ:eqeq
 		{:EqExpr eq=new EqExpr(BinOpType.EQEQ);RESULT = eq;:} 
-	|	NOTEQ:n
+	|	NOTEQ:noreq
 		{:EqExpr eq=new EqExpr(BinOpType.NOTEQ);RESULT = eq;:} 
 	;
 
 cond_op ::=
-		ANDAND:a
+		ANDAND:andand
 		{:CondExpr c=new CondExpr(BinOpType.ANDAND);RESULT=c;:}
-	|	OROR:o
+	|	OROR:oror
 		{:CondExpr c=new CondExpr(BinOpType.OROR);RESULT=c;:}
 	;
 	
