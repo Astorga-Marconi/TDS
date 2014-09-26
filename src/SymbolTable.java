@@ -64,6 +64,15 @@ public class SymbolTable{
 		}
 	}
 
+	public void insertNewMethod(Descriptor descriptor){
+		if (search(descriptor.getName()) == null) {
+			levels.get(amountLevels-1).add(descriptor);
+		} else {
+			System.out.println("There is already a Method with the same ID");
+		}
+	}
+
+
 	
 	/**
 	 * Search a descriptor in the levels.
