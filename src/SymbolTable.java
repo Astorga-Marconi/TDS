@@ -64,7 +64,10 @@ public class SymbolTable{
 		}
 	}
 
-	public void insertNewMethod(Descriptor descriptor){
+	public void insertNewMethod(FunctionDescriptor descriptor){
+		if (descriptor.getName().equals("main") && descriptor.getParameters().size() != 0) {
+			System.out.println("El metodo Main no puede contener parametros.");
+		}
 		if (search(descriptor.getName()) == null) {
 			levels.get(amountLevels-1).add(descriptor);
 		} else {

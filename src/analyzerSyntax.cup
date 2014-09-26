@@ -18,8 +18,15 @@ import error.Error;
 action code {:
 	SymbolTable table = new SymbolTable();
 	Type currentType;
-	Boolean mainDeclared = false;
 	TypeCheckVisitor typeVisitor = new TypeCheckVisitor();
+
+	private void endProgram() {
+		for (Error e: typeVisitor.getErrors()) {	// Imprimo por pantalla los errores del checkeo de tipos.
+				System.out.println(e.toString());
+		}
+		
+		System.out.println("Test finalizado");
+	}
 :}
 
 /* Terminals (tokens obtained by the lexical analyzer) */
@@ -76,22 +83,8 @@ precedence left  MULT, DIV, MOD;
 start with program;
 
 program ::= 
-		CLASS ID LBRACE {: table.insertNewBlock(); :} set_decl RBRACE {: table.closeBlock(); :}
-		{:	if (table.search("main") == null) {
-				System.out.println("El metodo Main no ha sido declarado.");
-			};	:}
-		{:	for (Error e: typeVisitor.getErrors()) {	// Imprimo por pantalla los errores del checkeo de tipos.
-				System.out.println(e.toString());
-			};	:}
-		{:System.out.println("Test finalizado");:}
-	|	CLASS ID LBRACE {: table.insertNewBlock(); :} RBRACE {: table.closeBlock(); :}
-		{:	if (table.search("main") == null) {
-				System.out.println("El metodo Main no ha sido declarado.");
-			};	:}
-		{:	for (Error e: typeVisitor.getErrors()) {	// Imprimo por pantalla los errores del checkeo de tipos.
-				System.out.println(e.toString());
-			};	:}
-		{:System.out.println("Test finalizado");:}
+		CLASS ID LBRACE {: table.insertNewBlock(); :} set_decl RBRACE {: table.closeBlock(); endProgram(); :}
+	|	CLASS ID LBRACE {: table.insertNewBlock(); :} RBRACE {: table.closeBlock(); endProgram();:}
 	;
 
 set_decl ::= 
