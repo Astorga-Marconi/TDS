@@ -59,11 +59,11 @@ non terminal	Expression expr, zero_or_one_expr, method_call_expr, externinvk_arg
 non terminal 	VarLocation location;
 non terminal 	VarDescriptor type_id_method_decl;
 non terminal    IfStmt if_stmt; 
-non terminal    BinOpExpr bin_op;
-non terminal    EqExpr eq_op;
-non terminal    RelExpr rel_op;
-non terminal    ArithExpr arith_op;
-non terminal    CondExpr cond_op;
+//non terminal    BinOpExpr bin_op;
+//non terminal    EqExpr eq_op;
+//non terminal    RelExpr rel_op;
+non terminal  BinOpType arith_op, bin_op, cond_op, eq_op, rel_op;
+//non terminal    CondExpr cond_op;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -392,7 +392,7 @@ expr ::=
 	|	literal:l1
 		{: RESULT = l1; :}
 	|	expr:e1 bin_op:b expr:e2 
-		//{: RESULT = new BinOpExpr(e1,e2); :}
+		
 	|	MINUS:m1 expr:e1
 		{: RESULT = new NegativeExpr(m1, e1); :}
 	|	NOT:n1 expr:e1
@@ -432,41 +432,41 @@ bin_op ::=
 	;
 
 arith_op ::=
-		PLUS:plus
-		{:ArithExpr a=new ArithExpr(BinOpType.PLUS);RESULT=a;:} 
-	|	MINUS:minus
-		{:ArithExpr a=new ArithExpr(BinOpType.MINUS);RESULT=a;:} 
-	|	MULT:mult
-		{:ArithExpr a=new ArithExpr(BinOpType.MULT);RESULT=a;:} 
-	|	DIV:did
-		{:ArithExpr a=new ArithExpr(BinOpType.DIV);RESULT=a;:} 
-	|	MOD:mod
-		{:ArithExpr a=new ArithExpr(BinOpType.MOD);RESULT=a;:}
+		PLUS
+		{: RESULT = BinOpType.PLUS; :}
+	|	MINUS
+		{: RESULT = BinOpType.MINUS; :}
+	|	MULT
+		{: RESULT = BinOpType.MULT; :}
+	|	DIV
+		{: RESULT = BinOpType.DIV; :}
+	|	MOD
+		{: RESULT = BinOpType.MOD; :}
 	;
 
 rel_op ::=
-		LT:lt
-		{:RelExpr rel=new RelExpr(BinOpType.LT);RESULT=rel;:} 
-	|	GT:gt
-		{:RelExpr rel=new RelExpr(BinOpType.GT);RESULT=rel;:}
-	|	LTEQ:lteq
-		{:RelExpr rel=new RelExpr(BinOpType.LTEQ);RESULT=rel;:}
-	|	GTEQ:gteq
-		{:RelExpr rel=new RelExpr(BinOpType.GTEQ);RESULT=rel;:} 
+		LT
+		{: RESULT = BinOpType.LT; :}
+	|	GT
+		{: RESULT = BinOpType.GT; :}
+	|	LTEQ
+		{: RESULT = BinOpType.LTEQ; :}
+	|	GTEQ
+		{: RESULT = BinOpType.GTEQ; :}
 	;
 
 eq_op ::=
-		EQEQ:eqeq
-		{:EqExpr eq=new EqExpr(BinOpType.EQEQ);RESULT = eq;:} 
-	|	NOTEQ:noreq
-		{:EqExpr eq=new EqExpr(BinOpType.NOTEQ);RESULT = eq;:} 
+		EQEQ
+		{: RESULT = BinOpType.EQEQ; :}
+	|	NOTEQ
+		{: RESULT = BinOpType.NOTEQ; :}
 	;
 
 cond_op ::=
-		ANDAND:andand
-		{:CondExpr c=new CondExpr(BinOpType.ANDAND);RESULT=c;:}
-	|	OROR:oror
-		{:CondExpr c=new CondExpr(BinOpType.OROR);RESULT=c;:}
+		ANDAND
+		{: RESULT = BinOpType.ANDAND; :}
+	|	OROR
+		{: RESULT = BinOpType.OROR; :}
 	;
 	
 literal ::=
