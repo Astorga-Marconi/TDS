@@ -29,7 +29,7 @@ public interface ASTVisitor<T> {
 	T visit(ExternInvkStmt stmt);
 	
 // visit expressions
-	//T visit(BinOpExpr expr);
+	T visit(BinOpExpr expr);
 	T visit(MethodCallExpr expr);
 	T visit(ExternInvkArgExpr expr);
 	T visit(ExternInvkArgStringLit expr);
