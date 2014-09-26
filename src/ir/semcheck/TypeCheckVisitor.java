@@ -26,7 +26,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	}
 
 	//			visit statements
-	@Override
+	
 	public Type visit(AssignStmt stmt) {
 		Type typeLocation = stmt.getLocation().accept(this);
 		Type typeExpr = stmt.getExpression().accept(this);
@@ -36,14 +36,14 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(ReturnStmt stmt) {
 		Type typeReturnExpr = stmt.getExpression().accept(this);
 		// Podriamos ver de hacerlo en una clace parte 
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(IfStmt stmt) {
 		Type typeIfConditionStmt = stmt.getCondition().accept(this);
 		if (typeIfConditionStmt != Type.TBOOLEAN) {
@@ -52,7 +52,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		return null;	
 	}
 
-	@Override
+	
 	public Type visit(ForStmt stmt) {
 	  	Type typeForStmtExpr = stmt.getInitialValue().accept(this);
     	Type typeForStmtCondition = stmt.getCondition().accept(this);
@@ -63,17 +63,17 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
   		return null;
   	}
 
-	@Override
+	
 	public Type visit(BreakStmt stmt) {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(ContinueStmt stmt) {
 		return null;
 	} 
 
-	@Override
+	
 	public Type visit(WhileStmt stmt) {
 		Type typeWhileStmtCondition = stmt.getCondition().accept(this);
 		Type tBlock = stmt.getBlock().accept(this);
@@ -83,12 +83,12 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(LoopStmt stmt) {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(Block stmt) {
 		if (stmt != null) {
 			System.out.println(stmt.toString());
@@ -102,19 +102,19 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		return null;
 	}
 	
-	@Override
+	
 	public Type visit(MethodCallStmt stmt) {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(ExternInvkStmt stmt) {
 		return null;
 	}
 
 	//			visit Expressions
 
-	@Override
+	
 	public Type visit(BinOpExpr expr) {
 		Type typeExprL = expr.getLeftOperand().accept(this);
 		Type typeExprR = expr.getRightOperand().accept(this);
@@ -126,22 +126,22 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(MethodCallExpr expr) {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(ExternInvkArgExpr expr) {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(ExternInvkArgStringLit expr) {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(NegativeExpr expr) {
 		Type typenegativeExpr = expr.getExpression().accept(this);
     	if (typenegativeExpr != Type.TBOOLEAN){
@@ -150,56 +150,41 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	return typenegativeExpr;
 	}
 
+	
   	public Type visit (ParentExpr expr){
     	Type typeParentExpr = expr.getExpression().accept(this);
     	expr.setType(typeParentExpr);
     	return typeParentExpr;
   	}
 
-  	public Type visit(ArithExpr expr) {
-  		return null;
-  	}
-
-  	public Type visit(RelExpr expr) {
-  		return null;
-  	}
-
-  	public Type visit(CondExpr expr) {
-  		return null;
-  	}
-
-  	public Type visit(EqExpr expr) {
-  		return null;
-  	}
-
 	//			visit literals
-	@Override
+	
 	public Type visit(IntLiteral lit) {
 		return lit.getType();
 	}
 
-	@Override
+	
 	public Type visit(FloatLiteral lit) {
 		return lit.getType();
 	}
 
-	@Override
+	
 	public Type visit(BoolLiteral lit) {
 		return lit.getType();
 	}
 
 	//			visit locations	
-	@Override
+	
 	public Type visit(VarLocation loc) {
 		return loc.getType();		
 	}
 
-	@Override
+	
 	public Type visit(NotExp expr) {
 		return null;
 	}
 
-	@Override
+	
 	public Type visit(SemicolonStmt stmt) {
 		return null;
 	}
