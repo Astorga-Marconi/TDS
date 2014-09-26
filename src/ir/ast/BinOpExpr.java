@@ -7,6 +7,7 @@
  * Version: 0.1 
  */
 package ir.ast;
+
 import ir.ASTVisitor;
 
 public abstract class BinOpExpr extends Expression {
@@ -15,6 +16,7 @@ public abstract class BinOpExpr extends Expression {
 	protected Expression rOperand; //right expression
 
 	public BinOpExpr(){
+	
 	}
 	
 	public BinOpExpr(Expression l, Expression r){

@@ -37,8 +37,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	}
 	
 	public Type visit(ReturnStmt stmt) {
-		Type typeReturnExpr = stmt.getExpression().accept(this);
-		// Podriamos ver de hacerlo en una clace parte 
+		Type typeReturnExpr = stmt.getExpression().accept(this); 
 		return null;
 	}
 
@@ -141,9 +140,35 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	return typeParentExpr;
   	}
 
-  	public Type visit (ArithExpr expr){
-       	return null;
-  	}
+  	
+  public Type visit (ArithExpr expr)   {
+    Type leftOperand = expr.getLeftOperand().accept(this);
+    Type rightOperand = expr.getRightOperand().accept(this);
+    BinOpType operator = expr.getOperator();
+    if  (leftOperand == Type.TBOOLEAN || rightOperand == Type.TBOOLEAN){
+    	addError(expr,"Los operando de una expresion aritmetica no peden ser Bool");
+    } 
+    switch(operator){
+      case LT: case LTEQ: case GT: case GTEQ: case EQEQ: case NOTEQ:
+      case ANDAND: case OROR:
+
+      case DIV: case MOD:
+        if(!(leftOperand == rightOperand)){
+				    addError(expr,"Error de tipos en operacion aritmetica");  
+         }else {
+            expr.setType(leftOperand);
+            return leftOperand; 
+         }
+      case PLUS: case MINUS: case MULT:
+        if(!(leftOperand == rightOperand)){
+            addError(expr,"Error de tipos en operacion aritmetica");  
+         }else {
+            expr.setType(leftOperand);
+            return leftOperand; 
+         }
+    }
+    return null;
+  }
 
   	public Type visit (RelExpr expr){
        	return null;
