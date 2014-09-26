@@ -144,22 +144,12 @@ id_field_decl ::=
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
-		type:t1 ID:id1
-		{:	Descriptor m1 = new FunctionDescriptor(t1, id1);
-			table.insertNewMethod(m1);	:}
-		LPAREN zero_or_one_list_type_id_method_decl:params
-		{:	if (id1.toString().equals("main") && params.size() != 0){	// Si el metodo es main no debe tener parametros.
-				System.out.println("El metodo main no puede tener parametros.");
-			}; :}
+		type:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
+		{:	table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
 		RPAREN block:b
 		{:	typeVisitor.visit(b);	:}
-	|	TVOID:t1 ID:id1
-		{:	Descriptor m1 = new FunctionDescriptor(t1, id1);
-			table.insertNewMethod(m1);	:}
-		LPAREN zero_or_one_list_type_id_method_decl:params
-		{:	if (id1.toString().equals("main") && params.size() != 0){	// Si el metodo es main no debe tener parametros.
-				System.out.println("El metodo main no puede tener parametros.");
-			}; :}
+	|	TVOID:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
+		{:	table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
 		RPAREN block:b
 		{:	typeVisitor.visit(b);	:}
 	;
