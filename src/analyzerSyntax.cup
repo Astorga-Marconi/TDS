@@ -392,8 +392,6 @@ expr ::=
 	|	literal:l1
 		{: RESULT = l1; :}
 	|	expr:e1 bin_op:b expr:e2 
-		//{:b.setLeftOperand(e1); b.setRightOperand(e2); RESULT = b;:};
-
 	|	MINUS:m1 expr:e1
 		{: RESULT = new NegativeExpr(m1, e1); :}
 	|	NOT:n1 expr:e1
