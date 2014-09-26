@@ -26,7 +26,6 @@ action code {:
 terminal BREAK;
 terminal CLASS;
 terminal CONTINUE;
-//terminal IF,ELSE;
 terminal FOR;
 terminal WHILE;
 terminal RETURN;
@@ -54,13 +53,18 @@ non terminal    Type type;
 non terminal    Literal literal;
 non terminal    Block block, _block;
 non terminal 	AssignOpType assign_op;
-non terminal 	BinOpType bin_op, arith_op, rel_op, eq_op, cond_op;
 non terminal 	LinkedList set_statement, list_expr, list_externinvk_arg, list_type_id_method_decl, zero_or_one_list_type_id_method_decl;
 non terminal 	Statement statement, method_call_stmt; // zero_or_one_else_block,
 non terminal	Expression expr, zero_or_one_expr, method_call_expr, externinvk_arg;
 non terminal 	VarLocation location;
 non terminal 	VarDescriptor type_id_method_decl;
 non terminal    IfStmt if_stmt; 
+
+non terminal    BinOpExpr bin_op;
+non terminal    EqExpr eq_op;
+non terminal    RelExpr rel_op;
+non terminal    ArithExpr arith_op;
+non terminal    CondExpr cond_op;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -388,8 +392,9 @@ expr ::=
 		{: RESULT = m1; :}
 	|	literal:l1
 		{: RESULT = l1; :}
-	|	expr:e1 bin_op:bo1 expr:e2
-		{: RESULT = new BinOpExpr(e1, bo1, e2); :}
+	|	expr:e1 bin_op:b expr:e2 
+		//{:b.setLeftOperand(e1); b.setRightOperand(e2); RESULT = b;:};
+
 	|	MINUS:m1 expr:e1
 		{: RESULT = new NegativeExpr(m1, e1); :}
 	|	NOT:n1 expr:e1
@@ -422,48 +427,48 @@ bin_op ::=
 		{: RESULT = ao1; :}
 	|	rel_op:ro1
 		{: RESULT = ro1; :}
-	|	eq_op:eo1
+	|	eq_op:eo1 
 		{: RESULT = eo1; :}
 	|	cond_op:co1
 		{: RESULT = co1; :}
 	;
 
 arith_op ::=
-		PLUS:op1
-		{: RESULT = op1; :}
-	|	MINUS:op2
-		{: RESULT = op2; :}
-	|	MULT:op3
-		{: RESULT = op3; :}
-	|	DIV:op4
-		{: RESULT = op4; :}
-	|	MOD:op5
-		{: RESULT = op5; :}
+		PLUS:p
+		{:ArithExpr a=new ArithExpr(BinOpType.PLUS);RESULT=a;:} 
+	|	MINUS:m
+		{:ArithExpr a=new ArithExpr(BinOpType.MINUS);RESULT=a;:} 
+	|	MULT:m
+		{:ArithExpr a=new ArithExpr(BinOpType.MULT);RESULT=a;:} 
+	|	DIV:d
+		{:ArithExpr a=new ArithExpr(BinOpType.DIV);RESULT=a;:} 
+	|	MOD:m
+		{:ArithExpr a=new ArithExpr(BinOpType.MOD);RESULT=a;:}
 	;
 
 rel_op ::=
-		LT:op1
-		{: RESULT = op1; :}
-	|	GT:op2
-		{: RESULT = op2; :}
-	|	LTEQ:op3
-		{: RESULT = op3; :}
-	|	GTEQ:op4
-		{: RESULT = op4; :}
+		LT:l
+		{:RelExpr rel=new RelExpr(BinOpType.LT);RESULT=rel;:} 
+	|	GT:g
+		{:RelExpr rel=new RelExpr(BinOpType.GT);RESULT=rel;:}
+	|	LTEQ:l
+		{:RelExpr rel=new RelExpr(BinOpType.LTEQ);RESULT=rel;:}
+	|	GTEQ:g
+		{:RelExpr rel=new RelExpr(BinOpType.GTEQ);RESULT=rel;:} 
 	;
 
 eq_op ::=
-		EQEQ:op1
-		{: RESULT = op1; :}
-	|	NOTEQ:op2
-		{: RESULT = op2; :}
+		EQEQ:e
+		{:EqExpr eq=new EqExpr(BinOpType.EQEQ);RESULT = eq;:} 
+	|	NOTEQ:n
+		{:EqExpr eq=new EqExpr(BinOpType.NOTEQ);RESULT = eq;:} 
 	;
 
 cond_op ::=
-		ANDAND:op1
-		{: RESULT = op1; :}
-	|	OROR:op2
-		{: RESULT = op2; :}
+		ANDAND:a
+		{:CondExpr c=new CondExpr(BinOpType.ANDAND);RESULT=c;:}
+	|	OROR:o
+		{:CondExpr c=new CondExpr(BinOpType.OROR);RESULT=c;:}
 	;
 	
 literal ::=
