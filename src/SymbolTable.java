@@ -130,11 +130,12 @@ public class SymbolTable{
 	}
 
 	public boolean checkMethodCall(String idMethod, LinkedList<Expression> params) {
-		FunctionDescriptor d = (FunctionDescriptor) (search(idMethod));
+		Descriptor d = (search(idMethod));
 		if (d instanceof FunctionDescriptor) {
-			if (d.getParameters().size() == params.size()) {
+			FunctionDescriptor f = (FunctionDescriptor) d;
+			if (f.getParameters().size() == params.size()) {
 				for (int i = 0; i < params.size(); i++) {
-					if (params.get(i).getType() != d.getParameters().get(i).getType()) {
+					if (params.get(i).getType() != f.getParameters().get(i).getType()) {
 						System.out.println("La llamada al metodo tiene parametros de tipo equivocado.");
 						return false;
 					}
