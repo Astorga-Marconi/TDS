@@ -349,7 +349,7 @@ bin_op ::=
 	|	eq_op:eo 
 		{: RESULT = eo; :}
 	|	cond_op:co
-		//{: RESULT = co; :}
+		{: RESULT = co; :}
 	;
 
 arith_op ::=
@@ -378,16 +378,16 @@ rel_op ::=
 
 eq_op ::=
 		EQEQ
-		
+		{:EqExpr eqeq =new EqExpr(BinOpType.EQEQ);RESULT=eqeq;:} 
 	|	NOTEQ
-		
+		{:EqExpr noteq =new EqExpr(BinOpType.NOTEQ);RESULT=noteq;:} 
 	;
 
 cond_op ::=
-		ANDAND
-		//{: RESULT = BinOpType.ANDAND; :}
+		ANDAND 
+		{:CondExpr andand =new CondExpr(BinOpType.ANDAND);RESULT=andand;:} 
 	|	OROR
-		//{: RESULT = BinOpType.OROR; :}
+		{:CondExpr oror =new CondExpr(BinOpType.OROR);RESULT=oror;:} 
 	;
 	
 literal ::=

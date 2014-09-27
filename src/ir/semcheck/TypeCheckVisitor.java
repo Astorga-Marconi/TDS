@@ -170,7 +170,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	return null;
  	 }
 
-  	public Type visit (RelExpr expr)   {
+  	public Type visit (RelExpr expr) {
     	Type leftOperand = expr.getLeftOperand().accept(this);
     	Type rightOperand = expr.getRightOperand().accept(this);
     	BinOpType oper = expr.getOperator();
@@ -185,8 +185,21 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	}
   	}
 
-  	public Type visit (CondExpr expr){
-       	return null;
+  	public Type visit (CondExpr expr)   {
+    	Type leftOperand = expr.getLeftOperand().accept(this);
+    	Type rightOperand = expr.getRightOperand().accept(this);
+    	BinOpType oper = expr.getOperator();
+    	if ( (leftOperand != Type.TBOOLEAN)){
+ 			addError(expr,"Operandos de una expresion booleana deben ser del tipo Booleanos.!");
+    	} 
+    	if ( !(leftOperand == rightOperand)){
+	    	addError(expr,"Operandos de la expresion condicional deberian ser del mismo tipo.!");  
+    	}
+    	if (!(oper == BinOpType.ANDAND || oper == BinOpType.OROR)){
+	    	addError(expr,"Error.!");  
+    	}
+    	expr.setType(Type.TBOOLEAN);    
+    	return Type.TBOOLEAN;
   	}
 
   	public Type visit (EqExpr expr){
