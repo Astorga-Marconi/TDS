@@ -54,7 +54,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	Type typeForStmtCondition = stmt.getCondition().accept(this);
     	Type tBlock = stmt.getForBlock().accept(this);
     	if ((typeForStmtExpr != Type.TINT) && (typeForStmtCondition != Type.TINT)) {
-    		addError(stmt,"Las expresiones del For deberian ser de tipo TINT");
+    		addError(stmt,"Las expresiones del For deberian ser de tipo INT");
     	}
   		return null;
   	}
