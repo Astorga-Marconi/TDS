@@ -75,7 +75,25 @@ public class SymbolTable{
 		}
 	}
 
+	public void insertNewVar(VarDescriptor descriptor){
+		if (searchInCurrentLevel(descriptor.getName()) == null) {
+			levels.get(amountLevels-1).add(descriptor);
+		} else {
+			System.out.println("There is already a Variable with the same ID");
+		}
+	}
 
+	public void insertNewArrayVar(ArrayVarDescriptor descriptor){
+		if (searchInCurrentLevel(descriptor.getName()) == null) {
+			if (descriptor.getSize() > 0) {
+				levels.get(amountLevels-1).add(descriptor);
+			} else {
+				System.out.println("Es tamaño de el arreglo no es correcto.");
+			}
+		} else {
+			System.out.println("There is already a Variable with the same ID");
+		}
+	}
 	
 	/**
 	 * Search a descriptor in the levels.
