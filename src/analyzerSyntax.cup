@@ -178,9 +178,6 @@ statement ::=
 		{: RESULT = mc; :}
 	|	if_stmt:a 
 		{: RESULT = a; :}	
-	//|	IF LPAREN expr:e1 RPAREN block:b1 zero_or_one_else_block:b2     //{:System.out.print("MENEM ACA ESTOY");:}
-	//	{: RESULT = new IfStmt(e1, (Block)b1, (Block)b2); :}
-
 	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 block:b1 
 		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 				RESULT = new ForStmt(id1, e1, e2, (Block)b1);	// FALTA OBSERVAR SI DICHO DESCRIPTOR ES UNA VARIABLE Y NO OTRA COSA!!
@@ -206,13 +203,6 @@ statement ::=
 if_stmt ::= 
 		IF:w LPAREN expr:e RPAREN block:b1 ELSE block:b2 {:RESULT = new IfStmt(e, (Block)b1, (Block)b2);:}
     |   IF:w LPAREN expr:e RPAREN block:b {:RESULT = new IfStmt(e, (Block)b);:} ;
-
-//zero_or_one_else_block ::= 
-	//	ELSE block:b1
-	//	{: RESULT = b1; :}
-	//|	/* LAMBDA */
-	//	{: RESULT = null; :}
-	//;
 	
 set_statement ::= 
 		statement:s set_statement:ss
@@ -313,7 +303,7 @@ expr ::=
 	|	literal:l1
 		{: RESULT = l1; :}
 	|	expr:e1 bin_op:b expr:e2 
-		{:b.setLeftOperand(e1); b.setRightOperand(e2); RESULT = b;:}
+		{: b.setLeftOperand(e1); b.setRightOperand(e2); RESULT = b; :}
 	|	MINUS:m1 expr:e1
 		{: RESULT = new NegativeExpr(m1, e1); :}
 	|	NOT:n1 expr:e1
