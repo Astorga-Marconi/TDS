@@ -360,7 +360,7 @@ arith_op ::=
 	|	MULT
 		{: ArithExpr mult = new ArithExpr(BinOpType.MULT);RESULT=mult; :} 
 	|	DIV
-		{: ArithExpr div = ew ArithExpr(BinOpType.DIV);RESULT=div; :} 
+		{: ArithExpr div = new ArithExpr(BinOpType.DIV);RESULT=div; :} 
 	|	MOD
 		{: ArithExpr mod = new ArithExpr(BinOpType.MOD);RESULT=mod; :} 
 	;
