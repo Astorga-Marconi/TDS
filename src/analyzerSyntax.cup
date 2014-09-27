@@ -245,19 +245,9 @@ assign_op ::=
 
 method_call_stmt ::= 
 		ID:id1 LPAREN  RPAREN
-		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
-				RESULT = new MethodCallStmt(id1);	// FALTA FIJARSE SI EL DESCRIPTOR ENCONTRADO ES UN METODO!!!!
-			} else {
-				// No exite un metodo declarado con ese Id.
-				RESULT = null;
-			}; :}
+		{:	RESULT = (table.checkMethodCall(id1, (new LinkedList<Expression>()) )) ? (new MethodCallStmt(id1)) : null;	:}
 	|	ID:id1 LPAREN list_expr:le RPAREN
-		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
-				RESULT = new MethodCallStmt(id1, le);	// FALTA FIJARSE SI EL DESCRIPTOR ENCONTRADO ES UN METODO!!!!
-			} else {
-				// No exite un metodo declarado con ese Id.
-				RESULT = null;
-			}; :}
+		{:	RESULT = (table.checkMethodCall(id1, le)) ? (new MethodCallStmt(id1)) : null;	:}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t RPAREN
 		{: RESULT = new ExternInvkStmt(id1, t); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t COMMA list_externinvk_arg:l RPAREN

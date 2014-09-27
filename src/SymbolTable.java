@@ -128,6 +128,27 @@ public class SymbolTable{
 		}
 		return null;
 	}
+
+	public boolean checkMethodCall(String idMethod, LinkedList<Expression> params) {
+		FunctionDescriptor d = (FunctionDescriptor) (search(idMethod));
+		if (d instanceof FunctionDescriptor) {
+			if (d.getParameters().size() == params.size()) {
+				for (int i = 0; i < params.size(); i++) {
+					if (params.get(i).getType() != d.getParameters().get(i).getType()) {
+						System.out.println("La llamada al metodo tiene parametros de tipo equivocado.");
+						return false;
+					}
+				}
+				return true;
+			} else {
+				System.out.println("La longitud de parametros no es la misma");
+				return false;
+			}
+		} else {
+			System.out.println("El descriptor llamado como metodo no es un metodo.");
+		}
+		return false;
+	}
 	
 	public void showTable(){
 		for (int i = 0; i < levels.size(); i++)
