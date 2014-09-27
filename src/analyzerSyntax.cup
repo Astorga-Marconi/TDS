@@ -385,9 +385,9 @@ eq_op ::=
 
 cond_op ::=
 		ANDAND 
-		{:CondExpr andand = new CondExpr(BinOpType.ANDAND);RESULT=andand;:} 
+		{: CondExpr andand = new CondExpr(BinOpType.ANDAND);RESULT=andand; :} 
 	|	OROR
-		{:CondExpr oror = new CondExpr(BinOpType.OROR);RESULT=oror;:} 
+		{: CondExpr oror = new CondExpr(BinOpType.OROR);RESULT=oror; :} 
 	;
 	
 literal ::=
