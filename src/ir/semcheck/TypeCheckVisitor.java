@@ -139,20 +139,17 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	expr.setType(typeParentExpr);
     	return typeParentExpr;
   	}
-
-  	
+	
   	public Type visit (ArithExpr expr)   {
     	Type leftOperand = expr.getLeftOperand().accept(this);
     	Type rightOperand = expr.getRightOperand().accept(this);
-    	BinOpType operator = expr.getOperator();
+    	BinOpType oper = expr.getOperator();
     	if  (leftOperand == Type.TBOOLEAN || rightOperand == Type.TBOOLEAN){
     		addError(expr,"Los operando de una expresion aritmetica no deberian ser Booleanos.!");
     	} 
-    	switch(operator){
+    	switch(oper){
       		case LT: case LTEQ: case GT: case GTEQ: case EQEQ: case NOTEQ:
-      		case ANDAND: case OROR:
-
-      		case DIV: case MOD:
+      		case ANDAND: case OROR: case DIV: case MOD:
         	if(!(leftOperand == rightOperand)){
 				addError(expr,"Error de tipos");  
          	}else {
@@ -181,7 +178,8 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
       		case DIV: case MINUS: case MULT: case PLUS: case EQEQ: case NOTEQ:
       		case ANDAND: case OROR: case MOD:
 				addError(expr,"Error");  
-      		default: expr.setType(Type.TBOOLEAN); return Type.TBOOLEAN;
+      		default: expr.setType(Type.TBOOLEAN); 
+      		return Type.TBOOLEAN;
     	}
   	}
 
