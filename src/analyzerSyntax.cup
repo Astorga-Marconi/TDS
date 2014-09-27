@@ -68,7 +68,6 @@ non terminal 	VarDescriptor type_id_method_decl;
 non terminal    IfStmt if_stmt; 
 //non terminal  	BinOpType arith_op, cond_op, eq_op, rel_op;
 
-
 non terminal    BinOpExpr bin_op;
 non terminal    EqExpr eq_op;
 non terminal    RelExpr rel_op;
@@ -345,9 +344,9 @@ bin_op ::=
 		arith_op:ao
 		{: RESULT = ao; :}
 	|	rel_op:ro
-		//{: RESULT = ro; :}
+		{: RESULT = ro; :}
 	|	eq_op:eo 
-		//{: RESULT = eo; :}
+		{: RESULT = eo; :}
 	|	cond_op:co
 		//{: RESULT = co; :}
 	;
@@ -367,13 +366,13 @@ arith_op ::=
 
 rel_op ::=
 		LT
-		//{: RESULT = BinOpType.LT; :}
+		{:RelExpr lt =new RelExpr(BinOpType.LT);RESULT=lt;:} 
 	|	GT
-		//{: RESULT = BinOpType.GT; :}
+		{:RelExpr gt =new RelExpr(BinOpType.GT);RESULT=gt;:}
 	|	LTEQ
-		//{: RESULT = BinOpType.LTEQ; :}
+		{:RelExpr lteq =new RelExpr(BinOpType.LTEQ);RESULT=lteq;:}
 	|	GTEQ
-		//{: RESULT = BinOpType.GTEQ; :}
+		{:RelExpr gteq =new RelExpr(BinOpType.GTEQ);RESULT=gteq;:}
 	;
 
 eq_op ::=

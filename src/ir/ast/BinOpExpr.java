@@ -11,17 +11,16 @@ package ir.ast;
 import ir.ASTVisitor;
 
 public abstract class BinOpExpr extends Expression {
-	protected BinOpType operator; //operator in the expr = expr operator expr
+	protected BinOpType operator; 
 	protected Expression lOperand; //left expression
 	protected Expression rOperand; //right expression
 
 	public BinOpExpr(){
-	
 	}
 	
-	public BinOpExpr(Expression l, Expression r){
-		lOperand = l;
-		rOperand = r;
+	public BinOpExpr(Expression lExpr, Expression rExp){
+		lOperand = lExpr;
+		rOperand = rExp;
 	}
 	
 	public BinOpType getOperator() {

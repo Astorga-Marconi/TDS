@@ -16,8 +16,8 @@ public class RelExpr extends BinOpExpr {
         type = Type.TBOOLEAN;
     }
 
-	public RelExpr(Expression l, BinOpType op, Expression r){
-	    super(l, r);
+	public RelExpr(Expression lExpr, BinOpType op, Expression rExp){
+	    super(lExpr, rExp);
         super.operator = op;
         type = Type.TBOOLEAN;
 	}
