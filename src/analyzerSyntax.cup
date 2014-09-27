@@ -353,41 +353,41 @@ bin_op ::=
 	;
 
 arith_op ::=
-		PLUS:plus
-		{:ArithExpr a =new ArithExpr(BinOpType.PLUS);RESULT=a;:} 
-	|	MINUS:minus
-		{:ArithExpr a =new ArithExpr(BinOpType.MINUS);RESULT=a;:} 
-	|	MULT:mult
-		{:ArithExpr a =new ArithExpr(BinOpType.MULT);RESULT=a;:} 
-	|	DIV:div
-		{:ArithExpr a =new ArithExpr(BinOpType.DIV);RESULT=a;:} 
-	|	MOD:mod
-		{:ArithExpr a =new ArithExpr(BinOpType.MOD);RESULT=a;:} 
+		PLUS
+		{: ArithExpr plus = new ArithExpr(BinOpType.PLUS);RESULT=plus; :} 
+	|	MINUS
+		{: ArithExpr minus = new ArithExpr(BinOpType.MINUS);RESULT=minus; :} 
+	|	MULT
+		{: ArithExpr mult = new ArithExpr(BinOpType.MULT);RESULT=mult; :} 
+	|	DIV
+		{: ArithExpr div = ew ArithExpr(BinOpType.DIV);RESULT=div; :} 
+	|	MOD
+		{: ArithExpr mod = new ArithExpr(BinOpType.MOD);RESULT=mod; :} 
 	;
 
 rel_op ::=
 		LT
-		{:RelExpr lt =new RelExpr(BinOpType.LT);RESULT=lt;:} 
+		{: RelExpr lt = new RelExpr(BinOpType.LT);RESULT=lt; :} 
 	|	GT
-		{:RelExpr gt =new RelExpr(BinOpType.GT);RESULT=gt;:}
+		{: RelExpr gt = new RelExpr(BinOpType.GT);RESULT=gt; :}
 	|	LTEQ
-		{:RelExpr lteq =new RelExpr(BinOpType.LTEQ);RESULT=lteq;:}
+		{: RelExpr lteq = new RelExpr(BinOpType.LTEQ);RESULT=lteq; :}
 	|	GTEQ
-		{:RelExpr gteq =new RelExpr(BinOpType.GTEQ);RESULT=gteq;:}
+		{: RelExpr gteq = new RelExpr(BinOpType.GTEQ);RESULT=gteq; :}
 	;
 
 eq_op ::=
 		EQEQ
-		{:EqExpr eqeq =new EqExpr(BinOpType.EQEQ);RESULT=eqeq;:} 
+		{: EqExpr eqeq = new EqExpr(BinOpType.EQEQ);RESULT=eqeq; :} 
 	|	NOTEQ
-		{:EqExpr noteq =new EqExpr(BinOpType.NOTEQ);RESULT=noteq;:} 
+		{: EqExpr noteq = new EqExpr(BinOpType.NOTEQ);RESULT=noteq; :} 
 	;
 
 cond_op ::=
 		ANDAND 
-		{:CondExpr andand =new CondExpr(BinOpType.ANDAND);RESULT=andand;:} 
+		{:CondExpr andand = new CondExpr(BinOpType.ANDAND);RESULT=andand;:} 
 	|	OROR
-		{:CondExpr oror =new CondExpr(BinOpType.OROR);RESULT=oror;:} 
+		{:CondExpr oror = new CondExpr(BinOpType.OROR);RESULT=oror;:} 
 	;
 	
 literal ::=

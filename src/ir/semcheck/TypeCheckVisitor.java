@@ -129,7 +129,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	public Type visit(NegativeExpr expr) {
 		Type typenegativeExpr = expr.getExpression().accept(this);
     	if (typenegativeExpr != Type.TBOOLEAN){
-    		 addError(expr,"La expresion despues del - no deberia ser de tipo TBOOLEAN");
+    		addError(expr,"La expresion despues del - no deberia ser de tipo TBOOLEAN");
     	}
     	return typenegativeExpr;
 	}
@@ -180,7 +180,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	switch(oper){
       		case DIV: case MINUS: case MULT: case PLUS: case EQEQ: case NOTEQ:
       		case ANDAND: case OROR: case MOD:
-				    addError(expr,"Error");  
+				addError(expr,"Error");  
       		default: expr.setType(Type.TBOOLEAN); return Type.TBOOLEAN;
     	}
   	}
@@ -202,8 +202,18 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
     	return Type.TBOOLEAN;
   	}
 
-  	public Type visit (EqExpr expr){
-       	return null;
+  	public Type visit (EqExpr expr)   {
+    	Type leftOperand = expr.getLeftOperand().accept(this);
+    	Type rightOperand = expr.getRightOperand().accept(this);
+    	BinOpType oper = expr.getOperator();
+    	if (!(oper == BinOpType.EQEQ || oper == BinOpType.NOTEQ)){
+ 		  addError(expr,"Error");
+    	}
+    	if (! (leftOperand == rightOperand)){
+	    	addError(expr,"Operandos de una expresion de Equivalencia deberian ser del mismo tipo");  
+    	} 
+    	expr.setType(Type.TBOOLEAN);
+    	return Type.TBOOLEAN;
   	}
   	
 	//			visit literals
