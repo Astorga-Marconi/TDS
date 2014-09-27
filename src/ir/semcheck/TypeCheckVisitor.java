@@ -141,37 +141,48 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
   	}
 
   	
-  public Type visit (ArithExpr expr)   {
-    Type leftOperand = expr.getLeftOperand().accept(this);
-    Type rightOperand = expr.getRightOperand().accept(this);
-    BinOpType operator = expr.getOperator();
-    if  (leftOperand == Type.TBOOLEAN || rightOperand == Type.TBOOLEAN){
-    	addError(expr,"Los operando de una expresion aritmetica no peden ser Bool");
-    } 
-    switch(operator){
-      case LT: case LTEQ: case GT: case GTEQ: case EQEQ: case NOTEQ:
-      case ANDAND: case OROR:
+  	public Type visit (ArithExpr expr)   {
+    	Type leftOperand = expr.getLeftOperand().accept(this);
+    	Type rightOperand = expr.getRightOperand().accept(this);
+    	BinOpType operator = expr.getOperator();
+    	if  (leftOperand == Type.TBOOLEAN || rightOperand == Type.TBOOLEAN){
+    		addError(expr,"Los operando de una expresion aritmetica no deberian ser Booleanos.!");
+    	} 
+    	switch(operator){
+      		case LT: case LTEQ: case GT: case GTEQ: case EQEQ: case NOTEQ:
+      		case ANDAND: case OROR:
 
-      case DIV: case MOD:
-        if(!(leftOperand == rightOperand)){
-				    addError(expr,"Error de tipos en operacion aritmetica");  
-         }else {
-            expr.setType(leftOperand);
-            return leftOperand; 
-         }
-      case PLUS: case MINUS: case MULT:
-        if(!(leftOperand == rightOperand)){
-            addError(expr,"Error de tipos en operacion aritmetica");  
-         }else {
-            expr.setType(leftOperand);
-            return leftOperand; 
-         }
-    }
-    return null;
-  }
+      		case DIV: case MOD:
+        	if(!(leftOperand == rightOperand)){
+				addError(expr,"Error de tipos");  
+         	}else {
+            	expr.setType(leftOperand);
+            	return leftOperand; 
+         	}
+      		case PLUS: case MINUS: case MULT:
+        	if(!(leftOperand == rightOperand)){
+            	addError(expr,"Error de tipos");  
+         	}else {
+            	expr.setType(leftOperand);
+            	return leftOperand; 
+         	}
+    	}
+    	return null;
+ 	 }
 
-  	public Type visit (RelExpr expr){
-       	return null;
+  	public Type visit (RelExpr expr)   {
+    	Type leftOperand = expr.getLeftOperand().accept(this);
+    	Type rightOperand = expr.getRightOperand().accept(this);
+    	BinOpType oper = expr.getOperator();
+    	if  (leftOperand == Type.TBOOLEAN || rightOperand == Type.TBOOLEAN){
+    		addError(expr,"Operandos de una expresion relacional no deberian ser de tipo Booleanos.!");
+    	} 
+    	switch(oper){
+      		case DIV: case MINUS: case MULT: case PLUS: case EQEQ: case NOTEQ:
+      		case ANDAND: case OROR: case MOD:
+				    addError(expr,"Error");  
+      		default: expr.setType(Type.TBOOLEAN); return Type.TBOOLEAN;
+    	}
   	}
 
   	public Type visit (CondExpr expr){

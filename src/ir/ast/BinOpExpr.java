@@ -7,7 +7,6 @@
  * Version: 0.1 
  */
 package ir.ast;
-
 import ir.ASTVisitor;
 
 public abstract class BinOpExpr extends Expression {

@@ -69,10 +69,11 @@ non terminal    IfStmt if_stmt;
 //non terminal  	BinOpType arith_op, cond_op, eq_op, rel_op;
 
 non terminal    BinOpExpr bin_op;
-non terminal    EqExpr eq_op;
-non terminal    RelExpr rel_op;
-non terminal    CondExpr cond_op;
 non terminal    ArithExpr arith_op;
+non terminal    RelExpr rel_op;
+non terminal    EqExpr eq_op;
+non terminal    CondExpr cond_op;
+
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -377,9 +378,9 @@ rel_op ::=
 
 eq_op ::=
 		EQEQ
-		//{: RESULT = BinOpType.EQEQ; :}
+		
 	|	NOTEQ
-		//{: RESULT = BinOpType.NOTEQ; :}
+		
 	;
 
 cond_op ::=

@@ -36,6 +36,7 @@ public interface ASTVisitor<T> {
 	T visit(NegativeExpr expr);
 	T visit(NotExp expr);
 	T visit(ParentExpr expr);
+	
 	T visit(ArithExpr expr);
 	T visit(RelExpr expr);
 	T visit(CondExpr expr);	
