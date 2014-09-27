@@ -41,13 +41,17 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		return null;
 	}
 
-	public Type visit(IfStmt stmt) {
-		Type typeIfConditionStmt = stmt.getCondition().accept(this);
-		if (typeIfConditionStmt != Type.TBOOLEAN) {
-			addError(stmt,"El tipo de la expresion deberia ser de booleana");
-		}
-		return null;	
-	}
+	public Type visit(IfStmt stmt)  {
+    	Type condition = stmt.getCondition().accept(this);
+    	if (condition != Type.TBOOLEAN) {
+    		addError(stmt,"La condicion de la sentencia If deberia ser de tipo Booleana.!");
+    	}
+    	Type blockIf = stmt.getIfBlock().accept(this);
+    	if (stmt.getElseBlock() != null) {
+    		Type blockElse = stmt.getElseBlock().accept(this);	
+    	}
+  		return null;
+  	}
 	
 	public Type visit(ForStmt stmt) {
 	  	Type typeForStmtExpr = stmt.getInitialValue().accept(this);
