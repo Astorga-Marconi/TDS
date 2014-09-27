@@ -19,7 +19,9 @@ action code {:
 	SymbolTable table = new SymbolTable();
 	Type currentType;
 	TypeCheckVisitor typeVisitor = new TypeCheckVisitor();
-
+	Integer currentInLoop = 0;	// Cada vez que abro un bloque de ciclo lo incremento y cuando el bloque
+								// cierra lo decremento. Entonces Si currentInLoop es 0 no se encuentra
+								// en un ciclo, sino lo contrario.
 	private void endProgram() {
 		for (Error e: typeVisitor.getErrors()) {	// Imprimo por pantalla los errores del checkeo de tipos.
 				System.out.println(e.toString());
@@ -176,7 +178,7 @@ statement ::=
 		{: RESULT = mc; :}
 	|	if_stmt:a 
 		{: RESULT = a; :}	
-	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 block:b1 
+	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 {:currentInLoop++;:} block:b1 {:currentInLoop--;:}
 		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
 				RESULT = new ForStmt(id1, e1, e2, (Block)b1);	// FALTA OBSERVAR SI DICHO DESCRIPTOR ES UNA VARIABLE Y NO OTRA COSA!!
 			} else {
@@ -184,14 +186,16 @@ statement ::=
 				RESULT = null;
 			}; :}
 		/*{: RESULT = new ForStmt(id1, e1, e2, (Block)b1); :}*/
-	|	WHILE expr:e block:b
+	|	WHILE expr:e {:currentInLoop++;:} block:b {:currentInLoop--;:}
 		{:RESULT = new WhileStmt(e, (Block)b); :}
 	|	RETURN zero_or_one_expr:e1 SEMICOLON
 		{: RESULT = new ReturnStmt(e1); :}
 	|	BREAK SEMICOLON
-		{: RESULT = new BreakStmt(); :}
+		{:	if (currentInLoop == 0) System.out.println("Error: Break statement must be in a Loop.");
+			else RESULT = new BreakStmt();	:}
 	|	CONTINUE SEMICOLON
-		{: RESULT = new ContinueStmt(); :}
+		{:	if (currentInLoop == 0) System.out.println("Error: Continue statement must be in a Loop.");
+			else RESULT = new ContinueStmt(); :}
 	|	SEMICOLON
 		{: RESULT = new SemicolonStmt(); :}
 	|	block:b1
@@ -207,13 +211,12 @@ if_stmt ::=
 set_statement ::= 
 		statement:s set_statement:ss
 		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
-			set_st.add(s);
+			if (s != null) set_st.add(s);
 			set_st.addAll(ss);
-			//System.out.println("SET_STATEMENT: " + set_st.size() + " STATEMENT");
 			RESULT = set_st; :} 
 	|	statement:s
 		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
-			set_st.add(s);
+			if (s != null) set_st.add(s);
 			RESULT = set_st; :}
 	;
 
