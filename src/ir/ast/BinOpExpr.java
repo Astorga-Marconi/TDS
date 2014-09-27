@@ -10,7 +10,7 @@ package ir.ast;
 import ir.ASTVisitor;
 
 public abstract class BinOpExpr extends Expression {
-	protected BinOpType oper; 
+	protected BinOpType operator; 
 	protected Expression lOperand; //left expression
 	protected Expression rOperand; //right expression
 
@@ -23,11 +23,11 @@ public abstract class BinOpExpr extends Expression {
 	}
 	
 	public BinOpType getOperator() {
-		return oper;
+		return operator;
 	}
 
 	public void setOperator(BinOpType oper) {
-		this.oper = oper;
+		this.operator = oper;
 	}
 
 	public Expression getLeftOperand() {
