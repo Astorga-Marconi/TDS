@@ -8,7 +8,6 @@
  * Version: 0.1 
  */
 package ir.ast;
-
 import ir.ASTVisitor;
 
 public class IfStmt extends Statement {
