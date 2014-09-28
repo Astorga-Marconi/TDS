@@ -292,8 +292,8 @@ expr ::=
 		{: b.setLeftOperand(e1); b.setRightOperand(e2); RESULT = b; :}
 	|	MINUS:m1 expr:e1
 		{: RESULT = new NegativeExpr(m1, e1); :}
-	|	NOT:n1 expr:e1
-		{: RESULT = new NotExp(n1, e1); :}
+	|	NOT:n1 expr:e1 
+		{: RESULT = new NotExpr(n1, e1); :}
 	|	LPAREN:l expr:e RPAREN:r 
 		{:RESULT = new ParentExpr(e, e.getType());:}
 	;

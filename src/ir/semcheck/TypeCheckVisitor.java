@@ -133,11 +133,20 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	public Type visit(NegativeExpr expr) {
 		Type typenegativeExpr = expr.getExpression().accept(this);
     	if (typenegativeExpr != Type.TBOOLEAN){
-    		addError(expr,"La expresion despues del - no deberia ser de tipo TBOOLEAN");
+    		addError(expr,"La expresion despues del - no deberia ser de tipo BOOLEAN");
     	}
     	return typenegativeExpr;
 	}
 	
+	public Type visit (NotExpr expr)   {
+    	Type oper = expr.getExpression().accept(this);
+    	if (oper != Type.TBOOLEAN){
+    		addError(expr,"La condicion que contiene el ! deberia ser de tipo BOOLEAN");  
+    	}
+    	expr.setType(Type.TBOOLEAN);
+    	return oper;
+ 	}
+
   	public Type visit (ParentExpr expr){
     	Type typeParentExpr = expr.getExpression().accept(this);
     	expr.setType(typeParentExpr);
@@ -236,10 +245,6 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	
 	public Type visit(VarLocation loc) {
 		return loc.getType();		
-	}
-	
-	public Type visit(NotExp expr) {
-		return null;
 	}
 
 	public Type visit(SemicolonStmt stmt) {
