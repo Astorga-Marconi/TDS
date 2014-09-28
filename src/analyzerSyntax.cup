@@ -74,7 +74,6 @@ non terminal    RelExpr rel_op;
 non terminal    EqExpr eq_op;
 non terminal    CondExpr cond_op;
 
-
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
 precedence left  OROR;
