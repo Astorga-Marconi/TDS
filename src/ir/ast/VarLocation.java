@@ -16,6 +16,12 @@ public class VarLocation extends Location {
 		this.id = id;
 		this.blockId = -1;
 	}
+
+	public VarLocation(String id, Type t) {
+		this.id = id;
+		this.type = t;
+		this.blockId = -1;
+	}
 	
 	public int getBlockId() {
 		return blockId;

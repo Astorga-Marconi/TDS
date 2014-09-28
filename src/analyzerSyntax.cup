@@ -173,7 +173,7 @@ type ::=
 
 statement ::=
 		location:l1 assign_op:ap1 expr:e1 SEMICOLON
-		{:	RESULT = new AssignStmt(l1, ap1, e1); :}
+		{:	if (l1 != null || ap1 != null || e1 != null) RESULT = new AssignStmt(l1, ap1, e1); :}
 	|	method_call_stmt:mc SEMICOLON
 		{: RESULT = mc; :}
 	|	if_stmt:a 
@@ -264,22 +264,9 @@ method_call_expr ::=
 
 location ::= 
 		ID:id1
-		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
-				VarLocation loc = new VarLocation(id1);	// FALTA! HAY Q CHEQUEAR  QUE DEBE SER VARIABLE!
-				loc.setType(table.search(id1).getType());
-				//System.out.println( "CHECKEO EL TIPO EN LOCATION: " + table.search(id1).getType().toString() );
-				RESULT = loc;
-			} else {
-				// No exite un location declarado con ese Id.
-				RESULT = null;
-			}; :}
+		{:	RESULT = (table.checkVar(id1)) ? (new VarLocation(id1, (table.search(id1).getType()))) : null;	:}
 	|	ID:id1 LBRACK expr RBRACK
-		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado en la tabla con el mismo nombre.
-				RESULT = new VarLocation(id1);	// FALTA! DEBE SER DEL TIPO ARRAY!
-			} else {
-				// No exite un location declarado con ese Id.
-				RESULT = null;
-			}; :}
+		{:	RESULT = (table.checkArrayVar(id1)) ? (new VarLocation(id1, (table.search(id1).getType()))) : null;	:}
 	;
 
 list_expr ::= 

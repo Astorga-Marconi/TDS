@@ -139,6 +139,16 @@ public class SymbolTable{
 		return false;
 	}
 
+	public boolean checkArrayVar(String idMethod) {
+		Descriptor d = (search(idMethod));
+		if (d instanceof ArrayVarDescriptor) {
+			return true;
+		} else {
+			System.out.println("No existe un arreglo con el nombre de " + idMethod + ".");
+		}
+		return false;
+	}
+
 	public boolean checkMethodCall(String idMethod, LinkedList<Expression> params) {
 		Descriptor d = (search(idMethod));
 		if (d instanceof FunctionDescriptor) {
