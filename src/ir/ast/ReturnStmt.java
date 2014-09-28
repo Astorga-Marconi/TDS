@@ -1,12 +1,19 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: ReturnStmt.java
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 package ir.ast;
-
 import ir.ASTVisitor;
 
 public class ReturnStmt extends Statement {
-	private Expression expression; // the return expression
+	private Expression expression; 
 	
-	public ReturnStmt(Expression e) {
-		this.expression = e;
+	public ReturnStmt(Expression expr) {
+		this.expression = expr;
 	}
 	
 	public ReturnStmt() {
@@ -17,8 +24,8 @@ public class ReturnStmt extends Statement {
 		return expression;
 	}
 
-	public void setExpression(Expression expression) {
-		this.expression = expression;
+	public void setExpression(Expression expr) {
+		this.expression = expr;
 	}
 	
 	@Override

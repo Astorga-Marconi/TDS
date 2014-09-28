@@ -64,9 +64,10 @@ non terminal    Block block, _block;
 non terminal 	AssignOpType assign_op;
 non terminal 	LinkedList set_statement, list_expr, list_externinvk_arg, list_type_id_method_decl, zero_or_one_list_type_id_method_decl;
 non terminal 	Statement statement, method_call_stmt; // zero_or_one_else_block,
-non terminal	Expression expr, zero_or_one_expr, method_call_expr, externinvk_arg;
+non terminal	Expression expr, method_call_expr, externinvk_arg;
 non terminal 	VarLocation location;
 non terminal 	VarDescriptor type_id_method_decl;
+non terminal 	ReturnStmt return_stmt;
 non terminal    IfStmt if_stmt;
 non terminal    BinOpExpr bin_op;
 non terminal    ArithExpr arith_op;
@@ -183,8 +184,8 @@ statement ::=
 	|	WHILE expr:e {:currentInLoop++;:} block:b
 		{:	currentInLoop--;
 			RESULT = new WhileStmt(e, (Block)b); :}
-	|	RETURN zero_or_one_expr:e1 SEMICOLON
-		{: RESULT = new ReturnStmt(e1); :}
+	|	return_stmt:rs SEMICOLON 
+		{: RESULT = rs; :}
 	|	BREAK SEMICOLON
 		{:	if (currentInLoop == 0) System.out.println("Error: Break statement must be in a Loop.");
 			else RESULT = new BreakStmt();	:}
@@ -204,6 +205,13 @@ if_stmt ::=
 		{: RESULT = new IfStmt(e, (Block)b1, (Block)b2); :}
 	;
       
+return_stmt ::= 
+		RETURN expr:e 
+		{: RESULT = new ReturnStmt(e); :} 
+	|   RETURN
+		{: RESULT = new ReturnStmt(); :} 	
+	;
+
 set_statement ::= 
 		statement:s set_statement:ss
 		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
@@ -214,13 +222,6 @@ set_statement ::=
 		{:	LinkedList<Statement> set_st = new LinkedList<Statement>();
 			if (s != null) set_st.add(s);
 			RESULT = set_st; :}
-	;
-
-zero_or_one_expr ::= 
-		expr:e1
-		{: RESULT = e1; :}
-	|	/* LAMBDA */
-		{: RESULT = null; :}
 	;
 
 assign_op ::=

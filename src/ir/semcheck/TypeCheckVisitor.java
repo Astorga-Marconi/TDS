@@ -36,10 +36,12 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		return null;
 	}
 	
-	public Type visit(ReturnStmt stmt) {
-		Type typeReturnExpr = stmt.getExpression().accept(this); 
-		return null;
-	}
+  	public Type visit(ReturnStmt stmt) {
+    	if (stmt.getExpression() != null) {
+        	Type expr = stmt.getExpression().accept(this);
+    	}
+  		return null;
+  	}
 
 	public Type visit(IfStmt stmt)  {
     	Type condition = stmt.getCondition().accept(this);
