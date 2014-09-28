@@ -178,16 +178,12 @@ statement ::=
 		{: RESULT = mc; :}
 	|	if_stmt:a 
 		{: RESULT = a; :}	
-	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 {:currentInLoop++;:} block:b1 {:currentInLoop--;:}
-		{:	if (table.search(id1) != null) {	// Observo si ya existe un descriptor ya declarado con el mismo nombre en el mismo bloque.
-				RESULT = new ForStmt(id1, e1, e2, (Block)b1);	// FALTA OBSERVAR SI DICHO DESCRIPTOR ES UNA VARIABLE Y NO OTRA COSA!!
-			} else {
-				// No exite un metodo declarado con ese Id.
-				RESULT = null;
-			}; :}
-		/*{: RESULT = new ForStmt(id1, e1, e2, (Block)b1); :}*/
-	|	WHILE expr:e {:currentInLoop++;:} block:b {:currentInLoop--;:}
-		{:RESULT = new WhileStmt(e, (Block)b); :}
+	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 {:currentInLoop++;:} block:b1
+		{:	currentInLoop--;
+			RESULT = (table.checkVar(id1)) ? (new ForStmt(id1, e1, e2, b1)) : null;	:}
+	|	WHILE expr:e {:currentInLoop++;:} block:b
+		{:	currentInLoop--;
+			RESULT = new WhileStmt(e, (Block)b); :}
 	|	RETURN zero_or_one_expr:e1 SEMICOLON
 		{: RESULT = new ReturnStmt(e1); :}
 	|	BREAK SEMICOLON

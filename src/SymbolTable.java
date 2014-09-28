@@ -129,6 +129,16 @@ public class SymbolTable{
 		return null;
 	}
 
+	public boolean checkVar(String idMethod) {
+		Descriptor d = (search(idMethod));
+		if (d instanceof VarDescriptor) {
+			return true;
+		} else {
+			System.out.println("No existe una variable con el nombre de " + idMethod + ".");
+		}
+		return false;
+	}
+
 	public boolean checkMethodCall(String idMethod, LinkedList<Expression> params) {
 		Descriptor d = (search(idMethod));
 		if (d instanceof FunctionDescriptor) {
@@ -146,7 +156,7 @@ public class SymbolTable{
 				return false;
 			}
 		} else {
-			System.out.println("El descriptor llamado como metodo no es un metodo.");
+			System.out.println("No existe un metodo con el nombre de " + idMethod + ".");
 		}
 		return false;
 	}
