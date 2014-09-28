@@ -157,7 +157,7 @@ _block ::=
 				System.out.println("_BLOCK: UN STATEMENT");
 			}*/
 			//System.out.println("BLOCK: " + ss.size() + " STATEMENT");
-			RESULT = new Block(table.getCurrentLevel(), ss); :}		// Usamos set_field_declaration??
+		RESULT = new Block(table.getCurrentLevel(), ss); :}		// Usamos set_field_declaration??
 	|	LBRACE set_statement:ss RBRACE
 		{: RESULT = new Block(table.getCurrentLevel(), ss); :} 
 	|	LBRACE set_field_decl RBRACE

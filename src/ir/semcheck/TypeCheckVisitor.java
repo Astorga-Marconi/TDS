@@ -6,6 +6,7 @@
  * Project: Compilador
  * Authors: Astorga Dario - Marconi Pablo
  * Version: 0.1 
+ * Description the class: Chequeos de tipos, en condiciones, expresiones aritmeticas, etc
  */
 package ir.semcheck;
 
