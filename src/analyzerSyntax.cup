@@ -198,10 +198,12 @@ statement ::=
 	;
 
 if_stmt ::=  
-		IF:w LPAREN expr:e RPAREN block:b1 ELSE block:b2 
+		IF:w LPAREN expr:e RPAREN block:b 
+    	{: RESULT = new IfStmt(e, (Block)b); :} 
+	|	IF:w LPAREN expr:e RPAREN block:b1 ELSE block:b2 
 		{: RESULT = new IfStmt(e, (Block)b1, (Block)b2); :}
-    |   IF:w LPAREN expr:e RPAREN block:b 
-    	{: RESULT = new IfStmt(e, (Block)b); :} ;
+	;
+       
 	
 set_statement ::= 
 		statement:s set_statement:ss
