@@ -144,7 +144,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	public Type visit (NotExpr expr)   {
     	Type oper = expr.getExpression().accept(this);
     	if (oper != Type.TBOOLEAN){
-    		addError(expr,"La condicion que contiene el ! deberia ser de tipo BOOLEAN");  
+    		addError(expr,"El operando de la negacion (!) deben ser de tipo boolean");  
     	}
     	expr.setType(Type.TBOOLEAN);
     	return oper;
