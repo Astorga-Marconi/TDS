@@ -14,7 +14,7 @@ import ir.ast.*;
 
 public class InstrCode {
 
-	private BinOpType operator;
+	private Operator operator;
 	private Expression leftOperand;
 	private Expression rightOperand;
 	private Expression result;
@@ -22,18 +22,18 @@ public class InstrCode {
 	public InstrCode () {
 	}
 
-	public InstrCode (BinOpType newOperator, Expression newLeftOperand, Expression newRightOperand, Expression res) {
+	public InstrCode (Operator newOperator, Expression newLeftOperand, Expression newRightOperand, Expression res) {
 		operator = newOperator;
 		leftOperand = newLeftOperand;
 		rightOperand = newRightOperand;
 		result = res;
 	}
 
-	public BinOpType getOperator() {
+	public Operator getOperator() {
 		return operator;
 	}
 
-	public void setOperator(BinOpType oper) {
+	public void setOperator(Operator oper) {
 		operator = oper;
 	}
 

@@ -105,9 +105,19 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	public Expression visit (ArithExpr expr) {
   		Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
-    	VarLocation res = new VarLocation(); 
-    	InstrCode instr = new InstrCode(expr.getOperator(), leftOperand, rightOperand, res);
-    	instrList.add(instr);
+    	VarLocation res = new VarLocation();
+    	Operator operator = null;
+    	switch (expr.getOperator()) {
+    		case PLUS:
+    			operator = Operator.PLUS;
+    		case MINUS:
+    			operator = Operator.MINUS;
+    		case MULT:
+    			operator = Operator.MULT;
+    		case DIV:
+    			operator = Operator.DIV;
+    	}
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
  	}
 
