@@ -152,7 +152,9 @@ type_id_method_decl ::=
 block ::= {:table.insertNewBlock();:} _block:b1 {:table.closeBlock(); RESULT = b1; :};
 
 _block ::= 
-		LBRACE  set_field_decl set_statement:ss RBRACE
+		LBRACE RBRACE
+		{:	RESULT = new Block(table.getCurrentLevel(), (new LinkedList<Statement>()));	:}
+	|	LBRACE  set_field_decl set_statement:ss RBRACE
 		{:	/*for (Statement stt : ss) {
 				System.out.println("_BLOCK: UN STATEMENT");
 			}*/
