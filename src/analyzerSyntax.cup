@@ -11,6 +11,7 @@
 import java_cup.runtime.*;
 import ir.ast.*;
 import ir.semcheck.*;
+import ir.CodeGen.*;
 import java.util.*;
 import error.Error;
 
@@ -19,6 +20,7 @@ action code {:
 	SymbolTable table = new SymbolTable();
 	Type currentType;
 	TypeCheckVisitor typeVisitor = new TypeCheckVisitor();
+	CodeGenVisitor codeGen = new CodeGenVisitor();
 	Integer currentInLoop = 0;	// Cada vez que abro un bloque de ciclo lo incremento y cuando el bloque
 								// cierra lo decremento. Entonces Si currentInLoop es 0 no se encuentra
 								// en un ciclo, sino lo contrario.
