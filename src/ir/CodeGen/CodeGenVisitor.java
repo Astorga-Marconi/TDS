@@ -29,6 +29,19 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	//			visit statements
 	
 	public Expression visit(AssignStmt stmt) {
+		Expression loc = stmt.getLocation();
+		Expression expr = stmt.getExpression().accept(this);
+		Expression resExpr = null;
+		switch (stmt.getOperator()) {
+    		case EQ:
+    			instrList.add(new InstrCode(Operator.EQ, expr, null, loc));
+    		case PLUSEQ:
+    			instrList.add(new InstrCode(Operator.PLUS, loc, expr, resExpr));
+    			instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+    		case MINUSEQ:
+    			instrList.add(new InstrCode(Operator.MINUS, loc, expr, resExpr));
+    			instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+    	}
 		return null;
 	}
 	

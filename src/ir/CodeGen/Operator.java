@@ -25,7 +25,10 @@ public enum Operator {
 	NOTEQ, 
 	ANDAND,
 	NOT,
-	OROR;
+	OROR,
+	PLUSEQ,
+	MINUSEQ,
+	EQ;
 	
 	@Override
 	public String toString() {
@@ -58,6 +61,12 @@ public enum Operator {
 				return "NOT";
 			case OROR:
 				return "OR";
+			case PLUSEQ:
+				return "PLUSEQ";
+			case MINUSEQ:
+				return "MINUSEQ";
+			case EQ:
+				return "EQ";
 		}
 		return null;
 	}
