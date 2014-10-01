@@ -20,6 +20,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
 	private List<Error> errors;
 	private List<InstrCode> instrList ;
+	private Integer labelsIdGen = 0;
 
 	public CodeGenVisitor() {
 		errors = new LinkedList<Error>();
@@ -31,7 +32,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	public Expression visit(AssignStmt stmt) {
 		Expression loc = stmt.getLocation();
 		Expression expr = stmt.getExpression().accept(this);
-		Expression resExpr = null;
+		Expression resExpr = new VarLocation();
 		switch (stmt.getOperator()) {
     		case EQ:
     			instrList.add(new InstrCode(Operator.EQ, expr, null, loc));
@@ -46,10 +47,34 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 	
   	public Expression visit(ReturnStmt stmt) {
+  		Expression retExpr = null;
+  		if (stmt.getExpression() != null) {
+  			retExpr = stmt.getExpression().accept(this);
+  		}
+  		instrList.add(new InstrCode(Operator.RET, null, null, retExpr));
   		return null;
   	}
 
 	public Expression visit(IfStmt stmt)  {
+		Expression ifCond = stmt.getCondition().accept(this);
+		Expression endIfLabel = new VarLocation("endIfLabel" + Integer.toString(labelsIdGen++));
+		instrList.add(new InstrCode(Operator.CMP, ifCond, (new BoolLiteral("true")), null));
+		if (stmt.getElseBlock() == null) {	// Si no tengo un else
+			instrList.add(new InstrCode(Operator.JNE, null, null, endIfLabel));
+			// Genero las instrucciones del bloque if
+			Expression ifInstrs = stmt.getIfBlock().accept(this);
+			instrList.add(new InstrCode(Operator.LABEL, null, null, endIfLabel));
+		} else {	// Si tengo un else
+			Expression elseLabel = new VarLocation("elseLabel" + Integer.toString(labelsIdGen++));
+			instrList.add(new InstrCode(Operator.JNE, null, null, elseLabel));
+			// Genero las instrucciones del bloque if
+			Expression ifInstrs = stmt.getIfBlock().accept(this);
+			instrList.add(new InstrCode(Operator.JMP, null, null, endIfLabel));
+			instrList.add(new InstrCode(Operator.LABEL, null, null, elseLabel));
+			// Genero las instrucciones del bloque else.
+			Expression elseInstrs = stmt.getElseBlock().accept(this);
+			instrList.add(new InstrCode(Operator.LABEL, null, null, endIfLabel));
+		}
   		return null;
   	}
 	

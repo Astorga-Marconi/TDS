@@ -28,7 +28,12 @@ public enum Operator {
 	OROR,
 	PLUSEQ,
 	MINUSEQ,
-	EQ;
+	EQ,
+	RET,
+	CMP,
+	JNE,
+	JMP,
+	LABEL;
 	
 	@Override
 	public String toString() {
@@ -67,6 +72,16 @@ public enum Operator {
 				return "MINUSEQ";
 			case EQ:
 				return "EQ";
+			case RET:
+				return "RET";
+			case CMP:
+				return "CMP";
+			case JNE:
+				return "JNE";
+			case JMP:
+				return "JMP";
+			case LABEL:
+				return "LABEL";
 		}
 		return null;
 	}
