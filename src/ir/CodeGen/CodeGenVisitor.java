@@ -174,15 +174,52 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
  	}
 
   	public Expression visit (RelExpr expr) {
-      	return null;
+  		Expression leftOperand = expr.getLeftOperand().accept(this);
+    	Expression rightOperand = expr.getRightOperand().accept(this);
+    	VarLocation res = new VarLocation();
+    	Operator operator = null;
+    	switch (expr.getOperator()) {
+    		case GT:
+    			operator = Operator.GT;
+    		case LT:
+    			operator = Operator.LT;
+    		case LTEQ:
+    			operator = Operator.LTEQ;
+    		case GTEQ:
+    			operator = Operator.GTEQ;
+    	}
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
+    	return res;
   	}
 
   	public Expression visit (CondExpr expr)   {
-    	return null;
+  		Expression leftOperand = expr.getLeftOperand().accept(this);
+    	Expression rightOperand = expr.getRightOperand().accept(this);
+    	VarLocation res = new VarLocation();  
+    	Operator operator = null;
+    	switch (expr.getOperator()) {
+    		case ANDAND:
+    			operator = Operator.ANDAND;
+    		case OROR:
+    			operator = Operator.OROR;
+    	}
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
+    	return res;
   	}
 
   	public Expression visit (EqExpr expr)   {
-    	return null;
+  		Expression leftOperand = expr.getLeftOperand().accept(this);
+    	Expression rightOperand = expr.getRightOperand().accept(this);
+    	VarLocation res = new VarLocation();  
+    	Operator operator = null;
+  		switch (expr.getOperator()) {
+    		case EQEQ:
+    			operator = Operator.EQEQ;
+    		case NOTEQ:
+    			operator = Operator.NOTEQ;
+    	}
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
+    	return res;
   	}
   	
 	//			visit literals
