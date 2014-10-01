@@ -79,6 +79,20 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	}
 	
 	public Expression visit(ForStmt stmt) {
+		Expression initialValExpr = stmt.getInitialValue().accept(this);
+		Expression forCondExpr = stmt.getCondition().accept(this);
+		VarLocation loc = new VarLocation(stmt.getId());
+		Expression forLabel = new VarLocation("forLabel" + Integer.toString(labelsIdGen++));
+		Expression endForLabel = new VarLocation("endForLabel" + Integer.toString(labelsIdGen++));
+		instrList.add(new InstrCode(Operator.EQ, initialValExpr, null, loc));
+		instrList.add(new InstrCode(Operator.LABEL, null, null, forLabel));
+		instrList.add(new InstrCode(Operator.CMP, loc, forCondExpr, null));
+		instrList.add(new InstrCode(Operator.JGE, null, null, endForLabel));
+		// Genero las instrucciones del bloque for.
+		Expression forBlockInstrs = stmt.getForBlock().accept(this);
+		instrList.add(new InstrCode(Operator.INC, loc, null, loc));
+		instrList.add(new InstrCode(Operator.JMP, null, null, forLabel));
+		instrList.add(new InstrCode(Operator.LABEL, null, null, endForLabel));
   		return null;
   	}
 	

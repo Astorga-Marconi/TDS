@@ -33,7 +33,9 @@ public enum Operator {
 	CMP,
 	JNE,
 	JMP,
-	LABEL;
+	LABEL,
+	JGE,
+	INC;
 	
 	@Override
 	public String toString() {
