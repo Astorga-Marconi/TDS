@@ -160,7 +160,22 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
  	}
 
   	public Expression visit (RelExpr expr) {
-      	return null;
+  		Expression leftOperand = expr.getLeftOperand().accept(this);
+    	Expression rightOperand = expr.getRightOperand().accept(this);
+    	VarLocation res = new VarLocation();
+    	Operator operator = null;
+    	switch (expr.getOperator()) {
+    		case GT:
+    			operator = Operator.GT;
+    		case LT:
+    			operator = Operator.LT;
+    		case LTEQ:
+    			operator = Operator.LTEQ;
+    		case GTEQ:
+    			operator = Operator.GTEQ;
+    	}
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
+    	return res;
   	}
 
   	public Expression visit (CondExpr expr)   {
