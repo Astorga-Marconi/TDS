@@ -249,15 +249,21 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	//			visit literals
 	
 	public Expression visit(IntLiteral lit) {
-		return null;
+		Expression res = new VarLocation("int" + Integer.toString(labelsIdGen++));
+		//instrList.add(new InstrCode( , , , res));
+    	return res;
 	}
 	
 	public Expression visit(FloatLiteral lit) {
-		return null;
+		Expression res = new VarLocation("float" + Integer.toString(labelsIdGen++));
+		//instrList.add(new InstrCode( , , , res));
+    	return res;
 	}
 
 	public Expression visit(BoolLiteral lit) {
-		return null;
+		Expression res = new VarLocation("bool" + Integer.toString(labelsIdGen++));	
+		//instrList.add(new InstrCode( , , , res));
+    	return res;
 	}
 
 	//			visit locations	
