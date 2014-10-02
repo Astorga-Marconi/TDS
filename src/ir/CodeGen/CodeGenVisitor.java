@@ -161,7 +161,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(NegativeExpr expr) {
-    	return null;
+    	Expression oper = expr.getExpression().accept(this);
+  		VarLocation res = new VarLocation();
+		instrList.add(new InstrCode(Operator.MINUS, oper, null, res));
+    	return res;
 	}
 	
 	public Expression visit (NotExpr expr)   {
