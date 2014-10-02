@@ -132,6 +132,9 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 	
 	public Expression visit(Block stmt) {
+		for (Statement s: stmt.getStatements()) {
+			s.accept(this);
+		}
 		return null;
 	}
 	
