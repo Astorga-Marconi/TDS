@@ -250,19 +250,19 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
 	public Expression visit(IntLiteral lit) {
 		Expression res = new VarLocation("int" + Integer.toString(labelsIdGen++));
-		//instrList.add(new InstrCode( , , , res));
+		//instrList.add(new InstrCode(Operator.EQ , ,null, res));
     	return res;
 	}
 	
 	public Expression visit(FloatLiteral lit) {
 		Expression res = new VarLocation("float" + Integer.toString(labelsIdGen++));
-		//instrList.add(new InstrCode( , , , res));
+		//instrList.add(new InstrCode(Operator.EQ , ,null , res));
     	return res;
 	}
 
 	public Expression visit(BoolLiteral lit) {
 		Expression res = new VarLocation("boolean" + Integer.toString(labelsIdGen++));	
-		//instrList.add(new InstrCode( , , , res));
+		//instrList.add(new InstrCode(Operator.EQ, ,null , res));
     	return res;
 	}
 
