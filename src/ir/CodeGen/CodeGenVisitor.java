@@ -21,10 +21,12 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	private List<Error> errors;
 	private List<InstrCode> instrList ;
 	private Integer labelsIdGen = 0;
+	private List<Expression> label;
 
 	public CodeGenVisitor() {
 		errors = new LinkedList<Error>();
 		instrList = new LinkedList<InstrCode>();
+		label = new LinkedList<Expression>();
 	}
 
 	//			visit statements
@@ -97,14 +99,22 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	}
 	
 	public Expression visit(BreakStmt stmt) {
+		instrList.add(new InstrCode(Operator.JMP, null, null,label.get(label.size()-2)));
 		return null;
 	}
 
 	public Expression visit(ContinueStmt stmt) {
-		return null;
+  		instrList.add(new InstrCode(Operator.JMP, null, null, label.get(label.size()-2)));
+  		return null;
 	} 
 
 	public Expression visit(WhileStmt stmt) {
+		Expression labelBeginWhile = new VarLocation("beginWhile" + Integer.toString(labelsIdGen++));
+		Expression labelEndWhile = new VarLocation("endWhile" + Integer.toString(labelsIdGen++));
+
+    	label.add(label.size(), labelBeginWhile);
+    	label.add(label.size(), labelEndWhile);
+
 		return null;
 	}
 	
