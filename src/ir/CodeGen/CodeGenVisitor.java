@@ -175,7 +175,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
  	}
 
   	public Expression visit (ParentExpr expr) {
-    	return null;
+  		return expr.getExpression().accept(this);
   	}
 	
   	public Expression visit (ArithExpr expr) {
@@ -261,7 +261,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(BoolLiteral lit) {
-		Expression res = new VarLocation("bool" + Integer.toString(labelsIdGen++));	
+		Expression res = new VarLocation("boolean" + Integer.toString(labelsIdGen++));	
 		//instrList.add(new InstrCode( , , , res));
     	return res;
 	}
