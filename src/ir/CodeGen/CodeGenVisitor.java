@@ -269,7 +269,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	//			visit locations	
 	
 	public Expression visit(VarLocation loc) {
-		return null;		
+		return loc;	
 	}
 
 	public Expression visit(SemicolonStmt stmt) {
