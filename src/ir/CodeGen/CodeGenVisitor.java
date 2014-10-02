@@ -21,12 +21,14 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	private List<Error> errors;
 	private List<InstrCode> instrList ;
 	private Integer labelsIdGen = 0;
-	private List<Expression> label;
+	private List<Expression> jmpLabels;	// Lista que guarda los labels de los posibles saltos a realizarse
+										// al encontrar un BREAK o CONTINUE. Cada vez que se encuentra 
+										// con un ciclo se guarda el label inicio y fin de ciclo.
 
 	public CodeGenVisitor() {
 		errors = new LinkedList<Error>();
 		instrList = new LinkedList<InstrCode>();
-		label = new LinkedList<Expression>();
+		jmpLabels = new LinkedList<Expression>();
 	}
 
 	//			visit statements
@@ -99,30 +101,29 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	}
 	
 	public Expression visit(BreakStmt stmt) {
-		instrList.add(new InstrCode(Operator.JMP, null, null,label.get(label.size()-2)));
+		instrList.add(new InstrCode(Operator.JMP, null, null, jmpLabels.get(jmpLabels.size()-1)));
 		return null;
 	}
 
 	public Expression visit(ContinueStmt stmt) {
-  		instrList.add(new InstrCode(Operator.JMP, null, null, label.get(label.size()-2)));
+  		instrList.add(new InstrCode(Operator.JMP, null, null, jmpLabels.get(jmpLabels.size()-2)));
   		return null;
 	} 
 
 	public Expression visit(WhileStmt stmt) {
-		Expression initialValStmt = stmt.getCondition().accept(this);
 		Expression beginWhilelabel = new VarLocation("beginWhileLabel" + Integer.toString(labelsIdGen++));
 		Expression endWhilelabel = new VarLocation("endWhileLabel" + Integer.toString(labelsIdGen++));
-    	label.add(label.size(), beginWhilelabel);
-    	label.add(label.size(), endWhilelabel);
-		instrList.add(new InstrCode(Operator.LABEL, initialValStmt, null, beginWhilelabel));
+    	jmpLabels.add(beginWhilelabel);	// Agrego los labels que pertenecen al principio y al fin del ciclo respectivamente.
+    	jmpLabels.add(endWhilelabel);
+		instrList.add(new InstrCode(Operator.LABEL, null, null, beginWhilelabel));
     	Expression condition = stmt.getCondition().accept(this);	 
     	instrList.add(new InstrCode(Operator.CMP, condition, (new BoolLiteral("true")), null));
 		instrList.add(new InstrCode(Operator.JNE, null, null, endWhilelabel));
 		Expression block = stmt.getBlock().accept(this);
   	    instrList.add(new InstrCode(Operator.JMP, null, null, beginWhilelabel));	
 		instrList.add(new InstrCode(Operator.LABEL, null, null, endWhilelabel));
-   		label.remove(label.size()-1);
-    	label.remove(label.size()-1);
+   		jmpLabels.remove(jmpLabels.size()-1);	// Remuevo los labels que pertenecen al principio y al fin del ciclo respectivamente.
+    	jmpLabels.remove(jmpLabels.size()-1);
 		return null;
 	}
 	
