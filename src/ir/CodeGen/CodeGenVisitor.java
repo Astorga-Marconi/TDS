@@ -109,12 +109,20 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	} 
 
 	public Expression visit(WhileStmt stmt) {
-		Expression labelBeginWhile = new VarLocation("beginWhile" + Integer.toString(labelsIdGen++));
-		Expression labelEndWhile = new VarLocation("endWhile" + Integer.toString(labelsIdGen++));
-
-    	label.add(label.size(), labelBeginWhile);
-    	label.add(label.size(), labelEndWhile);
-
+		Expression initialValStmt = stmt.getCondition().accept(this);
+		Expression beginWhilelabel = new VarLocation("beginWhileLabel" + Integer.toString(labelsIdGen++));
+		Expression endWhilelabel = new VarLocation("endWhileLabel" + Integer.toString(labelsIdGen++));
+    	label.add(label.size(), beginWhilelabel);
+    	label.add(label.size(), endWhilelabel);
+		instrList.add(new InstrCode(Operator.LABEL, initialValStmt, null, beginWhilelabel));
+    	Expression condition = stmt.getCondition().accept(this);	 
+    	instrList.add(new InstrCode(Operator.CMP, condition, (new BoolLiteral("true")), null));
+		instrList.add(new InstrCode(Operator.JNE, null, null, endWhilelabel));
+		Expression block = stmt.getBlock().accept(this);
+  	    instrList.add(new InstrCode(Operator.JMP, null, null, beginWhilelabel));	
+		instrList.add(new InstrCode(Operator.LABEL, null, null, endWhilelabel));
+   		label.remove(label.size()-1);
+    	label.remove(label.size()-1);
 		return null;
 	}
 	
