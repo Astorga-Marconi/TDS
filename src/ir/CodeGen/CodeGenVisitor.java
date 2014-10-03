@@ -139,6 +139,16 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 	
 	public Expression visit(MethodCallStmt stmt) {
+		for (Expression e: stmt.getParameters()) {
+			Expression parameter = e.accept(this);
+			instrList.add(new InstrCode(Operator.PUSH, parameter, null, null));
+		}
+		VarLocation nameMethod = new VarLocation(stmt.getId());
+		instrList.add(new InstrCode(Operator.CALL, nameMethod, null, null));
+		if (stmt.getParameters().size() > 0) {
+			// DELPARAMS saca los parametros metidos en la pila con anterioridad.
+			instrList.add(new InstrCode(Operator.DELPARAMS, null, null, null));
+		}
 		return null;
 	}
 

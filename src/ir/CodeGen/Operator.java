@@ -35,7 +35,10 @@ public enum Operator {
 	JMP,
 	LABEL,
 	JGE,
-	INC;
+	INC,
+	PUSH,
+	CALL,
+	DELPARAMS;
 	
 	@Override
 	public String toString() {
@@ -84,6 +87,12 @@ public enum Operator {
 				return "JMP";
 			case LABEL:
 				return "LABEL";
+			case PUSH:
+				return "PUSH";
+			case CALL:
+				return "CALL";
+			case DELPARAMS:
+				return "DELPARAMS";
 		}
 		return null;
 	}
