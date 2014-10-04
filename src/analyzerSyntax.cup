@@ -19,6 +19,7 @@ import error.Error;
 action code {:
 	SymbolTable table = new SymbolTable();
 	Type currentType;
+	Type currentMethodRetType;
 	TypeCheckVisitor typeVisitor = new TypeCheckVisitor();
 	CodeGenVisitor codeGen = new CodeGenVisitor();
 	Integer currentInLoop = 0;	// Cada vez que abro un bloque de ciclo lo incremento y cuando el bloque
@@ -116,13 +117,17 @@ list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 
 method_decl ::= 
 		type:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
-		{:	table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
+		{:	currentMethodRetType = t1;
+			table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
 		RPAREN block:b
-		{:	typeVisitor.visit(b);	:}
+		{:	currentMethodRetType = null;
+			typeVisitor.visit(b);	:}
 	|	TVOID:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
-		{:	table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
+		{:	currentMethodRetType = Type.TVOID;
+			table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
 		RPAREN block:b
-		{:	typeVisitor.visit(b);	:}
+		{:	currentMethodRetType = null;
+			typeVisitor.visit(b);	:}
 	;
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
@@ -170,9 +175,15 @@ _block ::=
 	;
 
 type ::=
-		TBOOLEAN:t {:currentType = Type.TBOOLEAN;:}
-	|	TFLOAT:t {:currentType = Type.TFLOAT;:}
-	|	TINT:t {:currentType = Type.TINT;:}
+		TBOOLEAN
+		{:	currentType = Type.TBOOLEAN;
+			RESULT = Type.TBOOLEAN;	:}
+	|	TFLOAT
+		{:	currentType = Type.TFLOAT;
+			RESULT = Type.TFLOAT;	:}
+	|	TINT
+		{:	currentType = Type.TINT;
+			RESULT = Type.TINT;	:}
 	;
 
 statement ::=
@@ -211,9 +222,14 @@ if_stmt ::=
       
 return_stmt ::= 
 		RETURN expr:e 
-		{: RESULT = new ReturnStmt(e); :} 
+		{:	if (e.getType() != currentMethodRetType)
+				System.out.println("La expresion de retorno no es del mismo tipo del metodo.");
+				System.out.println("el tipo de la expresion: " + e.getType() + ", tipo requerido: " + currentMethodRetType);
+			RESULT = new ReturnStmt(e); :}
 	|   RETURN
-		{: RESULT = new ReturnStmt(); :} 	
+		{:	if (currentMethodRetType != Type.TVOID)
+				System.out.println("La declaracion return debe retornar una expresion de tipo " + currentMethodRetType);
+			RESULT = new ReturnStmt(); :}
 	;
 
 set_statement ::= 
