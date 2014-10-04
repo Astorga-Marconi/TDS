@@ -159,6 +159,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	//			visit Expressions
 
 	public Expression visit(BinOpExpr expr) {
+		System.out.println("Paso por BinOpExpr");
 		return null;
 	}
 	
@@ -264,7 +265,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
 	public Expression visit(IntLiteral lit) {
 		Expression res = new VarLocation("int" + Integer.toString(labelsIdGen++));
-		instrList.add(new InstrCode(Operator.EQ, (new IntLiteral(lit.getValue().toString())), null, res));
+		instrList.add(new InstrCode(Operator.EQ, lit, null, res));
     	return res;
 	}
 	
@@ -288,6 +289,13 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 
 	public Expression visit(SemicolonStmt stmt) {
 		return null;
+	}
+
+	public void printInstrs() {
+		System.out.println("SE CREARON " + instrList.size() + " INSTRUCCIONES: ");
+		for (InstrCode i : instrList) {
+			System.out.println(i.toString());
+		}
 	}
 
 	private void addError(AST a, String desc) {

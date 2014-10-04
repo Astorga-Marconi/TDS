@@ -61,5 +61,10 @@ public class InstrCode {
 		result = res;
 	}
 
+	public String toString() {
+		String res = operator + ", " + leftOperand + ", " + rightOperand + ", " + result;
+		return res;
+	}
+
 
 }

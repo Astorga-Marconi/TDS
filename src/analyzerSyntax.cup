@@ -29,7 +29,7 @@ action code {:
 		for (Error e: typeVisitor.getErrors()) {	// Imprimo por pantalla los errores del checkeo de tipos.
 				System.out.println(e.toString());
 		}
-		
+		codeGen.printInstrs();
 		System.out.println("Test finalizado");
 	}
 :}
@@ -121,13 +121,15 @@ method_decl ::=
 			table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
 		RPAREN block:b
 		{:	currentMethodRetType = null;
-			typeVisitor.visit(b);	:}
+			typeVisitor.visit(b);
+			codeGen.visit(b);	:}
 	|	TVOID:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
 		{:	currentMethodRetType = Type.TVOID;
 			table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
 		RPAREN block:b
 		{:	currentMethodRetType = null;
-			typeVisitor.visit(b);	:}
+			typeVisitor.visit(b);
+			codeGen.visit(b);	:}
 	;
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
