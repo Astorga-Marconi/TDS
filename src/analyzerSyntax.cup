@@ -222,9 +222,10 @@ if_stmt ::=
       
 return_stmt ::= 
 		RETURN expr:e 
-		{:	if (e.getType() != currentMethodRetType)
+		{:	if (e.getType() != currentMethodRetType) {
 				System.out.println("La expresion de retorno no es del mismo tipo del metodo.");
 				System.out.println("el tipo de la expresion: " + e.getType() + ", tipo requerido: " + currentMethodRetType);
+			}
 			RESULT = new ReturnStmt(e); :}
 	|   RETURN
 		{:	if (currentMethodRetType != Type.TVOID)
