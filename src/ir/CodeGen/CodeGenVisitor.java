@@ -36,7 +36,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	public Expression visit(AssignStmt stmt) {
 		Expression expr = stmt.getExpression().accept(this);
 		Expression loc = stmt.getLocation();
-		Expression resExpr = new VarLocation();
+		Expression resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
 		switch (stmt.getOperator()) {
     		case EQ:
     			instrList.add(new InstrCode(Operator.EQ, expr, null, loc));
@@ -180,14 +180,14 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 
 	public Expression visit(NegativeExpr expr) {
     	Expression oper = expr.getExpression().accept(this);
-  		VarLocation res = new VarLocation();
+  		VarLocation res = new VarLocation("negRes" + Integer.toString(labelsIdGen++));
 		instrList.add(new InstrCode(Operator.MINUS, oper, null, res));
     	return res;
 	}
 	
 	public Expression visit (NotExpr expr)   {
     	Expression oper = expr.getExpression().accept(this);
-  		Expression res = new VarLocation();
+  		Expression res = new VarLocation("notRes" + Integer.toString(labelsIdGen++));
 		instrList.add(new InstrCode(Operator.NOT, oper, null, res));
     	return res;
  	}
@@ -222,7 +222,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	public Expression visit (RelExpr expr) {
   		Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
-    	VarLocation res = new VarLocation();
+    	VarLocation res = new VarLocation("relRes" + Integer.toString(labelsIdGen++));
     	Operator operator = null;
     	switch (expr.getOperator()) {
     		case GT:
@@ -245,7 +245,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	public Expression visit (CondExpr expr)   {
   		Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
-    	VarLocation res = new VarLocation();  
+    	VarLocation res = new VarLocation("condRes" + Integer.toString(labelsIdGen++));  
     	Operator operator = null;
     	switch (expr.getOperator()) {
     		case ANDAND:
@@ -262,7 +262,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	public Expression visit (EqExpr expr)   {
   		Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
-    	VarLocation res = new VarLocation();  
+    	VarLocation res = new VarLocation("eqRes" + Integer.toString(labelsIdGen++));  
     	Operator operator = null;
   		switch (expr.getOperator()) {
     		case EQEQ:
