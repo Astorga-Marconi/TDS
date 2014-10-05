@@ -34,18 +34,21 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	//			visit statements
 	
 	public Expression visit(AssignStmt stmt) {
-		Expression loc = stmt.getLocation();
 		Expression expr = stmt.getExpression().accept(this);
+		Expression loc = stmt.getLocation();
 		Expression resExpr = new VarLocation();
 		switch (stmt.getOperator()) {
     		case EQ:
     			instrList.add(new InstrCode(Operator.EQ, expr, null, loc));
+    			break;
     		case PLUSEQ:
     			instrList.add(new InstrCode(Operator.PLUS, loc, expr, resExpr));
     			instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+    			break;
     		case MINUSEQ:
     			instrList.add(new InstrCode(Operator.MINUS, loc, expr, resExpr));
     			instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+    			break;
     	}
 		return null;
 	}
@@ -196,17 +199,21 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	public Expression visit (ArithExpr expr) {
   		Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
-    	VarLocation res = new VarLocation();
+    	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
     	Operator operator = null;
     	switch (expr.getOperator()) {
     		case PLUS:
     			operator = Operator.PLUS;
+    			break;
     		case MINUS:
     			operator = Operator.MINUS;
+    			break;
     		case MULT:
     			operator = Operator.MULT;
+    			break;
     		case DIV:
     			operator = Operator.DIV;
+    			break;
     	}
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
@@ -220,12 +227,16 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     	switch (expr.getOperator()) {
     		case GT:
     			operator = Operator.GT;
+    			break;
     		case LT:
     			operator = Operator.LT;
+    			break;
     		case LTEQ:
     			operator = Operator.LTEQ;
+    			break;
     		case GTEQ:
     			operator = Operator.GTEQ;
+    			break;
     	}
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
@@ -239,8 +250,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     	switch (expr.getOperator()) {
     		case ANDAND:
     			operator = Operator.ANDAND;
+    			break;
     		case OROR:
     			operator = Operator.OROR;
+    			break;
     	}
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
@@ -254,8 +267,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   		switch (expr.getOperator()) {
     		case EQEQ:
     			operator = Operator.EQEQ;
+    			break;
     		case NOTEQ:
     			operator = Operator.NOTEQ;
+    			break;
     	}
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
