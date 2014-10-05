@@ -9,7 +9,9 @@ Autores:
 Etapas: 
 ------------------------
 * Análizador Léxico y Sintáctico 
-* Análizador Semantico           
+* Análizador Semantico 
+* Generador de Código Intermedio
+* Interprete
 
 Organizacion directorios
 ------------------------
