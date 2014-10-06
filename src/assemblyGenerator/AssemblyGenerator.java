@@ -1,3 +1,13 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: AssemblyGenerator.java
+ * Project: Compilador
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ * Description the class: Clase encargada de la generacion del codigo Assembler a partir del codigo intermedio. 
+ */
 package AssemblyGenerator;
 
 import java.util.*;
@@ -31,6 +41,10 @@ public class AssemblyGenerator {
 
 	public void generateAssembly() {
 		if (instrList.size() == 0) throw new IllegalStateException("No existe codigo intermedio generado.");
+
+
+
+
 	}
 
 }
