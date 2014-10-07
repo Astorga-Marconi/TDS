@@ -50,24 +50,22 @@ public class AssemblyGenerator {
 			switch (instr.getOperator()) {
 
 				case ANDAND:
-						assemblyCode.add("ANDAND");
-					
+						assemblyCode.add("ANDAND");	
 				case OROR:
 						assemblyCode.add("OROR");
+			  	case MOD:
+						assemblyCode.add("MOD");
 					
-
 				case PLUS:
-						assemblyCode.add("PLUS");
-					
+						assemblyCode.add("PLUS");					
 				case MINUS:
-						assemblyCode.add("MINUS");
-								
+						assemblyCode.add("MINUS");							
 				case MULT:
-						assemblyCode.add("MULT");
-					
+						assemblyCode.add("MULT");	
 				case DIV:
 						assemblyCode.add("DIV");
-								
+				case NOT:
+						assemblyCode.add("NOT");					
 			}
 			assemblyCode.add("\n");		
 		}
