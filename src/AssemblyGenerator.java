@@ -32,7 +32,7 @@ public class AssemblyGenerator {
 		return instrList;
 	}
 
-	public void setAssemblyList(List<String> l) {
+	public void setAssemblyCode(List<String> l) {
 		assemblyCode = l;
 	}
 
@@ -125,10 +125,11 @@ public class AssemblyGenerator {
 						assemblyCode.add("DELPARAMS");
 				case LABEL:	
 						assemblyCode.add("LABEL");
+				case RET:
+						assemblyCode.add("RET");
 			}
 			assemblyCode.add("\n");		
 		}
 	}
-
 
 }
