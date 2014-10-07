@@ -72,8 +72,11 @@ public class AssemblyGenerator {
 						assemblyCode.add("movl		$0, %eax\n");
 						assemblyCode.add(".L4:\n");
 						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp)\n");
-			  	case MOD:
-						assemblyCode.add("MOD");
+			  	 case MOD:
+						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %eax \n");
+						assemblyCode.add("cltd\n");
+						assemblyCode.add("idivl	" + instr.getLeftOperand() + "\n");
+						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");
 				case PLUS:
 						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax \n");
 						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %edx \n");					
@@ -90,9 +93,16 @@ public class AssemblyGenerator {
 						assemblyCode.add("imull	%eax, %edx \n");
 						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");	
 				case DIV:
-						assemblyCode.add("DIV");
+						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax \n");
+						assemblyCode.add("cltd\n");
+						assemblyCode.add("idivl	" + instr.getRightOperand() + "\n");
+						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp)\n");
 				case NOT:
-						assemblyCode.add("NOT");					
+						assemblyCode.add("cmpl		$0, " + instr.getLeftOperand() + "(%rbp) \n");
+						assemblyCode.add("sete		%al \n");
+						assemblyCode.add("movzbl	%al, %eax \n");
+						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp) \n");
+									
 			}
 			assemblyCode.add("\n");		
 		}
