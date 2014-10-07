@@ -6,11 +6,12 @@
  * Project: Compilador
  * Authors: Astorga Dario - Marconi Pablo
  * Version: 0.1 
- * Description the class: Clase encargada de la generacion del codigo Assembler a partir del codigo intermedio. 
+ * Description the class: Clase encargada de la generacion del codigo Assembler a partir del codigo intermedio 
  */
 package AssemblyGenerator;
 
 import java.util.*;
+import ir.CodeGen.*;
 import ir.CodeGen.InstrCode;
 
 public class AssemblyGenerator {
@@ -35,16 +36,42 @@ public class AssemblyGenerator {
 		assemblyCode = l;
 	}
 
-	public List<String> getAssemblyList() {
+	public List<String> getAssemblyCode() {
 		return assemblyCode;
 	}
 
 	public void generateAssembly() {
 		if (instrList.size() == 0) throw new IllegalStateException("No existe codigo intermedio generado.");
 
+		// Existe codigo intermedio generado
+		// Encabezado (falta)
 
+		for (InstrCode instr : instrList) {
+			switch (instr.getOperator()) {
 
+				case ANDAND:
+						assemblyCode.add("ANDAND");
+					
+				case OROR:
+						assemblyCode.add("OROR");
+					
 
+				case PLUS:
+						assemblyCode.add("PLUS");
+					
+				case MINUS:
+						assemblyCode.add("MINUS");
+								
+				case MULT:
+						assemblyCode.add("MULT");
+					
+				case DIV:
+						assemblyCode.add("DIV");
+								
+			}
+			assemblyCode.add("\n");		
+		}
 	}
+
 
 }
