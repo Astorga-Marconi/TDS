@@ -45,6 +45,7 @@ public class AssemblyGenerator {
 
 		// Existe codigo intermedio generado
 		// Encabezado (falta)
+		// List<String> l = new LinkedList<String>();
 
 		for (InstrCode instr : instrList) {
 			switch (instr.getOperator()) {
@@ -119,7 +120,11 @@ public class AssemblyGenerator {
 				case LTEQ:
 						assemblyCode.add("LTEQ");
 				case GTEQ:
-						assemblyCode.add("GTEQ");		
+						assemblyCode.add("GTEQ");	
+				case DELPARAMS:
+						assemblyCode.add("DELPARAMS");
+				case LABEL:	
+						assemblyCode.add("LABEL");
 			}
 			assemblyCode.add("\n");		
 		}
