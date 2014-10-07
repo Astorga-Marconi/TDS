@@ -8,7 +8,7 @@
  * Version: 0.1 
  * Description the class: Clase encargada de la generacion del codigo Assembler a partir del codigo intermedio 
  */
-package AssemblyGenerator;
+package assemblyGenerator;
 
 import java.util.*;
 import ir.CodeGen.*;
