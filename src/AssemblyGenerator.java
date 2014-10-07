@@ -50,9 +50,28 @@ public class AssemblyGenerator {
 			switch (instr.getOperator()) {
 
 				case ANDAND:
-						assemblyCode.add("ANDAND");	
+						assemblyCode.add("cmpl		$0, " + instr.getLeftOperand() + "(%rbp)\n");
+						assemblyCode.add("je 		.L2\n");
+						assemblyCode.add("cmpl		$0, " + instr.getRightOperand() + "(%rbp)\n");
+						assemblyCode.add("je 		.L2\n");
+						assemblyCode.add("movl		$1, %eax\n");
+						assemblyCode.add("jmp		.L3\n");
+						assemblyCode.add(".L2:\n");
+						assemblyCode.add("movl		$0, %eax\n");
+						assemblyCode.add(".L3:\n");
+						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp)\n");	
 				case OROR:
-						assemblyCode.add("OROR");
+						assemblyCode.add("cmpl		$0, " + instr.getLeftOperand() + "(%rbp)\n");
+						assemblyCode.add("jne 		.L2\n");
+						assemblyCode.add("cmpl		$0, " + instr.getRightOperand() + "(%rbp)\n");
+						assemblyCode.add("je 		.L3\n");
+						assemblyCode.add(".L2: \n");
+						assemblyCode.add("movl		$1, %eax\n");
+						assemblyCode.add("jmp 		.L4\n");
+						assemblyCode.add(".L3:\n");
+						assemblyCode.add("movl		$0, %eax\n");
+						assemblyCode.add(".L4:\n");
+						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp)\n");
 			  	case MOD:
 						assemblyCode.add("MOD");
 					
