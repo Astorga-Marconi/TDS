@@ -102,7 +102,24 @@ public class AssemblyGenerator {
 						assemblyCode.add("sete		%al \n");
 						assemblyCode.add("movzbl	%al, %eax \n");
 						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp) \n");
-									
+				case JMP:
+		    			assemblyCode.add("jmp 		"+ instr.getResult() + "\n");
+		    	case LT:
+			    		assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax\n");
+						assemblyCode.add("cmpl		" + instr.getRightOperand() + "(%rbp), %eax\n");
+						assemblyCode.add("setl		%al\n");
+						assemblyCode.add("movzbl 	%al, %eax\n");
+						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp)\n");
+				case GT:
+			    		assemblyCode.add("movl		" + instr.getLeftOperand() +"(%rbp), %eax\n");
+						assemblyCode.add("cmpl		" + instr.getRightOperand() + "(%rbp), %eax\n");
+						assemblyCode.add("setg		%al\n");
+						assemblyCode.add("movzbl	%al, %eax\n");
+						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp)\n");
+				case LTEQ:
+						assemblyCode.add("LTEQ");
+				case GTEQ:
+						assemblyCode.add("GTEQ");		
 			}
 			assemblyCode.add("\n");		
 		}
