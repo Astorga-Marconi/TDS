@@ -74,13 +74,21 @@ public class AssemblyGenerator {
 						assemblyCode.add("movl		%eax, " + instr.getResult() + "(%rbp)\n");
 			  	case MOD:
 						assemblyCode.add("MOD");
-					
 				case PLUS:
-						assemblyCode.add("PLUS");					
+						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax \n");
+						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %edx \n");					
+						assemblyCode.add("addl		%eax, %edx \n");
+						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");
 				case MINUS:
-						assemblyCode.add("MINUS");							
+						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %eax \n");
+						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %edx \n");					
+						assemblyCode.add("subl		%eax, %edx \n");
+						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");			
 				case MULT:
-						assemblyCode.add("MULT");	
+						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax \n");
+						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %edx \n");					
+						assemblyCode.add("imull	%eax, %edx \n");
+						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");	
 				case DIV:
 						assemblyCode.add("DIV");
 				case NOT:
