@@ -127,6 +127,15 @@ public class AssemblyGenerator {
 						assemblyCode.add("LABEL");
 				case RET:
 						assemblyCode.add("RET");
+				case MINUSEQ:
+						assemblyCode.add("MINUSEQ");
+				case PLUSEQ:
+						assemblyCode.add("PLUSEQ");
+				case CALL:
+						assemblyCode.add("CALL");
+				case NOTEQ:
+						assemblyCode.add("NOTEQ");
+			
 			}
 			assemblyCode.add("\n");		
 		}
