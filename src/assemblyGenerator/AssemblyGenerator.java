@@ -44,7 +44,7 @@ public class AssemblyGenerator {
 		if (instrList.size() == 0) throw new IllegalStateException("No existe codigo intermedio generado.");
 		// Existe codigo intermedio generado
 		// Encabezado (falta)
-		// List<String> l = new LinkedList<String>();
+		// List<String> l = new LinkedList<String>();   
 		for (InstrCode instr : instrList) {
 			switch (instr.getOperator()) {
 				case PLUS:
