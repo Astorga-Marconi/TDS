@@ -149,7 +149,8 @@ public class AssemblyGenerator {
 				case CALL:
 						assemblyCode.add("CALL");
 				case DELPARAMS:
-						assemblyCode.add("DELPARAMS");
+						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %edi\n");
+						assemblyCode.add("movl	 	%edi, " + instr.getResult() + "(%rsp)\n");
 			}
 			assemblyCode.add("\n");		
 		}
