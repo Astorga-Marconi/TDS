@@ -42,11 +42,9 @@ public class AssemblyGenerator {
 
 	public void generateAssembly() {
 		if (instrList.size() == 0) throw new IllegalStateException("No existe codigo intermedio generado.");
-
 		// Existe codigo intermedio generado
 		// Encabezado (falta)
 		// List<String> l = new LinkedList<String>();
-
 		for (InstrCode instr : instrList) {
 			switch (instr.getOperator()) {
 				case PLUS:
@@ -75,7 +73,6 @@ public class AssemblyGenerator {
 						assemblyCode.add("cltd\n");
 						assemblyCode.add("idivl	" + instr.getLeftOperand() + "\n");
 						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");
-
 				case LT:
 			    		assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax\n");
 						assemblyCode.add("cmpl		" + instr.getRightOperand() + "(%rbp), %eax\n");
