@@ -14,7 +14,7 @@ import ir.semcheck.*;
 import ir.CodeGen.*;
 import java.util.*;
 import error.Error;
-
+import assemblyGenerator.*;
 
 action code {:
 	SymbolTable table = new SymbolTable();
@@ -22,6 +22,7 @@ action code {:
 	Type currentMethodRetType;
 	TypeCheckVisitor typeVisitor = new TypeCheckVisitor();
 	CodeGenVisitor codeGen = new CodeGenVisitor();
+	AssemblyGenerator assemblyGen;
 	Integer currentInLoop = 0;	// Cada vez que abro un bloque de ciclo lo incremento y cuando el bloque
 								// cierra lo decremento. Entonces Si currentInLoop es 0 no se encuentra
 								// en un ciclo, sino lo contrario.
@@ -30,6 +31,11 @@ action code {:
 				System.out.println(e.toString());
 		}
 		codeGen.printInstrs();
+		
+		// Generacion de codigo assembler.
+		assemblyGen = new AssemblyGenerator(codeGen.getInstrList());
+		System.out.println("Generando assembler...");
+		assemblyGen.generateAssembly("prueba");
 		System.out.println("Test finalizado");
 	}
 :}

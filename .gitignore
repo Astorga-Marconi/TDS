@@ -1,6 +1,6 @@
 *.class
 *.java~
-
+*.s
 
 src/Scanner.java
 src/parser.java

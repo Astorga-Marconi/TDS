@@ -31,6 +31,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		jmpLabels = new LinkedList<Expression>();
 	}
 
+	public List<InstrCode> getInstrList() {
+		return instrList;
+	}
+
 	//			visit statements
 	
 	public Expression visit(AssignStmt stmt) {
