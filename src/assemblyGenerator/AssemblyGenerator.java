@@ -13,14 +13,23 @@ package assemblyGenerator;
 import java.util.*;
 import ir.CodeGen.*;
 import ir.CodeGen.InstrCode;
+import java.io.*;
 
 public class AssemblyGenerator {
 
 	private List<InstrCode> instrList;
 	private List<String> assemblyCode;
 
+	private FileWriter file = null;
+	private PrintWriter pw = null;
+
 	public AssemblyGenerator(){
 		instrList = new LinkedList<InstrCode>();
+		assemblyCode = new LinkedList<String>();
+	}
+
+	public AssemblyGenerator(List<InstrCode> l){
+		instrList = l;
 		assemblyCode = new LinkedList<String>();
 	}
 
@@ -32,26 +41,35 @@ public class AssemblyGenerator {
 		return instrList;
 	}
 
-	public void setAssemblyCode(List<String> l) {
-		assemblyCode = l;
-	}
-
-	public List<String> getAssemblyCode() {
-		return assemblyCode;
-	}
-
-	public void generateAssembly() {
+	public void generateAssembly(String nameFile) {
 		if (instrList.size() == 0) throw new IllegalStateException("No existe codigo intermedio generado.");
-		// Existe codigo intermedio generado
-		// Encabezado (falta)
-		// List<String> l = new LinkedList<String>();   
+
+        try 
+        {
+        	file = new FileWriter(nameFile + ".s");
+            pw = new PrintWriter(file);
+
+            /* -- Encabezado -- */  
+            pw.println(".file " + nameFile +".ctds");
+            pw.println(".text ");
+            pw.println(".globl ");
+            pw.println(".type ");
+
+            genInstrAssembly();
+
+            file.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+	private void genInstrAssembly() {
 		for (InstrCode instr : instrList) {
 			switch (instr.getOperator()) {
 				case PLUS:
-						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax \n");
-						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %edx \n");					
-						assemblyCode.add("addl		%eax, %edx \n");
-						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");
+						plusInstrAssembly(instr);
+						break;
 				case MINUS:
 						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %eax \n");
 						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %edx \n");					
@@ -151,6 +169,13 @@ public class AssemblyGenerator {
 			}
 			assemblyCode.add("\n");		
 		}
+	}
+
+	private void plusInstrAssembly(InstrCode instr) {
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %edx");
+		pw.println("addl		%eax, %edx");
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");		
 	}
 
 }
