@@ -135,7 +135,7 @@ public class AssemblyGenerator {
 				case CMP:
 						assemblyCode.add("CMP");
 				case JNE:
-						assemblyCode.add("JNE");
+						assemblyCode.add("jne 		" + instr.getResult() + "\n");
 				case JMP:
 		    			assemblyCode.add("jmp 		"+ instr.getResult() + "\n");
 				case LABEL:	
