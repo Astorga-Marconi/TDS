@@ -43,7 +43,6 @@ public class AssemblyGenerator {
 
 	public void generateAssembly(String nameFile) {
 		if (instrList.size() == 0) throw new IllegalStateException("No existe codigo intermedio generado.");
-
         try 
         {
         	file = new FileWriter(nameFile + ".s");
@@ -71,16 +70,11 @@ public class AssemblyGenerator {
 						plusInstrAssembly(instr);
 						break;
 				case MINUS:
-						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %eax \n");
-						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %edx \n");					
-						assemblyCode.add("subl		%eax, %edx \n");
-						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");			
+						minusInstrAssembly(instr);
+						break;		
 				case MULT:
-						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax \n");
-						assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %edx \n");					
-						assemblyCode.add("imull	%eax, %edx \n");
-						assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");
-
+						multInstrAssembly();
+						break;	
 				case DIV:
 						assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax \n");
 						assemblyCode.add("cltd\n");
@@ -176,6 +170,21 @@ public class AssemblyGenerator {
 		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %edx");
 		pw.println("addl		%eax, %edx");
 		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");		
+	}
+
+	private void minusInstrAssembly(InstrCode instr) {
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edx");					
+		pw.println("subl		%eax, %edx");
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");	
+	}
+
+	private void multInstrAssembly(InstrCode instr) {
+		assemblyCode.add("movl		" + instr.getLeftOperand() + "(%rbp), %eax \n");
+		assemblyCode.add("movl		" + instr.getRightOperand() + "(%rbp), %edx \n");					
+		assemblyCode.add("imull	%eax, %edx \n");
+		assemblyCode.add("movl		%edx, " + instr.getResult() + "(%rbp)\n");
+	
 	}
 
 }
