@@ -40,6 +40,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		instrList.add(new InstrCode(Operator.METHODLABEL, null, null, (new VarLocation(f.getName()) )));
 	}
 
+	public void instrMethodEnd() {
+		instrList.add(new InstrCode(Operator.METHODEND, null, null, null));
+	}
+
 	//			visit statements
 	
 	public Expression visit(AssignStmt stmt) {

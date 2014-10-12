@@ -67,6 +67,9 @@ public class AssemblyGenerator {
 				case METHODLABEL:
 					methodLabelInstrAssembly(instr);
 					break;
+				case METHODEND:
+					methodEndInstrAssembly(instr);
+					break;
 				case PLUS:
 					plusInstrAssembly(instr);
 					break;
@@ -158,6 +161,12 @@ public class AssemblyGenerator {
 		pw.println(instr.getResult() + ":");
 		pw.println("	pushl 	%ebp");
 		pw.println("	movl 	%esp, %ebp");
+	}
+
+	private void methodEndInstrAssembly(InstrCode instr) {
+		pw.println("	popl	%ebp");
+		pw.println("	leave");
+		pw.println("	ret");
 	}
 
 	private void plusInstrAssembly(InstrCode instr) {
@@ -288,8 +297,6 @@ public class AssemblyGenerator {
 	 		pw.println("movl		" + instr.getResult() + "(%rbp), %eax");
 	 	else 
 			pw.println("mov 		$0, %eax");
-	 		pw.println("leave");
-			pw.println("ret");
 	}
 
 	private void cmpInstrAssembly(InstrCode instr) {

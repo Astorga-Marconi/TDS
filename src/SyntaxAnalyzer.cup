@@ -130,7 +130,8 @@ method_decl ::=
 		{:	currentMethodRetType = null;
 			typeVisitor.visit(b);
 			codeGen.instrMethodLabel( new FunctionDescriptor(t1, id1, params));
-			codeGen.visit(b);	:}
+			codeGen.visit(b);
+			codeGen.instrMethodEnd();	:}
 	|	TVOID:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
 		{:	currentMethodRetType = Type.TVOID;
 			table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
@@ -138,7 +139,8 @@ method_decl ::=
 		{:	currentMethodRetType = null;
 			typeVisitor.visit(b);
 			codeGen.instrMethodLabel( new FunctionDescriptor(t1, id1, params));
-			codeGen.visit(b);	:}
+			codeGen.visit(b);
+			codeGen.instrMethodEnd();	:}
 	;
 
 set_method_decl ::= method_decl set_method_decl | method_decl;
