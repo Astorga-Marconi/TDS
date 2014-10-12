@@ -89,6 +89,8 @@ public enum Operator {
 				return "JMP";
 			case LABEL:
 				return "LABEL";
+			case JGE:
+				return "JGE"	
 			case PUSH:
 				return "PUSH";
 			case CALL:
