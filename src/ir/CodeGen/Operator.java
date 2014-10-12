@@ -38,7 +38,8 @@ public enum Operator {
 	INC,
 	PUSH,
 	CALL,
-	DELPARAMS;
+	DELPARAMS,
+	METHODLABEL;
 	
 	@Override
 	public String toString() {
@@ -93,6 +94,8 @@ public enum Operator {
 				return "CALL";
 			case DELPARAMS:
 				return "DELPARAMS";
+			case METHODLABEL:
+				return "METHODLABEL";
 		}
 		return null;
 	}

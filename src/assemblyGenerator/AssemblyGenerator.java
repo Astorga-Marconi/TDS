@@ -49,10 +49,8 @@ public class AssemblyGenerator {
             pw = new PrintWriter(file);
 
             /* -- Encabezado -- */  
-            pw.println(".file " + nameFile +".ctds");
-            pw.println(".text ");
-            pw.println(".globl ");
-            pw.println(".type ");
+            pw.println("	.file 	" + nameFile +".ctds");
+            pw.println("	.text	");
 
             genInstrAssembly();
 
@@ -66,6 +64,9 @@ public class AssemblyGenerator {
 	private void genInstrAssembly() {
 		for (InstrCode instr : instrList) {
 			switch (instr.getOperator()) {
+				case METHODLABEL:
+					methodLabelInstrAssembly(instr);
+					break;
 				case PLUS:
 					plusInstrAssembly(instr);
 					break;
@@ -149,6 +150,14 @@ public class AssemblyGenerator {
 					break;
 			}
 		}
+	}
+
+	private void methodLabelInstrAssembly(InstrCode instr) {
+		pw.println("	.globl	" + instr.getResult());
+		pw.println("	.type	" + instr.getResult() + ", @function");
+		pw.println(instr.getResult() + ":");
+		pw.println("	pushl 	%ebp");
+		pw.println("	movl 	%esp, %ebp");
 	}
 
 	private void plusInstrAssembly(InstrCode instr) {

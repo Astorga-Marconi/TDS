@@ -15,6 +15,7 @@ import java.util.List;
 import ir.ASTVisitor;
 import ir.ast.*;
 import error.Error;
+import semanticAnalyzer.*;
 
 public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
@@ -33,6 +34,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 
 	public List<InstrCode> getInstrList() {
 		return instrList;
+	}
+
+	public void instrMethodLabel(FunctionDescriptor f) {
+		instrList.add(new InstrCode(Operator.METHODLABEL, null, null, (new VarLocation(f.getName()) )));
 	}
 
 	//			visit statements

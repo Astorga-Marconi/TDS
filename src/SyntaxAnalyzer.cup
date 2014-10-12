@@ -129,6 +129,7 @@ method_decl ::=
 		RPAREN block:b
 		{:	currentMethodRetType = null;
 			typeVisitor.visit(b);
+			codeGen.instrMethodLabel( new FunctionDescriptor(t1, id1, params));
 			codeGen.visit(b);	:}
 	|	TVOID:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
 		{:	currentMethodRetType = Type.TVOID;
@@ -136,6 +137,7 @@ method_decl ::=
 		RPAREN block:b
 		{:	currentMethodRetType = null;
 			typeVisitor.visit(b);
+			codeGen.instrMethodLabel( new FunctionDescriptor(t1, id1, params));
 			codeGen.visit(b);	:}
 	;
 
