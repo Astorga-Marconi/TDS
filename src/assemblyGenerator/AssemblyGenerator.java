@@ -221,6 +221,11 @@ public class AssemblyGenerator {
 	}
 
 	private void lteqInstrAssembly(InstrCode instr) {
+		pw.println("mov		" + instr.getOperand1() + "(%rbp), %eax");
+		pw.println("cmp		" + instr.getOperand2() + "(%rbp), %eax");
+		pw.println("setle 	%al");
+		pw.println("movzbl %al, %eax");
+		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
 
 	}
 
