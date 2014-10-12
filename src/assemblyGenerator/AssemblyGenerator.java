@@ -325,7 +325,7 @@ public class AssemblyGenerator {
 	}
 
 	private void labelInstrAssembly(InstrCode instr) {
-
+		pw.println("." + instr.getResult() + " ");   
 	}
 
 	private void jgeInstrAssembly(InstrCode instr) {
