@@ -300,7 +300,8 @@ public class AssemblyGenerator {
 	}
 
 	private void cmpInstrAssembly(InstrCode instr) {
-
+		pw.println("mov " + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("cmp " + instr.getLeftOperand() + "(%rbp), %eax");
 	}
 
 	private void jneInstrAssembly(InstrCode instr) {
