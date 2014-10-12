@@ -7,6 +7,7 @@
  * Authors: Astorga Dario - Marconi Pablo
  * Version: 0.1 
  */
+package semanticAnalyzer;
 
 import ir.ast.*;
 

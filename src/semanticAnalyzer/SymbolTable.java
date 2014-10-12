@@ -8,6 +8,8 @@
  * Authors: Astorga Dario - Marconi Pablo
  * Version: 0.1 
  */
+package semanticAnalyzer;
+
 import ir.ast.*;
 import java.util.LinkedList;
 import java.util.List;

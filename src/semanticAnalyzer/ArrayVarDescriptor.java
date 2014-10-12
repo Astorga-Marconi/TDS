@@ -1,3 +1,4 @@
+package semanticAnalyzer;
 
 import ir.ast.*;
 

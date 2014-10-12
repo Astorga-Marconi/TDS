@@ -15,6 +15,7 @@ import ir.CodeGen.*;
 import java.util.*;
 import error.Error;
 import assemblyGenerator.*;
+import semanticAnalyzer.*;
 
 action code {:
 	SymbolTable table = new SymbolTable();
