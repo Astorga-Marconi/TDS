@@ -341,7 +341,9 @@ public class AssemblyGenerator {
 	}
 
 	private void callInstrAssembly(InstrCode instr) {
-
+		pw.println("call 	" + instr.getLeftOperand() + " ");		
+  		if (instr.getResult() != null)
+  			pw.println("mov 	%eax, " + instr.getResult() + "(%rbp)  ");
 	}
 
 	private void delparamsInstrAssembly(InstrCode instr) {

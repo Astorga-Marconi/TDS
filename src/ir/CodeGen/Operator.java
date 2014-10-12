@@ -90,7 +90,7 @@ public enum Operator {
 			case LABEL:
 				return "LABEL";
 			case JGE:
-				return "JGE"	
+				return "JGE";	
 			case PUSH:
 				return "PUSH";
 			case CALL:
