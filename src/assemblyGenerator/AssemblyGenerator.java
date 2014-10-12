@@ -273,7 +273,10 @@ public class AssemblyGenerator {
 	}
 
 	private void minuseqInstrAssembly(InstrCode instr) {
-
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edx");					
+		pw.println("subl		%eax, %edx");
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void eqInstrAssembly(InstrCode instr) {
