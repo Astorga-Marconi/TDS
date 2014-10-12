@@ -224,7 +224,11 @@ public class AssemblyGenerator {
 	}
 
 	private void noteqInstrAssembly(InstrCode instr) {
-
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("cmpl		" + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("setne 	%al");
+		pw.println("movzbl %al, %eax");
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void andandInstrAssembly(InstrCode instr) {
