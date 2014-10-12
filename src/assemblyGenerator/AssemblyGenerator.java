@@ -278,7 +278,12 @@ public class AssemblyGenerator {
 	}
 
 	private void retInstrAssembly(InstrCode instr) {
-
+		if (instr.getResult() != null) 
+	 		pw.println("movl		" + instr.getResult() + "(%rbp), %eax");
+	 	else 
+			pw.println("mov 		$0, %eax");
+	 		pw.println("leave");
+			pw.println("ret");
 	}
 
 	private void cmpInstrAssembly(InstrCode instr) {
