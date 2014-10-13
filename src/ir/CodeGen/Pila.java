@@ -2,13 +2,13 @@
  * Copyright (C) 2014
  * All rights reserved.
  *
- * File Name: Labels.java
+ * File Name: Pila.java
  * Project: Compilador
  * Authors: Astorga Dario - Marconi Pablo
  * Version: 0.1 
  * Description the class:  
  */
-package assemblyGenerator;
+package ir.CodeGen;
 
 public class Pila {
     private int a;  
