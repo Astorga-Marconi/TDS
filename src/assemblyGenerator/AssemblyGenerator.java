@@ -130,14 +130,14 @@ public class AssemblyGenerator {
 				case JNE:
 					jneInstrAssembly(instr);
 					break;
+				case JGE:
+					jgeInstrAssembly(instr);
+					break;
 				case JMP:
 					jmpInstrAssembly(instr);
 					break;
 				case LABEL:
 					labelInstrAssembly(instr);
-					break;
-				case JGE:
-					jgeInstrAssembly(instr);
 					break;
 				case INC:
 					incInstrAssembly(instr);
@@ -317,11 +317,11 @@ public class AssemblyGenerator {
 	}
 
 	private void jneInstrAssembly(InstrCode instr) {
-		pw.println("jne 		" + instr.getResult());
+		pw.println("jne 	   ." + instr.getResult());
 	}
 
 	private void jmpInstrAssembly(InstrCode instr) {
-		pw.println("jmp 		"+ instr.getResult());
+		pw.println("jmp 	   ."+ instr.getResult());
 	}
 
 	private void labelInstrAssembly(InstrCode instr) {
@@ -329,7 +329,7 @@ public class AssemblyGenerator {
 	}
 
 	private void jgeInstrAssembly(InstrCode instr) {
-
+		pw.println("jge 		." + instr.getResult() + " ");
 	}
 
 	private void incInstrAssembly(InstrCode instr) {

@@ -32,9 +32,9 @@ public enum Operator {
 	RET,
 	CMP,
 	JNE,
+	JGE,
 	JMP,
-	LABEL,
-	JGE,   
+	LABEL,   
 	INC,
 	PUSH,
 	CALL,
@@ -85,12 +85,12 @@ public enum Operator {
 				return "CMP";
 			case JNE:
 				return "JNE";
+			case JGE:
+				return "JGE";
 			case JMP:
 				return "JMP";
 			case LABEL:
-				return "LABEL";
-			case JGE:
-				return "JGE";	
+				return "LABEL";	
 			case PUSH:
 				return "PUSH";
 			case CALL:
