@@ -17,8 +17,10 @@ import ir.ast.*;
 import error.Error;
 import semanticAnalyzer.*;
 
+
 public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
+	private Pila p;
 	private List<Error> errors;
 	private List<InstrCode> instrList ;
 	private Integer labelsIdGen = 0;
@@ -27,6 +29,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 										// con un ciclo se guarda el label inicio y fin de ciclo.
 
 	public CodeGenVisitor() {
+		p = new Pila();
 		errors = new LinkedList<Error>();
 		instrList = new LinkedList<InstrCode>();
 		jmpLabels = new LinkedList<Expression>();
