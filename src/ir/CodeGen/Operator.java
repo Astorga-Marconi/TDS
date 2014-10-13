@@ -34,7 +34,7 @@ public enum Operator {
 	JNE,
 	JMP,
 	LABEL,
-	JGE,
+	JGE,   
 	INC,
 	PUSH,
 	CALL,
