@@ -159,65 +159,65 @@ public class AssemblyGenerator {
 		pw.println("	.globl	" + instr.getResult());
 		pw.println("	.type	" + instr.getResult() + ", @function");
 		pw.println(instr.getResult() + ":");
-		pw.println("	push 	%rbp");
-		pw.println("	mov 	%rsp, %rbp");
+		pw.println("	pushl 	%ebp");
+		pw.println("	movl 	%esp, %ebp");
 	}
 
 	private void methodEndInstrAssembly(InstrCode instr) {
-		pw.println("	pop	%rbp");
+		pw.println("	popl	%ebp");
 		pw.println("	leave");
 		pw.println("	ret");
 	}
 
 	private void plusInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("mov		" + instr.getRightOperand() + "(%rbp), %edx");
-		pw.println("add		%eax, %edx");
-		pw.println("mov		%edx, " + instr.getResult() + "(%rbp)");		
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %edx");
+		pw.println("addl		%eax, %edx");
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");		
 	}
 
 	private void minusInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %edx");
-		pw.println("sub		%eax, %edx");
-		pw.println("mov		%edx, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edx");
+		pw.println("subl		%eax, %edx");
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void multInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("mov		" + instr.getRightOperand() + "(%rbp), %edx");
-		pw.println("imul		%eax, %edx");
-		pw.println("mov		%edx, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %edx");
+		pw.println("imull		%eax, %edx");
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void divInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
 		pw.println("cltd");
-		pw.println("idiv		" + instr.getRightOperand());
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("idivl		" + instr.getRightOperand());
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void modInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
 		pw.println("cltd");
-		pw.println("idiv		" + instr.getLeftOperand());
-		pw.println("mov		%edx, " + instr.getResult() + "(%rbp)");
+		pw.println("idivl		" + instr.getLeftOperand());
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void ltInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("cmp		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("set		%al");
-		pw.println("movzb 		%al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("cmpl		" + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("setl		%al");
+		pw.println("movzbl 		%al, %eax");
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void gtInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() +"(%rbp), %eax");
-		pw.println("cmp		" + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getLeftOperand() +"(%rbp), %eax");
+		pw.println("cmpl		" + instr.getRightOperand() + "(%rbp), %eax");
 		pw.println("setg		%al");
-		pw.println("movzb		%al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("movzbl		%al, %eax");
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void lteqInstrAssembly(InstrCode instr) {
@@ -253,51 +253,51 @@ public class AssemblyGenerator {
 	}
 
 	private void andandInstrAssembly(InstrCode instr) {
-		pw.println("cmp		$0, " + instr.getLeftOperand() + "(%rbp)");
+		pw.println("cmpl		$0, " + instr.getLeftOperand() + "(%rbp)");
 		pw.println("je 			.L2");
-		pw.println("cmp		$0, " + instr.getRightOperand() + "(%rbp)");
+		pw.println("cmpl		$0, " + instr.getRightOperand() + "(%rbp)");
 		pw.println("je 			.L2");
-		pw.println("mov		$1, %eax");
+		pw.println("movl		$1, %eax");
 		pw.println("jmp			.L3");
 		pw.println(".L2:");
-		pw.println("mov		$0, %eax");
+		pw.println("movl		$0, %eax");
 		pw.println(".L3:");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void notInstrAssembly(InstrCode instr) {
-		pw.println("cmp		$0, " + instr.getLeftOperand() + "(%rbp)");
+		pw.println("cmpl		$0, " + instr.getLeftOperand() + "(%rbp)");
 		pw.println("sete		%al");
-		pw.println("movzb		%al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("movzbl		%al, %eax");
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void ororInstrAssembly(InstrCode instr) {
-		pw.println("cmp		$0, " + instr.getLeftOperand() + "(%rbp)");
+		pw.println("cmpl		$0, " + instr.getLeftOperand() + "(%rbp)");
 		pw.println("jne 		.L2");
-		pw.println("cmp		$0, " + instr.getRightOperand() + "(%rbp)");
+		pw.println("cmpl		$0, " + instr.getRightOperand() + "(%rbp)");
 		pw.println("je 			.L3");
 		pw.println(".L2:");
-		pw.println("mov		$1, %eax");
+		pw.println("movl		$1, %eax");
 		pw.println("jmp 		.L4");
 		pw.println(".L3:");
-		pw.println("mov		$0, %eax");
+		pw.println("movl		$0, %eax");
 		pw.println(".L4:");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void pluseqInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("mov		" + instr.getRightOperand() + "(%rbp), %edx");					
-		pw.println("add		%eax, %edx");
-		pw.println("mov		%edx, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %edx");					
+		pw.println("addl		%eax, %edx");
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void minuseqInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %edx");					
-		pw.println("sub		%eax, %edx");
-		pw.println("mov		%edx, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edx");					
+		pw.println("subl		%eax, %edx");
+		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void eqInstrAssembly(InstrCode instr) {
@@ -306,7 +306,7 @@ public class AssemblyGenerator {
 
 	private void retInstrAssembly(InstrCode instr) {
 		if (instr.getResult() != null) 
-	 		pw.println("mov		" + instr.getResult() + "(%rbp), %eax");
+	 		pw.println("movl		" + instr.getResult() + "(%rbp), %eax");
 	 	else 
 			pw.println("mov 		$0, %eax");
 	}
@@ -347,8 +347,8 @@ public class AssemblyGenerator {
 	}
 
 	private void delparamsInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %edi");
-		pw.println("mov	 	%edi, " + instr.getResult() + "(%rsp)");
+		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edi");
+		pw.println("movl	 	%edi, " + instr.getResult() + "(%rsp)");
 	}
 
 }
