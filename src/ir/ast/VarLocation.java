@@ -19,12 +19,16 @@ public class VarLocation extends Location {
 	public VarLocation(String id) {
 		this.id = id;
 		this.blockId = -1;
+		this.offset = maxoffset;
+		maxoffset = maxoffset - 4;
 	}
 
 	public VarLocation(String id, Type t) {
 		this.id = id;
 		this.type = t;
 		this.blockId = -1;
+		this.offset = maxoffset;
+		maxoffset = maxoffset - 4;
 	}
 	
 	public int getBlockId() {

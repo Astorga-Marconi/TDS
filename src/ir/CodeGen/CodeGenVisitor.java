@@ -52,16 +52,18 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	public Expression visit(AssignStmt stmt) {
 		Expression expr = stmt.getExpression().accept(this);
 		Expression loc = stmt.getLocation();
-		Expression resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
+		Expression resExpr;
 		switch (stmt.getOperator()) {
     		case EQ:
     			instrList.add(new InstrCode(Operator.EQ, expr, null, loc));
     			break;
     		case PLUSEQ:
+    			resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
     			instrList.add(new InstrCode(Operator.PLUS, loc, expr, resExpr));
     			instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
     			break;
     		case MINUSEQ:
+    			resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
     			instrList.add(new InstrCode(Operator.MINUS, loc, expr, resExpr));
     			instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
     			break;
@@ -295,9 +297,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	//			visit literals
 	
 	public Expression visit(IntLiteral lit) {
-		Expression res = new VarLocation("int" + Integer.toString(labelsIdGen++));
-		instrList.add(new InstrCode(Operator.EQ, lit, null, res));
-    	return res;
+    	return lit;
 	}
 	
 	public Expression visit(FloatLiteral lit) {

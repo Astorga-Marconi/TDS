@@ -14,6 +14,7 @@ import java.util.*;
 import ir.CodeGen.*;
 import ir.CodeGen.InstrCode;
 import java.io.*;
+import ir.ast.*;
 
 public class AssemblyGenerator {
 
@@ -287,7 +288,7 @@ public class AssemblyGenerator {
 	}
 
 	private void pluseqInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("movl		" + ((Location)instr.getLeftOperand()).getOffset() + "(%rbp), %eax");
 		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %edx");					
 		pw.println("addl		%eax, %edx");
 		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
@@ -301,7 +302,7 @@ public class AssemblyGenerator {
 	}
 
 	private void eqInstrAssembly(InstrCode instr) {
-
+		pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void retInstrAssembly(InstrCode instr) {
