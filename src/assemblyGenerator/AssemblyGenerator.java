@@ -159,12 +159,12 @@ public class AssemblyGenerator {
 		pw.println("	.globl	" + instr.getResult());
 		pw.println("	.type	" + instr.getResult() + ", @function");
 		pw.println(instr.getResult() + ":");
-		pw.println("	push 	%ebp");
-		pw.println("	mov 	%esp, %ebp");
+		pw.println("	push 	%rbp");
+		pw.println("	mov 	%rsp, %rbp");
 	}
 
 	private void methodEndInstrAssembly(InstrCode instr) {
-		pw.println("	pop	%ebp");
+		pw.println("	pop	%rbp");
 		pw.println("	leave");
 		pw.println("	ret");
 	}
