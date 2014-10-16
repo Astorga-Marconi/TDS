@@ -299,7 +299,17 @@ method_call_expr ::=
 
 location ::= 
 		ID:id1
-		{:	RESULT = (table.checkVar(id1)) ? (new VarLocation(id1, (table.search(id1).getType()))) : null;	:}
+		{:	if (table.checkVar(id1)) {
+				if (table.search(id1).getLocation() != null) {
+					RESULT = (VarLocation) table.search(id1).getLocation();
+				} else {
+					VarLocation newVarLoc = new VarLocation(id1, table.search(id1).getType());
+					table.search(id1).setLocation(newVarLoc);
+					RESULT = newVarLoc;
+				}
+			} else {
+				RESULT = null;
+			}	:}
 	|	ID:id1 LBRACK expr RBRACK
 		{:	RESULT = (table.checkArrayVar(id1)) ? (new VarLocation(id1, (table.search(id1).getType()))) : null;	:}
 	;

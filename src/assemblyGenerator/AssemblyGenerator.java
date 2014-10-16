@@ -288,10 +288,7 @@ public class AssemblyGenerator {
 	}
 
 	private void pluseqInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + ((Location)instr.getLeftOperand()).getOffset() + "(%rbp), %eax");
-		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %edx");					
-		pw.println("addl		%eax, %edx");
-		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
+		pw.println("	addl 	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void minuseqInstrAssembly(InstrCode instr) {

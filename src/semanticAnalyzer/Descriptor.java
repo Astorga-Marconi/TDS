@@ -16,9 +16,12 @@ public abstract class Descriptor {
 		public String name;
 		public Type type;
 
+	private Location location;
+
 		public Descriptor(Type newType, String newName){
 			name = newName;
 			type = newType;
+			location = null;
 		}
 		
 		public void setName(String n){
@@ -36,4 +39,13 @@ public abstract class Descriptor {
 		public Type getType(){
 			return type;
 		}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location l) {
+		location = l;
+	}
+
 }
