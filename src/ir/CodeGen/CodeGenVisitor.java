@@ -61,15 +61,19 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			if (expr instanceof IntLiteral) {
     				instrList.add(new InstrCode(Operator.PLUSEQ, expr, null, loc));
     			} else {
-    				resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
-	    			instrList.add(new InstrCode(Operator.PLUS, loc, expr, resExpr));
-	    			instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+    				//resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
+	    			//instrList.add(new InstrCode(Operator.PLUS, loc, expr, resExpr));
+	    			//instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
     			}
     			break;
     		case MINUSEQ:
-    			resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
-    			instrList.add(new InstrCode(Operator.MINUS, loc, expr, resExpr));
-    			instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+    			if (expr instanceof IntLiteral) {
+    				instrList.add(new InstrCode(Operator.MINUSEQ, expr, null, loc));
+    			} else {
+	    			//resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
+	    			//instrList.add(new InstrCode(Operator.MINUS, loc, expr, resExpr));
+	    			//instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+	    		}
     			break;
     	}
 		return null;

@@ -162,6 +162,7 @@ public class AssemblyGenerator {
 		pw.println(instr.getResult() + ":");
 		pw.println("	pushl 	%ebp");
 		pw.println("	movl 	%esp, %ebp");
+		pw.println("	subl	$??, %esp	; falta reservar en memoria");
 	}
 
 	private void methodEndInstrAssembly(InstrCode instr) {
@@ -288,14 +289,19 @@ public class AssemblyGenerator {
 	}
 
 	private void pluseqInstrAssembly(InstrCode instr) {
-		pw.println("	addl 	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	addl 	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		}
 	}
 
 	private void minuseqInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edx");					
-		pw.println("subl		%eax, %edx");
-		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	subl 	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		}
+		//pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
+		//pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edx");					
+		//pw.println("subl		%eax, %edx");
+		//pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void eqInstrAssembly(InstrCode instr) {
