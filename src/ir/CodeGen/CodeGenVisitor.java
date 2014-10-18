@@ -225,7 +225,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	public Expression visit (ArithExpr expr) {
   		Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
-    	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
+    	//VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
     	Operator operator = null;
     	switch (expr.getOperator()) {
     		case PLUS:
@@ -241,8 +241,9 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			operator = Operator.DIV;
     			break;
     	}
-    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
-    	return res;
+    	// Supongo que resultado de la operacion en assembler queda en %edx
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, null));
+    	return null;
  	}
 
   	public Expression visit (RelExpr expr) {

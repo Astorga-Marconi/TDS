@@ -172,17 +172,28 @@ public class AssemblyGenerator {
 	}
 
 	private void plusInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %edx");
-		pw.println("addl		%eax, %edx");
-		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");		
+		if (instr.getLeftOperand() instanceof VarLocation && instr.getRightOperand() instanceof VarLocation) {
+			pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("	movl	" + ((Location)instr.getRightOperand() ).getOffset() + "(%ebp), %edx");
+			pw.println("	addl	%eax, %edx");
+			//pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
+		} else if (instr.getLeftOperand() instanceof IntLiteral && !(instr.getRightOperand() instanceof IntLiteral)) {
+			pw.println("	movl	" + ((Location)instr.getRightOperand() ).getOffset() + "(%ebp), %edx");
+			pw.println("	addl	$" + instr.getLeftOperand() +  ", %edx");
+		} else if (!(instr.getLeftOperand() instanceof IntLiteral) && instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	movl	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
+			pw.println("	addl	$" + instr.getRightOperand() +  ", %edx");
+		} else if (instr.getLeftOperand() instanceof IntLiteral && instr.getRightOperand() instanceof IntLiteral) {
+			int resPlus = Integer.parseInt(""+instr.getLeftOperand()) + Integer.parseInt(""+instr.getRightOperand());
+			pw.println("	movl	$" + resPlus +  ", %edx	; No es muy buena solucion");
+		}
 	}
 
 	private void minusInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edx");
-		pw.println("subl		%eax, %edx");
-		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
+		//pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
+		//pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edx");
+		//pw.println("subl		%eax, %edx");
+		//pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
 	}
 
 	private void multInstrAssembly(InstrCode instr) {
@@ -305,7 +316,15 @@ public class AssemblyGenerator {
 	}
 
 	private void eqInstrAssembly(InstrCode instr) {
-		pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else if (instr.getLeftOperand() instanceof VarLocation) {
+			pw.println("	movl	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
+			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else {
+			// Supongo que valor a asignar esta en edx.
+			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		}
 	}
 
 	private void retInstrAssembly(InstrCode instr) {
