@@ -40,7 +40,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public void instrMethodLabel(FunctionDescriptor f) {
-		instrList.add(new InstrCode(Operator.METHODLABEL, null, null, (new VarLocation(f.getName()) )));
+		instrList.add(new InstrCode(Operator.METHODLABEL, null, null, (new IntLiteral(f.getName()) )));
 	}
 
 	public void instrMethodEnd() {
@@ -58,22 +58,14 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			instrList.add(new InstrCode(Operator.EQ, expr, null, loc));
     			break;
     		case PLUSEQ:
-    			if (expr instanceof IntLiteral) {
-    				instrList.add(new InstrCode(Operator.PLUSEQ, expr, null, loc));
-    			} else {
-    				//resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
-	    			//instrList.add(new InstrCode(Operator.PLUS, loc, expr, resExpr));
-	    			//instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
-    			}
+    			resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
+	    		instrList.add(new InstrCode(Operator.PLUS, loc, expr, resExpr));
+	    		instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
     			break;
     		case MINUSEQ:
-    			if (expr instanceof IntLiteral) {
-    				instrList.add(new InstrCode(Operator.MINUSEQ, expr, null, loc));
-    			} else {
-	    			//resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
-	    			//instrList.add(new InstrCode(Operator.MINUS, loc, expr, resExpr));
-	    			//instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
-	    		}
+	    		resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
+	    		instrList.add(new InstrCode(Operator.MINUS, loc, expr, resExpr));
+	    		instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
     			break;
     	}
 		return null;
@@ -224,8 +216,18 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
   	public Expression visit (ArithExpr expr) {
   		Expression leftOperand = expr.getLeftOperand().accept(this);
+  		if (leftOperand instanceof IntLiteral) {	// Devuelve el literal, no la posicion en donde se guarda
+  			Expression resL = new VarLocation("int" + Integer.toString(labelsIdGen++));
+			instrList.add(new InstrCode(Operator.EQ, leftOperand, null, resL));
+			leftOperand = resL;
+  		}
     	Expression rightOperand = expr.getRightOperand().accept(this);
-    	//VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
+    	if (rightOperand instanceof IntLiteral) {
+  			Expression resR = new VarLocation("int" + Integer.toString(labelsIdGen++));
+			instrList.add(new InstrCode(Operator.EQ, rightOperand, null, resR));
+			rightOperand = resR;
+  		}
+    	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
     	Operator operator = null;
     	switch (expr.getOperator()) {
     		case PLUS:
@@ -241,9 +243,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			operator = Operator.DIV;
     			break;
     	}
-    	// Supongo que resultado de la operacion en assembler queda en %edx
-    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, null));
-    	return null;
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
+    	return res;
  	}
 
   	public Expression visit (RelExpr expr) {

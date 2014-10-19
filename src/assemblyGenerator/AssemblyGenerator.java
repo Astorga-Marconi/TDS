@@ -172,21 +172,10 @@ public class AssemblyGenerator {
 	}
 
 	private void plusInstrAssembly(InstrCode instr) {
-		if (instr.getLeftOperand() instanceof VarLocation && instr.getRightOperand() instanceof VarLocation) {
-			pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
-			pw.println("	movl	" + ((Location)instr.getRightOperand() ).getOffset() + "(%ebp), %edx");
-			pw.println("	addl	%eax, %edx");
-			//pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
-		} else if (instr.getLeftOperand() instanceof IntLiteral && !(instr.getRightOperand() instanceof IntLiteral)) {
-			pw.println("	movl	" + ((Location)instr.getRightOperand() ).getOffset() + "(%ebp), %edx");
-			pw.println("	addl	$" + instr.getLeftOperand() +  ", %edx");
-		} else if (!(instr.getLeftOperand() instanceof IntLiteral) && instr.getRightOperand() instanceof IntLiteral) {
-			pw.println("	movl	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
-			pw.println("	addl	$" + instr.getRightOperand() +  ", %edx");
-		} else if (instr.getLeftOperand() instanceof IntLiteral && instr.getRightOperand() instanceof IntLiteral) {
-			int resPlus = Integer.parseInt(""+instr.getLeftOperand()) + Integer.parseInt(""+instr.getRightOperand());
-			pw.println("	movl	$" + resPlus +  ", %edx	; No es muy buena solucion");
-		}
+		pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
+		pw.println("	addl	%eax, %edx");
+		pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void minusInstrAssembly(InstrCode instr) {
