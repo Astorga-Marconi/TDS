@@ -176,7 +176,7 @@ public class AssemblyGenerator {
 		pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
 		pw.println("	addl	%eax, %edx");
 		pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
-	}
+	} 
 
 	private void minusInstrAssembly(InstrCode instr) {
 		pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
