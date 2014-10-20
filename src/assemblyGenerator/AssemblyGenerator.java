@@ -169,8 +169,7 @@ public class AssemblyGenerator {
 
 	private void methodEndInstrAssembly(InstrCode instr) {
 		pw.println("	leave");
-		pw.println("	ret");
-	}
+		pw.println("	ret"); 
 
 	private void plusInstrAssembly(InstrCode instr) {
 		pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
@@ -309,7 +308,7 @@ public class AssemblyGenerator {
 		if (instr.getLeftOperand() instanceof IntLiteral) {
 			pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else if (instr.getLeftOperand() instanceof VarLocation) {
-			pw.println("	movl	%ecx, %eax");
+			pw.println("	movl	%ecx, %eax");   // Yo lo cambie (Dario)
 			pw.println("	movl	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else {
 			// Supongo que valor a asignar esta en edx.
