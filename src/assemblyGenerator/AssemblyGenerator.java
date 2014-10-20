@@ -162,7 +162,7 @@ public class AssemblyGenerator {
 		pw.println(instr.getResult() + ":");
 		pw.println("	pushl 	%ebp");
 		pw.println("	movl 	%esp, %ebp");
-		pw.println("	subl	$200, %esp	; falta reservar en memoria");
+		pw.println("	subl	$200, %esp ");
 		// cada metodo tendria q saber que offset poner
 		// Puse 200 por ahora , pero ahi que cambiarlo
 	}
@@ -182,8 +182,9 @@ public class AssemblyGenerator {
 	private void minusInstrAssembly(InstrCode instr) {
 		pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
 		pw.println("	movl    " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
-		pw.println("	subl    %eax, %edx");
-		pw.println("	movl    %edx, " + ((Location)instr.getResult()).getOffset()+ "(%ebp)");
+		pw.println("	movl	%edx, %ecx");
+		pw.println("	subl    %eax, %ecx");
+		pw.println("	movl    %eax, " + ((Location)instr.getResult()).getOffset()+ "(%ebp)");
 	}
 
 	private void multInstrAssembly(InstrCode instr) {
