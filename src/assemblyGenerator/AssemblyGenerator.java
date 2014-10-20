@@ -162,14 +162,14 @@ public class AssemblyGenerator {
 		pw.println(instr.getResult() + ":");
 		pw.println("	pushl 	%ebp");
 		pw.println("	movl 	%esp, %ebp");
-		pw.println("	subl	$200, %esp ");
-		// cada metodo tendria q saber que offset poner
-		// Puse 200 por ahora , pero ahi que cambiarlo
+		pw.println("	subl	$200, %esp "); // cada metodo tendria q saber que offset poner
+											 // Puse 200 por ahora , pero ahi que cambiarlo	
 	}
 
 	private void methodEndInstrAssembly(InstrCode instr) {
 		pw.println("	leave");
-		pw.println("	ret"); 
+		pw.println("	ret");
+	}
 
 	private void plusInstrAssembly(InstrCode instr) {
 		pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
@@ -308,8 +308,8 @@ public class AssemblyGenerator {
 		if (instr.getLeftOperand() instanceof IntLiteral) {
 			pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else if (instr.getLeftOperand() instanceof VarLocation) {
-			pw.println("	movl	%ecx, %eax");   // Yo lo cambie (Dario)
-			pw.println("	movl	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			//pw.println("	movl	%ecx, %eax"); // Yo lo comente (Dario)
+			//pw.println("	movl	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else {
 			// Supongo que valor a asignar esta en edx.
 			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
