@@ -164,7 +164,7 @@ public class AssemblyGenerator {
 		pw.println("	movl 	%esp, %ebp");
 		pw.println("	subl	$200, %esp	; falta reservar en memoria");
 		// cada metodo tendria q saber que offset poner
-		// Puse 200 por ahora , pero ahi que acmbiarlo
+		// Puse 200 por ahora , pero ahi que cambiarlo
 	}
 
 	private void methodEndInstrAssembly(InstrCode instr) {
@@ -187,10 +187,9 @@ public class AssemblyGenerator {
 	}
 
 	private void multInstrAssembly(InstrCode instr) {
-		pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%rbp), %eax");
-		pw.println("	imull   " + ((Location)instr.getLeftOperand()).getOffset() + "(%rbp), %eax");
-		//pw.println("	imull   %eax, %edx");
-		pw.println("	movl    %eax, " + ((Location)instr.getResult()).getOffset() + "(%rbp)");
+		pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		pw.println("	imull   " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		pw.println("	movl    %eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void divInstrAssembly(InstrCode instr) {
