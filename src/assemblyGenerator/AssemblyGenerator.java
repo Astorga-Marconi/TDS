@@ -184,7 +184,7 @@ public class AssemblyGenerator {
 		pw.println("	movl    " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
 		pw.println("	movl	%edx, %ecx");
 		pw.println("	subl    %eax, %ecx");
-		pw.println("	movl    %eax, " + ((Location)instr.getResult()).getOffset()+ "(%ebp)");
+		//pw.println("	movl    %eax, " + ((Location)instr.getResult()).getOffset()+ "(%ebp)");
 	}
 
 	private void multInstrAssembly(InstrCode instr) {
@@ -309,8 +309,8 @@ public class AssemblyGenerator {
 		if (instr.getLeftOperand() instanceof IntLiteral) {
 			pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else if (instr.getLeftOperand() instanceof VarLocation) {
-			pw.println("	movl	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
-			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			pw.println("	movl	%ecx, %eax");
+			pw.println("	movl	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else {
 			// Supongo que valor a asignar esta en edx.
 			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
