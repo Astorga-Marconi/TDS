@@ -162,11 +162,12 @@ public class AssemblyGenerator {
 		pw.println(instr.getResult() + ":");
 		pw.println("	pushl 	%ebp");
 		pw.println("	movl 	%esp, %ebp");
-		pw.println("	subl	$??, %esp	; falta reservar en memoria");
+		pw.println("	subl	$200, %esp	; falta reservar en memoria");
+		// cada metodo tendria q saber que offset poner
+		// Puse 200 por ahora , pero ahi que acmbiarlo
 	}
 
 	private void methodEndInstrAssembly(InstrCode instr) {
-		pw.println("	popl	%ebp");
 		pw.println("	leave");
 		pw.println("	ret");
 	}
