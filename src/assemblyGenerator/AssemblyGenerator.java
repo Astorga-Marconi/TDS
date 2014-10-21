@@ -327,10 +327,15 @@ public class AssemblyGenerator {
 	}
 
 	private void retInstrAssembly(InstrCode instr) {
-		if (instr.getResult() != null) 
-	 		pw.println("movl		" + instr.getResult() + "(%rbp), %eax");
-	 	else 
-			pw.println("mov 		$0, %eax");
+		if (instr.getResult() != null) {
+			if (instr.getResult() instanceof Literal) {
+				pw.println("	movl 	$" + instr.getResult() + ", %eax");
+			} else if (instr.getResult() instanceof VarLocation) {
+				pw.println("	movl 	" +  ((Location)instr.getResult()).getOffset() + "(%ebp), %eax");
+			}
+		} else {	// Si el Return no tiene parametros.
+			pw.println("	mov 	$0, %eax");
+		}
 	}
 
 	private void cmpInstrAssembly(InstrCode instr) {
