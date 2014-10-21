@@ -137,15 +137,19 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		VarLocation loc = stmt.getIdLocation();
 		Expression forLabel = new IntLiteral("forLabel" + Integer.toString(labelsIdGen++));
 		Expression endForLabel = new IntLiteral("endForLabel" + Integer.toString(labelsIdGen++));
+		jmpLabels.add(forLabel);	// Agrego los labels para el uso de break's y continue's.
+		jmpLabels.add(endForLabel);
 		instrList.add(new InstrCode(Operator.EQ, initialValExpr, null, loc));
 		instrList.add(new InstrCode(Operator.LABEL, null, null, forLabel));
 		instrList.add(new InstrCode(Operator.CMP, loc, forCondExpr, null));
 		instrList.add(new InstrCode(Operator.JLE, null, null, endForLabel));
 		// Genero las instrucciones del bloque for.
 		Expression forBlockInstrs = stmt.getForBlock().accept(this);
-		instrList.add(new InstrCode(Operator.INC, loc, null, loc));
+		instrList.add(new InstrCode(Operator.INC, loc, null, null));
 		instrList.add(new InstrCode(Operator.JMP, null, null, forLabel));
 		instrList.add(new InstrCode(Operator.LABEL, null, null, endForLabel));
+		jmpLabels.remove(jmpLabels.size()-2);	// Quito los labels, una vez fuera del ciclo son innecesarios.
+		jmpLabels.remove(jmpLabels.size()-1);
   		return null;
   	}
 	

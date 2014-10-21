@@ -50,7 +50,7 @@ public class AssemblyGenerator {
             pw = new PrintWriter(file);
 
             /* -- Encabezado -- */  
-            pw.println("	.file 	" + nameFile +".ctds");
+            //pw.println("	.file 	" + nameFile +".ctds");
             pw.println("	.text	");
 
             genInstrAssembly();
@@ -371,7 +371,7 @@ public class AssemblyGenerator {
 	}
 
 	private void incInstrAssembly(InstrCode instr) {
-		pw.println("	addl 	$1 ," + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)	; incremento la variable del for");
+		pw.println("	addl 	$1 ," + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)	# incremento la variable del for");
 	}
 
 	private void pushInstrAssembly(InstrCode instr) {
