@@ -11,20 +11,16 @@ import ir.ASTVisitor;
 
 public class ForStmt extends Statement {
 
-	private String id;
 	private Expression initialValue;
 	private Expression condition;
 	private Block forBlock;
+	private VarLocation idLocation;
 	
-	public ForStmt(String id, Expression val , Expression cond, Block forBlock) {
-		this.id = id;
+	public ForStmt(VarLocation id, Expression val , Expression cond, Block forBlock) {
+		this.idLocation = id;
 		this.initialValue = val;
 		this.condition = cond;
 		this.forBlock = forBlock;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public void setInitialValue(Expression exp) {
@@ -39,8 +35,8 @@ public class ForStmt extends Statement {
 		this.forBlock = bl;
 	}
 
-	public String getId() {
-		return id;
+	public void setIdLocation(VarLocation id) {
+		this.idLocation = id;
 	}
 
 	public Expression getInitialValue() {
@@ -55,9 +51,13 @@ public class ForStmt extends Statement {
 		return forBlock;
 	}
 
+	public VarLocation getIdLocation() {
+		return idLocation;
+	}
+
 	@Override
 	public String toString() {
-		String rtn = "for " + id + " = " + initialValue.toString() + ", " + condition.toString() + '\n' + forBlock.toString();	
+		String rtn = "for " + idLocation + " = " + initialValue.toString() + ", " + condition.toString() + '\n' + forBlock.toString();	
 		return rtn;
 	}
 

@@ -134,6 +134,12 @@ public class AssemblyGenerator {
 				case JGE:
 					jgeInstrAssembly(instr);
 					break;
+				case JL:
+					jlInstrAssembly(instr);
+					break;
+				case JLE:
+					jleInstrAssembly(instr);
+					break;
 				case JMP:
 					jmpInstrAssembly(instr);
 					break;
@@ -344,6 +350,14 @@ public class AssemblyGenerator {
 		pw.println("	jne 	." + instr.getResult());
 	}
 
+	private void jlInstrAssembly(InstrCode instr) {
+		pw.println("	jl 	." + instr.getResult());
+	}
+
+	private void jleInstrAssembly(InstrCode instr) {
+		pw.println("	jle 	." + instr.getResult());
+	}
+
 	private void jmpInstrAssembly(InstrCode instr) {
 		pw.println("	jmp 	."+ instr.getResult());
 	}
@@ -357,7 +371,7 @@ public class AssemblyGenerator {
 	}
 
 	private void incInstrAssembly(InstrCode instr) {
-
+		pw.println("	addl 	$1 ," + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)	; incremento la variable del for");
 	}
 
 	private void pushInstrAssembly(InstrCode instr) {

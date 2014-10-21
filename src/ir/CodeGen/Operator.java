@@ -34,6 +34,8 @@ public enum Operator {
 	JE,
 	JNE,
 	JGE,
+	JL,
+	JLE,
 	JMP,
 	LABEL,   
 	INC,

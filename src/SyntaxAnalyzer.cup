@@ -208,7 +208,19 @@ statement ::=
 		{: RESULT = a; :}	
 	|	FOR ID:id1 EQ expr:e1 COMMA expr:e2 {:currentInLoop++;:} block:b1
 		{:	currentInLoop--;
-			RESULT = (table.checkVar(id1)) ? (new ForStmt(id1, e1, e2, b1)) : null;	:}
+			if (table.checkVar(id1)) {
+				if (table.search(id1).getLocation() != null) {
+					VarLocation loc = (VarLocation) table.search(id1).getLocation();
+					RESULT = (new ForStmt(loc, e1, e2, b1));
+				} else {
+					VarLocation loc = new VarLocation(id1, table.search(id1).getType());
+					table.search(id1).setLocation(loc);
+					RESULT = (new ForStmt(loc, e1, e2, b1));
+				}
+			} else {
+				RESULT = null;
+			}
+			//RESULT = (table.checkVar(id1)) ? (new ForStmt(id1, e1, e2, b1)) : null;	:}
 	|	WHILE expr:e {:currentInLoop++;:} block:b
 		{:	currentInLoop--;
 			RESULT = new WhileStmt(e, (Block)b); :}
