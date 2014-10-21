@@ -135,8 +135,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		Expression initialValExpr = stmt.getInitialValue().accept(this);
 		Expression forCondExpr = stmt.getCondition().accept(this);
 		VarLocation loc = new VarLocation(stmt.getId());
-		Expression forLabel = new VarLocation("forLabel" + Integer.toString(labelsIdGen++));
-		Expression endForLabel = new VarLocation("endForLabel" + Integer.toString(labelsIdGen++));
+		Expression forLabel = new IntLiteral("forLabel" + Integer.toString(labelsIdGen++));
+		Expression endForLabel = new IntLiteral("endForLabel" + Integer.toString(labelsIdGen++));
 		instrList.add(new InstrCode(Operator.EQ, initialValExpr, null, loc));
 		instrList.add(new InstrCode(Operator.LABEL, null, null, forLabel));
 		instrList.add(new InstrCode(Operator.CMP, loc, forCondExpr, null));

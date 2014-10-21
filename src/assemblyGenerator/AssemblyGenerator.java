@@ -313,8 +313,8 @@ public class AssemblyGenerator {
 		if (instr.getLeftOperand() instanceof IntLiteral) {
 			pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else if (instr.getLeftOperand() instanceof VarLocation) {
-			//pw.println("	movl	%ecx, %eax"); // Yo lo comente (Dario)
-			//pw.println("	movl	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			pw.println("	movl 	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
+			pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else {
 			// Supongo que valor a asignar esta en edx.
 			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
@@ -346,7 +346,7 @@ public class AssemblyGenerator {
 	}
 
 	private void jmpInstrAssembly(InstrCode instr) {
-		pw.println("jmp 	   ."+ instr.getResult());
+		pw.println("	jmp 	."+ instr.getResult());
 	}
 
 	private void labelInstrAssembly(InstrCode instr) {
@@ -354,7 +354,7 @@ public class AssemblyGenerator {
 	}
 
 	private void jgeInstrAssembly(InstrCode instr) {
-		pw.println("jge 		." + instr.getResult() + " ");
+		pw.println("	jge 	." + instr.getResult());
 	}
 
 	private void incInstrAssembly(InstrCode instr) {
