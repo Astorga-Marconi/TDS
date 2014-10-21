@@ -31,6 +31,7 @@ public enum Operator {
 	EQ,
 	RET,
 	CMP,
+	JE,
 	JNE,
 	JGE,
 	JMP,

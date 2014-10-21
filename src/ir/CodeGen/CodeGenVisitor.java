@@ -82,16 +82,44 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 
 	public Expression visit(IfStmt stmt)  {
 		Expression ifCond = stmt.getCondition().accept(this);
-		Expression endIfLabel = new VarLocation("endIfLabel" + Integer.toString(labelsIdGen++));
-		instrList.add(new InstrCode(Operator.CMP, ifCond, (new BoolLiteral("true")), null));
+		Operator jop = null;	// El salto a realizar dependiendo de la condicion del if.
+		// Falta el problema de NotExpr!
+		if (ifCond instanceof EqExpr) {	// Si la condicion es de igualdad o no igualdad.
+			switch (((EqExpr)ifCond).getOperator()) {
+	    		case EQEQ:
+	    			jop = Operator.JNE;
+	    			break;
+	    		case NOTEQ:
+	    			jop = Operator.JE;
+	    			break;
+	    	}
+		} else if (ifCond instanceof RelExpr) {	// Si la condicion es relacional.
+			switch (((RelExpr)ifCond).getOperator()) {
+	    		case GT:
+	    			jop = Operator.LTEQ;
+	    			break;
+	    		case LT:
+	    			jop = Operator.GTEQ;
+	    			break;
+	    		case LTEQ:
+	    			jop = Operator.GT;
+	    			break;
+	    		case GTEQ:
+	    			jop = Operator.LT;
+	    			break;
+	    	}
+		}
+		Expression endIfLabel = new IntLiteral("endIfLabel" + Integer.toString(labelsIdGen++));
+		//instrList.add(new InstrCode(Operator.CMP, ifCond, (new BoolLiteral("true")), null));
+		instrList.add(new InstrCode(Operator.CMP, ((BinOpExpr)ifCond).getLeftOperand().accept(this), ((BinOpExpr)ifCond).getRightOperand().accept(this), null));
 		if (stmt.getElseBlock() == null) {	// Si no tengo un else
-			instrList.add(new InstrCode(Operator.JNE, null, null, endIfLabel));
+			instrList.add(new InstrCode(jop, null, null, endIfLabel));
 			// Genero las instrucciones del bloque if
 			Expression ifInstrs = stmt.getIfBlock().accept(this);
 			instrList.add(new InstrCode(Operator.LABEL, null, null, endIfLabel));
 		} else {	// Si tengo un else
-			Expression elseLabel = new VarLocation("elseLabel" + Integer.toString(labelsIdGen++));
-			instrList.add(new InstrCode(Operator.JNE, null, null, elseLabel));
+			Expression elseLabel = new IntLiteral("elseLabel" + Integer.toString(labelsIdGen++));
+			instrList.add(new InstrCode(jop, null, null, elseLabel));
 			// Genero las instrucciones del bloque if
 			Expression ifInstrs = stmt.getIfBlock().accept(this);
 			instrList.add(new InstrCode(Operator.JMP, null, null, endIfLabel));
@@ -180,7 +208,6 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	//			visit Expressions
 
 	public Expression visit(BinOpExpr expr) {
-		System.out.println("Paso por BinOpExpr");
 		return null;
 	}
 	
@@ -227,7 +254,6 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 			instrList.add(new InstrCode(Operator.EQ, rightOperand, null, resR));
 			rightOperand = resR;
   		}
-    	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
     	Operator operator = null;
     	switch (expr.getOperator()) {
     		case PLUS:
@@ -243,12 +269,13 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			operator = Operator.DIV;
     			break;
     	}
+    	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
  	}
 
   	public Expression visit (RelExpr expr) {
-  		Expression leftOperand = expr.getLeftOperand().accept(this);
+  		/*Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
     	VarLocation res = new VarLocation("relRes" + Integer.toString(labelsIdGen++));
     	Operator operator = null;
@@ -266,8 +293,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			operator = Operator.GTEQ;
     			break;
     	}
-    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
-    	return res;
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));*/
+    	return expr;
   	}
 
   	public Expression visit (CondExpr expr)   {
@@ -288,7 +315,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	}
 
   	public Expression visit (EqExpr expr)   {
-  		Expression leftOperand = expr.getLeftOperand().accept(this);
+  		/*Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
     	VarLocation res = new VarLocation("eqRes" + Integer.toString(labelsIdGen++));  
     	Operator operator = null;
@@ -300,8 +327,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			operator = Operator.NOTEQ;
     			break;
     	}
-    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
-    	return res;
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));*/
+    	return expr;
   	}
   	
 	//			visit literals

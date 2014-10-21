@@ -207,43 +207,47 @@ public class AssemblyGenerator {
 	}
 
 	private void ltInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("	jl 	." + instr.getResult());
+		/*pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
 		pw.println("cmpl		" + instr.getRightOperand() + "(%rbp), %eax");
 		pw.println("setl		%al");
 		pw.println("movzbl 		%al, %eax");
-		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");*/
 	}
 
 	private void gtInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getLeftOperand() +"(%rbp), %eax");
+		pw.println("	jg 	." + instr.getResult());
+		/*pw.println("movl		" + instr.getLeftOperand() +"(%rbp), %eax");
 		pw.println("cmpl		" + instr.getRightOperand() + "(%rbp), %eax");
 		pw.println("setg		%al");
 		pw.println("movzbl		%al, %eax");
-		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");*/
 	}
 
 	private void lteqInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("	jle 	." + instr.getResult());
+		/*pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
 		pw.println("cmp		" + instr.getRightOperand() + "(%rbp), %eax");
 		pw.println("setle 	%al");
 		pw.println("movzbl %al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");*/
 	}
 
 	private void gteqInstrAssembly(InstrCode instr) {
-		pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
+		pw.println("	jge 	." + instr.getResult());
+		/*pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
 		pw.println("cmp		" + instr.getRightOperand() + "(%rbp), %eax");
 		pw.println("setge 	%al");
 		pw.println("movzb %al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");*/
 	}
 
 	private void eqeqInstrAssembly(InstrCode instr) {
-		pw.println("mov 	" + instr.getLeftOperand() + "(%rbp), %eax");
+		/*pw.println("mov 	" + instr.getLeftOperand() + "(%rbp), %eax");
 		pw.println("cmp		" + instr.getRightOperand() + "(%rbp), %eax");
 		pw.println("sete		%al");
 		pw.println("movzb	%al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");
+		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");*/
 	}
 
 	private void noteqInstrAssembly(InstrCode instr) {
@@ -324,12 +328,20 @@ public class AssemblyGenerator {
 	}
 
 	private void cmpInstrAssembly(InstrCode instr) {
-		pw.println("mov " + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("cmp " + instr.getLeftOperand() + "(%rbp), %eax");
+		if (instr.getLeftOperand() instanceof Literal && instr.getRightOperand() instanceof Literal) {
+			pw.println("	cmp 	$" + instr.getLeftOperand() + ", $" + instr.getRightOperand());
+		} else if (instr.getLeftOperand() instanceof Literal && !(instr.getRightOperand() instanceof Literal)) {
+			pw.println("	cmp 	$" + instr.getLeftOperand() + ", " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		} else if (!(instr.getLeftOperand() instanceof Literal) && instr.getRightOperand() instanceof Literal) {
+			pw.println("	cmp 	$" + instr.getRightOperand() + ", " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		}else {
+			pw.println("	mov 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("	cmp 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		}
 	}
 
 	private void jneInstrAssembly(InstrCode instr) {
-		pw.println("jne 	   ." + instr.getResult());
+		pw.println("	jne 	." + instr.getResult());
 	}
 
 	private void jmpInstrAssembly(InstrCode instr) {
@@ -337,7 +349,7 @@ public class AssemblyGenerator {
 	}
 
 	private void labelInstrAssembly(InstrCode instr) {
-		pw.println("." + instr.getResult() + " ");   
+		pw.println("." + instr.getResult() + ":");
 	}
 
 	private void jgeInstrAssembly(InstrCode instr) {
