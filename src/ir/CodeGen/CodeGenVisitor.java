@@ -192,15 +192,17 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 	
 	public Expression visit(MethodCallStmt stmt) {
-		for (Expression e: stmt.getParameters()) {
-			Expression parameter = e.accept(this);
+		List lParams = stmt.getParameters();
+		for (int i = lParams.size()-1; i >= 0 ; i--) {
+			Expression parameter = ((Expression)lParams.get(i)).accept(this);
 			instrList.add(new InstrCode(Operator.PUSH, parameter, null, null));
 		}
-		VarLocation nameMethod = new VarLocation(stmt.getId());
+		Expression nameMethod = new IntLiteral(stmt.getId());
 		instrList.add(new InstrCode(Operator.CALL, nameMethod, null, null));
 		if (stmt.getParameters().size() > 0) {
+			Expression  numParams = new IntLiteral(""+stmt.getParameters().size());
 			// DELPARAMS saca los parametros metidos en la pila con anterioridad.
-			instrList.add(new InstrCode(Operator.DELPARAMS, null, null, null));
+			instrList.add(new InstrCode(Operator.DELPARAMS, numParams, null, null));
 		}
 		return null;
 	}
@@ -216,6 +218,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 	
 	public Expression visit(MethodCallExpr expr) {
+		/*Expression nameMethod = new IntLiteral(expr.getId());
+		VarLocation res = new VarLocation("methodReturn" + Integer.toString(labelsIdGen++));
+    	instrList.add(new InstrCode(Operator.CALL, nameMethod, null, res));
+		return res;*/
 		return null;
 	}
 	

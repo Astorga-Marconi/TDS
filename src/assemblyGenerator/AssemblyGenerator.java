@@ -380,18 +380,18 @@ public class AssemblyGenerator {
 	}
 
 	private void pushInstrAssembly(InstrCode instr) {
-
+		pw.println("	push 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 	}
 
 	private void callInstrAssembly(InstrCode instr) {
-		pw.println("call 	" + instr.getLeftOperand() + " ");		
-  		if (instr.getResult() != null)
-  			pw.println("mov 	%eax, " + instr.getResult() + "(%rbp)  ");
+		pw.println("	call 	" + instr.getLeftOperand());
+  		/*if (instr.getResult() != null)
+  			pw.println("	mov 	%eax, " + instr.getResult() + "(%ebp)");*/
 	}
 
 	private void delparamsInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %edi");
-		pw.println("movl	 	%edi, " + instr.getResult() + "(%rsp)");
+		int num = Integer.parseInt(""+instr.getLeftOperand()) * 4;
+		pw.println("	addl 	$" + num + ", %esp");
 	}
 
 }

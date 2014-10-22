@@ -281,9 +281,9 @@ assign_op ::=
 
 method_call_stmt ::= 
 		ID:id1 LPAREN  RPAREN
-		{:	RESULT = (table.checkMethodCall(id1, (new LinkedList<Expression>()) )) ? (new MethodCallStmt(id1)) : null;	:}
+		{:	RESULT = (table.checkMethodCall(id1, (new LinkedList<Expression>()) )) ? (new MethodCallStmt(id1, (new LinkedList<Expression>()))) : null;	:}
 	|	ID:id1 LPAREN list_expr:le RPAREN
-		{:	RESULT = (table.checkMethodCall(id1, le)) ? (new MethodCallStmt(id1)) : null;	:}
+		{:	RESULT = (table.checkMethodCall(id1, le)) ? (new MethodCallStmt(id1, le)) : null;	:}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t RPAREN
 		{: RESULT = new ExternInvkStmt(id1, t); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t COMMA list_externinvk_arg:l RPAREN
