@@ -178,14 +178,22 @@ public class AssemblyGenerator {
 	}
 
 	private void plusInstrAssembly(InstrCode instr) {
-		pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+		} else {
+			pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		}
 		pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
 		pw.println("	addl	%eax, %edx");
 		pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	} 
 
 	private void minusInstrAssembly(InstrCode instr) {
-		pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+		} else {
+			pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		}
 		pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
 		pw.println("	subl	%eax, %edx");
 		pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
