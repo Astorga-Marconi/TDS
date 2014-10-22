@@ -278,10 +278,10 @@ public class AssemblyGenerator {
 	}
 
 	private void notInstrAssembly(InstrCode instr) {
-		pw.println("	cmpl    $0, " + instr.getLeftOperand() + "(%rbp)");
+		pw.println("	cmpl    $0, " + instr.getLeftOperand() + "(%ebp)");
 		pw.println("	sete    %al");
 		pw.println("	movzbl  %al, %eax");
-		pw.println("	movl    %eax, " + instr.getResult() + "(%rbp)");
+		pw.println("	movl    %eax, " + instr.getResult() + "(%ebp)");
 	}
 
 	private void ororInstrAssembly(InstrCode instr) {
