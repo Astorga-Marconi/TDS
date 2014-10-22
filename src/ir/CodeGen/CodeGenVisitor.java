@@ -348,9 +348,9 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(BoolLiteral lit) {
-		Expression res = new VarLocation("boolean" + Integer.toString(labelsIdGen++));	
-		instrList.add(new InstrCode(Operator.EQ, (new BoolLiteral (lit.getValue().toString())), null, res));
-    	return res;
+		//Expression res = new VarLocation("boolean" + Integer.toString(labelsIdGen++));	
+		//instrList.add(new InstrCode(Operator.EQ, (new BoolLiteral (lit.getValue().toString())), null, res));
+    	return lit;
 	}
 
 	//			visit locations	
