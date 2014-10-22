@@ -272,6 +272,9 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     		case DIV:
     			operator = Operator.DIV;
     			break;
+    		case MOD:
+    			operator = Operator.MOD;
+    			break;
     	}
     	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
