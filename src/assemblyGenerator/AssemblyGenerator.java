@@ -206,10 +206,10 @@ public class AssemblyGenerator {
 	}
 
 	private void modInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("cltd");
-		pw.println("idivl		" + instr.getLeftOperand());
-		pw.println("movl		%edx, " + instr.getResult() + "(%rbp)");
+		pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		pw.println("	cltd ");
+		pw.println("	idivl   " + ((Location)instr.getLeftOperand()).getOffset());
+		pw.println("	movl    %edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void ltInstrAssembly(InstrCode instr) {
