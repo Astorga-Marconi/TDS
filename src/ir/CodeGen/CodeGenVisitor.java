@@ -82,44 +82,16 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 
 	public Expression visit(IfStmt stmt)  {
 		Expression ifCond = stmt.getCondition().accept(this);
-		Operator jop = null;	// El salto a realizar dependiendo de la condicion del if.
-		// Falta el problema de NotExpr!
-		if (ifCond instanceof EqExpr) {	// Si la condicion es de igualdad o no igualdad.
-			switch (((EqExpr)ifCond).getOperator()) {
-	    		case EQEQ:
-	    			jop = Operator.JNE;
-	    			break;
-	    		case NOTEQ:
-	    			jop = Operator.JE;
-	    			break;
-	    	}
-		} else if (ifCond instanceof RelExpr) {	// Si la condicion es relacional.
-			switch (((RelExpr)ifCond).getOperator()) {
-	    		case GT:
-	    			jop = Operator.LTEQ;
-	    			break;
-	    		case LT:
-	    			jop = Operator.GTEQ;
-	    			break;
-	    		case LTEQ:
-	    			jop = Operator.GT;
-	    			break;
-	    		case GTEQ:
-	    			jop = Operator.LT;
-	    			break;
-	    	}
-		}
 		Expression endIfLabel = new IntLiteral("endIfLabel" + Integer.toString(labelsIdGen++));
-		//instrList.add(new InstrCode(Operator.CMP, ifCond, (new BoolLiteral("true")), null));
-		instrList.add(new InstrCode(Operator.CMP, ((BinOpExpr)ifCond).getLeftOperand().accept(this), ((BinOpExpr)ifCond).getRightOperand().accept(this), null));
+		instrList.add(new InstrCode(Operator.CMP, ifCond, (new BoolLiteral("true")), null));
 		if (stmt.getElseBlock() == null) {	// Si no tengo un else
-			instrList.add(new InstrCode(jop, null, null, endIfLabel));
+			instrList.add(new InstrCode(Operator.JNE, null, null, endIfLabel));
 			// Genero las instrucciones del bloque if
 			Expression ifInstrs = stmt.getIfBlock().accept(this);
 			instrList.add(new InstrCode(Operator.LABEL, null, null, endIfLabel));
 		} else {	// Si tengo un else
 			Expression elseLabel = new IntLiteral("elseLabel" + Integer.toString(labelsIdGen++));
-			instrList.add(new InstrCode(jop, null, null, elseLabel));
+			instrList.add(new InstrCode(Operator.JNE, null, null, elseLabel));
 			// Genero las instrucciones del bloque if
 			Expression ifInstrs = stmt.getIfBlock().accept(this);
 			instrList.add(new InstrCode(Operator.JMP, null, null, endIfLabel));
@@ -288,7 +260,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
  	}
 
   	public Expression visit (RelExpr expr) {
-  		/*Expression leftOperand = expr.getLeftOperand().accept(this);
+  		Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
     	VarLocation res = new VarLocation("relRes" + Integer.toString(labelsIdGen++));
     	Operator operator = null;
@@ -306,7 +278,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			operator = Operator.GTEQ;
     			break;
     	}
-    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));*/
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return expr;
   	}
 
@@ -328,7 +300,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	}
 
   	public Expression visit (EqExpr expr)   {
-  		/*Expression leftOperand = expr.getLeftOperand().accept(this);
+  		Expression leftOperand = expr.getLeftOperand().accept(this);
     	Expression rightOperand = expr.getRightOperand().accept(this);
     	VarLocation res = new VarLocation("eqRes" + Integer.toString(labelsIdGen++));  
     	Operator operator = null;
@@ -340,8 +312,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			operator = Operator.NOTEQ;
     			break;
     	}
-    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));*/
-    	return expr;
+    	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
+    	return res;
   	}
   	
 	//			visit literals
@@ -357,9 +329,9 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(BoolLiteral lit) {
-		//Expression res = new VarLocation("boolean" + Integer.toString(labelsIdGen++));	
-		//instrList.add(new InstrCode(Operator.EQ, (new BoolLiteral (lit.getValue().toString())), null, res));
-    	return lit;
+		Expression res = new VarLocation("boolean" + Integer.toString(labelsIdGen++));	
+		instrList.add(new InstrCode(Operator.EQ, lit, null, res));
+    	return res;
 	}
 
 	//			visit locations	

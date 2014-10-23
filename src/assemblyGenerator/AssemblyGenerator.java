@@ -24,6 +24,8 @@ public class AssemblyGenerator {
 	private FileWriter file = null;
 	private PrintWriter pw = null;
 
+	private Integer labelsIdGen = 0;
+
 	public AssemblyGenerator(){
 		instrList = new LinkedList<InstrCode>();
 		assemblyCode = new LinkedList<String>();
@@ -213,89 +215,153 @@ public class AssemblyGenerator {
 	}
 
 	private void ltInstrAssembly(InstrCode instr) {
-		pw.println("	jl 	." + instr.getResult());
-		/*pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("cmpl		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("setl		%al");
-		pw.println("movzbl 		%al, %eax");
-		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");*/
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+		} else if (instr.getLeftOperand() instanceof Location){
+			pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		}
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+		} else if (instr.getRightOperand() instanceof Location){
+			pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		}
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endEqEq" + Integer.toString(labelsIdGen++);
+		pw.println("	jge 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
 	}
 
 	private void gtInstrAssembly(InstrCode instr) {
-		pw.println("	jg 	." + instr.getResult());
-		/*pw.println("movl		" + instr.getLeftOperand() +"(%rbp), %eax");
-		pw.println("cmpl		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("setg		%al");
-		pw.println("movzbl		%al, %eax");
-		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");*/
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+		} else if (instr.getLeftOperand() instanceof Location){
+			pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		}
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+		} else if (instr.getRightOperand() instanceof Location){
+			pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		}
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endEqEq" + Integer.toString(labelsIdGen++);
+		pw.println("	jle 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
 	}
 
 	private void lteqInstrAssembly(InstrCode instr) {
-		pw.println("	jle 	." + instr.getResult());
-		/*pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("cmp		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("setle 	%al");
-		pw.println("movzbl %al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");*/
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+		} else if (instr.getLeftOperand() instanceof Location){
+			pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		}
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+		} else if (instr.getRightOperand() instanceof Location){
+			pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		}
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endEqEq" + Integer.toString(labelsIdGen++);
+		pw.println("	jg 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
 	}
 
 	private void gteqInstrAssembly(InstrCode instr) {
-		pw.println("	jge 	." + instr.getResult());
-		/*pw.println("mov		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("cmp		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("setge 	%al");
-		pw.println("movzb %al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");*/
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+		} else if (instr.getLeftOperand() instanceof Location){
+			pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		}
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+		} else if (instr.getRightOperand() instanceof Location){
+			pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		}
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endEqEq" + Integer.toString(labelsIdGen++);
+		pw.println("	jl 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
 	}
 
 	private void eqeqInstrAssembly(InstrCode instr) {
-		/*pw.println("mov 	" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("cmp		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("sete		%al");
-		pw.println("movzb	%al, %eax");
-		pw.println("mov		%eax, " + instr.getResult() + "(%rbp)");*/
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+		} else if (instr.getLeftOperand() instanceof Location){
+			pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		}
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+		} else if (instr.getRightOperand() instanceof Location){
+			pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		}
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endEqEq" + Integer.toString(labelsIdGen++);
+		pw.println("	jne 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
 	}
 
 	private void noteqInstrAssembly(InstrCode instr) {
-		pw.println("movl		" + instr.getLeftOperand() + "(%rbp), %eax");
-		pw.println("cmpl		" + instr.getRightOperand() + "(%rbp), %eax");
-		pw.println("setne 	%al");
-		pw.println("movzbl %al, %eax");
-		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
+		if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+		} else if (instr.getLeftOperand() instanceof Location){
+			pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		}
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+		} else if (instr.getRightOperand() instanceof Location){
+			pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		}
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endEqEq" + Integer.toString(labelsIdGen++);
+		pw.println("	je 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
 	}
 
 	private void andandInstrAssembly(InstrCode instr) {
-		pw.println("cmpl		$0, " + instr.getLeftOperand() + "(%rbp)");
-		pw.println("je 			.L2");
-		pw.println("cmpl		$0, " + instr.getRightOperand() + "(%rbp)");
-		pw.println("je 			.L2");
-		pw.println("movl		$1, %eax");
-		pw.println("jmp			.L3");
-		pw.println(".L2:");
-		pw.println("movl		$0, %eax");
-		pw.println(".L3:");
-		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
+
 	}
 
 	private void notInstrAssembly(InstrCode instr) {
-		pw.println("	cmpl    $0, " + instr.getLeftOperand() + "(%ebp)");
-		pw.println("	sete    %al");
-		pw.println("	movzbl  %al, %eax");
-		pw.println("	movl    %eax, " + instr.getResult() + "(%ebp)");
+
 	}
 
 	private void ororInstrAssembly(InstrCode instr) {
-		pw.println("cmpl		$0, " + instr.getLeftOperand() + "(%rbp)");
-		pw.println("jne 		.L2");
-		pw.println("cmpl		$0, " + instr.getRightOperand() + "(%rbp)");
-		pw.println("je 			.L3");
-		pw.println(".L2:");
-		pw.println("movl		$1, %eax");
-		pw.println("jmp 		.L4");
-		pw.println(".L3:");
-		pw.println("movl		$0, %eax");
-		pw.println(".L4:");
-		pw.println("movl		%eax, " + instr.getResult() + "(%rbp)");
+
 	}
 
 	private void pluseqInstrAssembly(InstrCode instr) {
@@ -320,6 +386,12 @@ public class AssemblyGenerator {
 		} else if (instr.getLeftOperand() instanceof VarLocation) {
 			pw.println("	movl 	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
 			pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else if (instr.getLeftOperand() instanceof BoolLiteral){
+			if (((""+instr.getLeftOperand()).equals("true"))) {
+				pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			} else if (((""+instr.getLeftOperand()).equals("false"))) {
+				pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			}
 		} else {
 			// Supongo que valor a asignar esta en edx.
 			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
@@ -339,15 +411,14 @@ public class AssemblyGenerator {
 	}
 
 	private void cmpInstrAssembly(InstrCode instr) {
-		if (instr.getLeftOperand() instanceof Literal && instr.getRightOperand() instanceof Literal) {
-			pw.println("	cmp 	$" + instr.getLeftOperand() + ", $" + instr.getRightOperand());
-		} else if (instr.getLeftOperand() instanceof Literal && !(instr.getRightOperand() instanceof Literal)) {
-			pw.println("	cmp 	$" + instr.getLeftOperand() + ", " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
-		} else if (!(instr.getLeftOperand() instanceof Literal) && instr.getRightOperand() instanceof Literal) {
-			pw.println("	cmp 	$" + instr.getRightOperand() + ", " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
-		}else {
-			pw.println("	mov 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
-			pw.println("	cmp 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		if (instr.getLeftOperand() instanceof Literal && instr.getRightOperand() instanceof Literal)
+			pw.println("	cmpl 	$" + instr.getLeftOperand() + ", $" + instr.getRightOperand());
+		if (instr.getLeftOperand() instanceof VarLocation && instr.getRightOperand() instanceof BoolLiteral){
+			if (((""+instr.getRightOperand()).equals("true"))) {
+				pw.println("	cmpl 	$1, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			} else if (((""+instr.getRightOperand()).equals("false"))) {
+				pw.println("	cmpl 	$0, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			}
 		}
 	}
 
