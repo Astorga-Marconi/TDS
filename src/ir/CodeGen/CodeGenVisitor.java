@@ -196,6 +196,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		return res;*/
 		return null;
 	}
+
+	public Expression visit(ExternInvkExpr expr) {
+		return null;
+	}
 	
 	public Expression visit(ExternInvkArgExpr expr) {
 		return null;

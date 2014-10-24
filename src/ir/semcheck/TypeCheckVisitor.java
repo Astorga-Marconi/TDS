@@ -124,6 +124,10 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	public Type visit(MethodCallExpr expr) {
 		return null;
 	}
+
+	public Type visit(ExternInvkExpr expr) {
+		return null;
+	}
 	
 	public Type visit(ExternInvkArgExpr expr) {
 		return null;
