@@ -8,6 +8,7 @@
  * Version: 0.1 
  */
 package ir;
+
 import ir.ast.*;
 
 // Abstract visitor
