@@ -30,7 +30,7 @@ public class ExternInvkExpr extends Expression {
 	public ExternInvkExpr(String id, Type type, LinkedList<Expression> args) {
 		this.idInvk = id;
 		this.type = type;
-		largs = args;
+		this.largs = args;
 	}
 
 	public String getId(){
