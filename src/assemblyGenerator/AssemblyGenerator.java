@@ -365,7 +365,17 @@ public class AssemblyGenerator {
 	}
 
 	private void notInstrAssembly(InstrCode instr) {
-
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endNot" + Integer.toString(labelsIdGen++);
+		pw.println("	cmpl 	$1, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		pw.println("	je 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
 	}
 
 	private void ororInstrAssembly(InstrCode instr) {

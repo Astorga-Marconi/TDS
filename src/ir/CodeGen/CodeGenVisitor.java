@@ -217,9 +217,9 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 	
 	public Expression visit (NotExpr expr)   {
-    	Expression oper = expr.getExpression().accept(this);
+    	Expression boolExpr = expr.getExpression().accept(this);
   		Expression res = new VarLocation("notRes" + Integer.toString(labelsIdGen++));
-		instrList.add(new InstrCode(Operator.NOT, oper, null, res));
+		instrList.add(new InstrCode(Operator.NOT, boolExpr, null, res));
     	return res;
  	}
 
