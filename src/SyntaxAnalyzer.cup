@@ -295,18 +295,18 @@ method_call_stmt ::=
 	;
 
 method_call_expr ::= 
-		ID LPAREN  RPAREN
-		//{: RESULT = new MethodCallExpr(); :}
-	|	ID LPAREN list_expr RPAREN
-		//{: RESULT = new MethodCallExpr(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type RPAREN
-		//{: RESULT = new MethodCallExpr(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA type COMMA list_externinvk_arg RPAREN
-		//{: RESULT = new MethodCallExpr(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA TVOID RPAREN
-		//{: RESULT = new MethodCallExpr(); :}
-	|	EXTERNINVK LPAREN STRING_LITERAL COMMA TVOID COMMA list_externinvk_arg RPAREN
-		//{: RESULT = new MethodCallExpr(); :}
+		ID:id LPAREN  RPAREN
+		//{:	RESULT = :}
+	|	ID:id LPAREN list_expr RPAREN
+		//{:	RESULT = :}
+	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA type:t RPAREN
+		{:	RESULT = new ExternInvkExpr(sl, t); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA type:t COMMA list_externinvk_arg:lea RPAREN
+		{:	RESULT = new ExternInvkExpr(sl, t, lea); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA TVOID:tv RPAREN
+		{:	RESULT = new ExternInvkExpr(sl, tv); :}
+	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA TVOID:tv COMMA list_externinvk_arg:lea RPAREN
+		{:	RESULT = new ExternInvkExpr(sl, tv, lea); :}
 	;
 
 location ::= 
