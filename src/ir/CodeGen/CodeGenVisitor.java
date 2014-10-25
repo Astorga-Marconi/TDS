@@ -283,7 +283,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			break;
     	}
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
-    	return expr;
+    	return res;
   	}
 
   	public Expression visit (CondExpr expr)   {

@@ -361,7 +361,34 @@ public class AssemblyGenerator {
 	}
 
 	private void andandInstrAssembly(InstrCode instr) {
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endAnd" + Integer.toString(labelsIdGen++);
+		pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		pw.println("	jne 	." + labelFalse);
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
+	}
 
+	private void ororInstrAssembly(InstrCode instr) {
+		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endAnd" + Integer.toString(labelsIdGen++);
+		pw.println("	cmpl 	$1, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		pw.println("	je 	." + labelTrue);
+		pw.println("	cmpl 	$1, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		pw.println("	je 	." + labelTrue);
+		pw.println("	jmp 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
+		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	jmp 	." + labelEnd);
+		pw.println("	." + labelFalse + ":");
+		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		pw.println("	." + labelEnd + ":");
 	}
 
 	private void notInstrAssembly(InstrCode instr) {
@@ -376,10 +403,6 @@ public class AssemblyGenerator {
 		pw.println("	." + labelFalse + ":");
 		pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		pw.println("	." + labelEnd + ":");
-	}
-
-	private void ororInstrAssembly(InstrCode instr) {
-
 	}
 
 	private void pluseqInstrAssembly(InstrCode instr) {
