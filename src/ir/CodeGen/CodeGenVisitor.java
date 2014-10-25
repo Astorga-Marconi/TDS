@@ -344,6 +344,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		return loc;	
 	}
 
+	public Expression visit(ArrayLocation loc) {
+		return loc;	
+	}
+
 	public Expression visit(SemicolonStmt stmt) {
 		return null;
 	}

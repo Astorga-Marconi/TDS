@@ -254,6 +254,13 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		return loc.getType();		
 	}
 
+	public Type visit(ArrayLocation loc) {
+		if (loc.getExpression().getType() != Type.TINT) {
+			addError(loc,"El indice del arreglo no es de tipo entero.");  
+		}
+		return loc.getType();
+	}
+
 	public Type visit(SemicolonStmt stmt) {
 		return null;
 	}

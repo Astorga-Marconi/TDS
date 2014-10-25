@@ -75,7 +75,7 @@ non terminal 	AssignOpType assign_op;
 non terminal 	LinkedList set_statement, list_expr, list_externinvk_arg, list_type_id_method_decl, zero_or_one_list_type_id_method_decl;
 non terminal 	Statement statement, method_call_stmt; // zero_or_one_else_block,
 non terminal	Expression expr, method_call_expr, externinvk_arg;
-non terminal 	VarLocation location;
+non terminal 	Location location;
 non terminal 	VarDescriptor type_id_method_decl;
 non terminal 	ReturnStmt return_stmt;
 non terminal    IfStmt if_stmt;
@@ -312,9 +312,9 @@ method_call_expr ::=
 location ::= 
 		ID:id1
 		{:	if (table.checkVar(id1)) {
-				if (table.search(id1).getLocation() != null) {
+				if (table.search(id1).getLocation() != null) {	// Si la variable existe y a sido inicializada.
 					RESULT = (VarLocation) table.search(id1).getLocation();
-				} else {
+				} else {	// Si la variable existe pero no a sido inicializada.
 					VarLocation newVarLoc = new VarLocation(id1, table.search(id1).getType());
 					table.search(id1).setLocation(newVarLoc);
 					RESULT = newVarLoc;
@@ -322,8 +322,8 @@ location ::=
 			} else {
 				RESULT = null;
 			}	:}
-	|	ID:id1 LBRACK expr RBRACK
-		{:	RESULT = (table.checkArrayVar(id1)) ? (new VarLocation(id1, (table.search(id1).getType()))) : null;	:}
+	|	ID:id1 LBRACK expr:e1 RBRACK
+		{:	RESULT = (table.checkArrayVar(id1)) ? (new ArrayLocation(id1, (table.search(id1).getType()), ((ArrayVarDescriptor)table.search(id1)).getSize(), e1)) : null;	:}
 	;
 
 list_expr ::= 
