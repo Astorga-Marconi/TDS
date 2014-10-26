@@ -190,11 +190,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 	
 	public Expression visit(MethodCallExpr expr) {
-		/*Expression nameMethod = new IntLiteral(expr.getId());
+		Expression nameMethod = new IntLiteral(expr.getId());
 		VarLocation res = new VarLocation("methodReturn" + Integer.toString(labelsIdGen++));
-    	instrList.add(new InstrCode(Operator.CALL, nameMethod, null, res));
-		return res;*/
-		return null;
+    	instrList.add(new InstrCode(Operator.CALL, nameMethod, null, res));	
+		return res;
 	}
 
 	public Expression visit(ExternInvkExpr expr) {
