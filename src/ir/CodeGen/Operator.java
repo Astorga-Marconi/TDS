@@ -17,6 +17,7 @@ public enum Operator {
 	MULT,
 	DIV,
 	MOD,
+	NEG,
 	LT, 
 	GT,
 	LTEQ,
@@ -37,6 +38,7 @@ public enum Operator {
 	JL,
 	JLE,
 	JMP,
+	ARRAYVALUE,
 	LABEL,   
 	INC,
 	PUSH,
@@ -58,6 +60,8 @@ public enum Operator {
 				return "DIV";
 			case MOD:
 				return "MOD";
+			case NEG:
+				return "NEG";
 			case LT:
 				return "LT";
 			case GT:
@@ -92,6 +96,8 @@ public enum Operator {
 				return "JGE";
 			case JMP:
 				return "JMP";
+			case ARRAYVALUE:
+				return "ARRAYVALUE";
 			case LABEL:
 				return "LABEL";	
 			case PUSH:

@@ -89,6 +89,8 @@ public class SymbolTable{
 		if (searchInCurrentLevel(descriptor.getName()) == null) {
 			if (descriptor.getSize() > 0) {
 				levels.get(amountLevels-1).add(descriptor);
+				ArrayLocation newArrayLoc = new ArrayLocation(descriptor.getName(), descriptor.getType(), descriptor.getSize(), null);
+				search(descriptor.getName()).setLocation(newArrayLoc);
 			} else {
 				System.out.println("Es tamaño de el arreglo no es correcto.");
 			}

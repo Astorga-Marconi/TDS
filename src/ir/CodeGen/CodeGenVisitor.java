@@ -51,7 +51,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
 	public Expression visit(AssignStmt stmt) {
 		Expression expr = stmt.getExpression().accept(this);
-		Location loc = stmt.getLocation();
+		Expression loc = stmt.getLocation().accept(this);
 		Expression resExpr;
 		switch (stmt.getOperator()) {
     		case EQ:
@@ -212,7 +212,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	public Expression visit(NegativeExpr expr) {
     	Expression oper = expr.getExpression().accept(this);
   		VarLocation res = new VarLocation("negRes" + Integer.toString(labelsIdGen++));
-		instrList.add(new InstrCode(Operator.MINUS, oper, null, res));
+		instrList.add(new InstrCode(Operator.NEG, oper, null, res));
     	return res;
 	}
 	
@@ -345,7 +345,11 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(ArrayLocation loc) {
-		return loc;	
+		/*Expression expr = loc.getExpression().accept(this);
+		Expression res = new VarLocation("arrayValue" + Integer.toString(labelsIdGen++));
+		instrList.add(new InstrCode(Operator.ARRAYVALUE, loc, expr, res));
+    	return loc;*/
+    	return null;
 	}
 
 	public Expression visit(SemicolonStmt stmt) {

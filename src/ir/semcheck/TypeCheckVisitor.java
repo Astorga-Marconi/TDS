@@ -139,8 +139,8 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 
 	public Type visit(NegativeExpr expr) {
 		Type typenegativeExpr = expr.getExpression().accept(this);
-    	if (typenegativeExpr != Type.TBOOLEAN){
-    		addError(expr,"La expresion despues del - no deberia ser de tipo BOOLEAN");
+    	if (typenegativeExpr == Type.TBOOLEAN){
+    		addError(expr,"La negacion no es aplicable a expresiones de tipo Boolean.");
     	}
     	return typenegativeExpr;
 	}

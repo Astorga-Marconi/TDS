@@ -88,6 +88,9 @@ public class AssemblyGenerator {
 				case MOD:
 					modInstrAssembly(instr);
 					break;
+				case NEG:
+					negInstrAssembly(instr);
+					break;
 				case LT:
 					ltInstrAssembly(instr);
 					break;
@@ -220,6 +223,16 @@ public class AssemblyGenerator {
 		pw.println("	cltd ");
 		pw.println("	idivl   " + ((Location)instr.getLeftOperand()).getOffset());
 		pw.println("	movl    %edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+	}
+
+	private void negInstrAssembly(InstrCode instr) {
+		if (instr.getLeftOperand() instanceof VarLocation) {
+			pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+		} else if (instr.getLeftOperand() instanceof Literal) {
+			pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+		}
+		pw.println("	negl 	%eax");
+		pw.println("	movl 	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void ltInstrAssembly(InstrCode instr) {

@@ -323,7 +323,14 @@ location ::=
 				RESULT = null;
 			}	:}
 	|	ID:id1 LBRACK expr:e1 RBRACK
-		{:	RESULT = (table.checkArrayVar(id1)) ? (new ArrayLocation(id1, (table.search(id1).getType()), ((ArrayVarDescriptor)table.search(id1)).getSize(), e1)) : null;	:}
+		{:	if (table.checkArrayVar(id1)) {
+				ArrayLocation loc = (ArrayLocation) table.search(id1).getLocation();	// Ya debe estar inicializado
+				loc.setExpression(e1);
+				RESULT = loc;
+			} else {
+				RESULT = null;
+			}	:}
+			//RESULT = (table.checkArrayVar(id1)) ? (new ArrayLocation(id1, (table.search(id1).getType()), ((ArrayVarDescriptor)table.search(id1)).getSize(), e1)) : null;	:}
 	;
 
 list_expr ::= 
@@ -347,8 +354,8 @@ expr ::=
 		{: RESULT = l1; :}
 	|	expr:e1 bin_op:b expr:e2 
 		{: b.setLeftOperand(e1); b.setRightOperand(e2); RESULT = b; :}
-	|	MINUS:m1 expr:e1
-		{: RESULT = new NegativeExpr(m1, e1); :}
+	|	MINUS expr:e1
+		{: RESULT = new NegativeExpr(e1); :}
 	|	NOT:n1 expr:e1 
 		{: RESULT = new NotExpr(n1, e1); :}
 	|	LPAREN:l expr:e RPAREN:r 
