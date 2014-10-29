@@ -43,6 +43,7 @@ public enum Operator {
 	INC,
 	PUSH,
 	CALL,
+	METHODRET,
 	DELPARAMS,
 	METHODLABEL,
 	METHODEND;
@@ -104,6 +105,8 @@ public enum Operator {
 				return "PUSH";
 			case CALL:
 				return "CALL";
+			case METHODRET:
+				return "METHODRET";
 			case DELPARAMS:
 				return "DELPARAMS";
 			case METHODLABEL:
