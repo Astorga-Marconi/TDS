@@ -15,6 +15,11 @@ public class IntLiteral extends Literal {
 		value = null;
 	}
 
+	public IntLiteral(IntLiteral e) {
+		String v = e.getRawValue();
+		rawValue = v;
+	}
+
 	@Override
 	public Type getType() {
 		return Type.TINT;

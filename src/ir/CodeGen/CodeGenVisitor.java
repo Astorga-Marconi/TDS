@@ -51,21 +51,26 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
 	public Expression visit(AssignStmt stmt) {
 		Expression expr = stmt.getExpression().accept(this);
-		Expression loc = stmt.getLocation().accept(this);
+		Expression loc = stmt.getLocation();
 		Expression resExpr;
+		Expression arrayExpr = null;
+		if (loc instanceof ArrayLocation) {
+			// Si el location es ArrayLocation la asignacion EQ tendra un operando mas, sino será null.
+			arrayExpr =  ((ArrayLocation)loc).getExpression().accept(this);
+		}
 		switch (stmt.getOperator()) {
     		case EQ:
-    			instrList.add(new InstrCode(Operator.EQ, expr, null, loc));
+    			instrList.add(new InstrCode(Operator.EQ, expr, arrayExpr, loc));
     			break;
     		case PLUSEQ:
     			resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
-	    		instrList.add(new InstrCode(Operator.PLUS, loc, expr, resExpr));
-	    		instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+	    		instrList.add(new InstrCode(Operator.PLUS, loc.accept(this), expr, resExpr));
+	    		instrList.add(new InstrCode(Operator.EQ, resExpr, arrayExpr, loc));
     			break;
     		case MINUSEQ:
 	    		resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
-	    		instrList.add(new InstrCode(Operator.MINUS, loc, expr, resExpr));
-	    		instrList.add(new InstrCode(Operator.EQ, resExpr, null, loc));
+	    		instrList.add(new InstrCode(Operator.MINUS, loc.accept(this), expr, resExpr));
+	    		instrList.add(new InstrCode(Operator.EQ, resExpr, arrayExpr, loc));
     			break;
     	}
 		return null;
@@ -350,11 +355,11 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(ArrayLocation loc) {
-		/*Expression expr = loc.getExpression().accept(this);
+		// Este metodo solo es llamado cuando el ArrayLocation es usado como Expression.
+		Expression expr = loc.getExpression().accept(this);
 		Expression res = new VarLocation("arrayValue" + Integer.toString(labelsIdGen++));
 		instrList.add(new InstrCode(Operator.ARRAYVALUE, loc, expr, res));
-    	return loc;*/
-    	return null;
+    	return res;
 	}
 
 	public Expression visit(SemicolonStmt stmt) {

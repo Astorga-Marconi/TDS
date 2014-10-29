@@ -148,6 +148,9 @@ public class AssemblyGenerator {
 				case JMP:
 					jmpInstrAssembly(instr);
 					break;
+				case ARRAYVALUE:
+					arrayValueInstrAssembly(instr);
+					break;
 				case LABEL:
 					labelInstrAssembly(instr);
 					break;
@@ -435,20 +438,36 @@ public class AssemblyGenerator {
 	}
 
 	private void eqInstrAssembly(InstrCode instr) {
-		if (instr.getLeftOperand() instanceof IntLiteral) {
-			pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
-		} else if (instr.getLeftOperand() instanceof VarLocation) {
-			pw.println("	movl 	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
-			pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
-		} else if (instr.getLeftOperand() instanceof BoolLiteral){
-			if (((""+instr.getLeftOperand()).equals("true"))) {
-				pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
-			} else if (((""+instr.getLeftOperand()).equals("false"))) {
-				pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		if (instr.getResult() instanceof ArrayLocation) {	// Si se debe asignar a una direccion de un arreglo.
+			//	Guardo la expression del ArrayLocation en eax.
+			if (instr.getRightOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+			} else if (instr.getRightOperand() instanceof VarLocation) {
+				pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
 			}
-		} else {
-			// Supongo que valor a asignar esta en edx.
-			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			//	Coloco la expression izquierda en el ArrayLocation.
+			if (instr.getLeftOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp,%eax,4)");
+			} else if (instr.getLeftOperand() instanceof VarLocation) {
+				pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
+				pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp,%eax,4)");
+			}
+		} else if (instr.getResult() instanceof VarLocation) {	// Si se debe asignar a una variable.
+			if (instr.getLeftOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			} else if (instr.getLeftOperand() instanceof VarLocation) {
+				pw.println("	movl 	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
+				pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			} else if (instr.getLeftOperand() instanceof BoolLiteral){
+				if (((""+instr.getLeftOperand()).equals("true"))) {
+					pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+				} else if (((""+instr.getLeftOperand()).equals("false"))) {
+					pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+				}
+			} else {
+				// Supongo que valor a asignar esta en edx.
+				pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			}
 		}
 	}
 
@@ -490,6 +509,16 @@ public class AssemblyGenerator {
 
 	private void jmpInstrAssembly(InstrCode instr) {
 		pw.println("	jmp 	."+ instr.getResult());
+	}
+
+	private void arrayValueInstrAssembly(InstrCode instr) {
+		if (instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+		} else if (instr.getRightOperand() instanceof VarLocation) {
+			pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		}
+		pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp,%eax,4), %edx");
+		pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void labelInstrAssembly(InstrCode instr) {

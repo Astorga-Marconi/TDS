@@ -324,13 +324,11 @@ location ::=
 			}	:}
 	|	ID:id1 LBRACK expr:e1 RBRACK
 		{:	if (table.checkArrayVar(id1)) {
-				ArrayLocation loc = (ArrayLocation) table.search(id1).getLocation();	// Ya debe estar inicializado
-				loc.setExpression(e1);
-				RESULT = loc;
+				ArrayLocation loc = (ArrayLocation) table.search(id1).getLocation();
+				RESULT = (new ArrayLocation(loc, e1));	// Creo un nuevo VarLocation con la expression e1.
 			} else {
 				RESULT = null;
 			}	:}
-			//RESULT = (table.checkArrayVar(id1)) ? (new ArrayLocation(id1, (table.search(id1).getType()), ((ArrayVarDescriptor)table.search(id1)).getSize(), e1)) : null;	:}
 	;
 
 list_expr ::= 

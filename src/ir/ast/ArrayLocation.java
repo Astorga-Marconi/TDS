@@ -21,8 +21,6 @@ public class ArrayLocation extends Location {
 	public ArrayLocation(String id) {
 		this.id = id;
 		this.blockId = -1;
-		//this.offset = maxoffset;
-		//maxoffset = maxoffset - 4;
 	}
 
 	public ArrayLocation(String id, Type t, int size, Expression expr) {
@@ -31,8 +29,18 @@ public class ArrayLocation extends Location {
 		this.blockId = -1;
 		this.sizeArray = size;
 		this.expr = expr;
-		//this.offset = maxoffset;
-		//maxoffset = maxoffset - 4;
+		maxoffset = maxoffset - (4 * size);
+		this.offset = maxoffset + 4;
+	}
+
+	public ArrayLocation(ArrayLocation l, Expression e) {
+		// Constructor que copia un ArrayLocation menos la expression, y le asigna una nueva.
+		this.id = l.getId();
+		this.type = l.getType();
+		this.blockId = -1;
+		this.sizeArray = l.getSizeArray();
+		this.expr = e;
+		this.offset = l.getOffset();
 	}
 	
 	public int getBlockId() {
@@ -61,7 +69,7 @@ public class ArrayLocation extends Location {
 	
 	@Override
 	public String toString() {
-		return id;
+		return id + "[" + expr + "]";
 	}
 
 	@Override
