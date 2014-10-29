@@ -163,6 +163,9 @@ public class AssemblyGenerator {
 				case CALL:
 					callInstrAssembly(instr);
 					break;
+				case METHODRET:
+					methodRetInstrAssembly(instr);
+					break;
 				case DELPARAMS:
 					delparamsInstrAssembly(instr);
 					break;
@@ -534,13 +537,19 @@ public class AssemblyGenerator {
 	}
 
 	private void pushInstrAssembly(InstrCode instr) {
-		pw.println("	push 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		if (instr.getLeftOperand() instanceof VarLocation) {
+			pw.println("	push 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		}else if (instr.getLeftOperand() instanceof IntLiteral) {
+			pw.println("	push 	$" + instr.getLeftOperand());			
+		}
 	}
 
 	private void callInstrAssembly(InstrCode instr) {
 		pw.println("	call 	" + instr.getLeftOperand());
-  		/*if (instr.getResult() != null)
-  			pw.println("	mov 	%eax, " + instr.getResult() + "(%ebp)");*/
+	}
+
+	private void methodRetInstrAssembly(InstrCode instr) {
+		pw.println("	mov 	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void delparamsInstrAssembly(InstrCode instr) {
