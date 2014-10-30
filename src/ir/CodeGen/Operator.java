@@ -41,6 +41,7 @@ public enum Operator {
 	ARRAYVALUE,
 	LABEL,   
 	INC,
+	STRING,
 	PUSH,
 	CALL,
 	METHODRET,
@@ -101,6 +102,8 @@ public enum Operator {
 				return "ARRAYVALUE";
 			case LABEL:
 				return "LABEL";	
+			case STRING:
+				return "STRING";
 			case PUSH:
 				return "PUSH";
 			case CALL:

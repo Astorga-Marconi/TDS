@@ -289,9 +289,9 @@ method_call_stmt ::=
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA type:t COMMA list_externinvk_arg:l RPAREN
 		{: RESULT = new ExternInvkStmt(id1, t, l); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA TVOID:t RPAREN
-		{: RESULT = new ExternInvkStmt(id1, t); :}
+		{: RESULT = new ExternInvkStmt(id1, Type.TVOID); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:id1 COMMA TVOID:t COMMA list_externinvk_arg:l RPAREN
-		{: RESULT = new ExternInvkStmt(id1, t, l); :}
+		{: RESULT = new ExternInvkStmt(id1, Type.TVOID, l); :}
 	;
 
 method_call_expr ::= 
@@ -304,9 +304,9 @@ method_call_expr ::=
 	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA type:t COMMA list_externinvk_arg:lea RPAREN
 		{:	RESULT = new ExternInvkExpr(sl, t, lea); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA TVOID:tv RPAREN
-		{:	RESULT = new ExternInvkExpr(sl, tv); :}
+		{:	RESULT = new ExternInvkExpr(sl, Type.TVOID); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA TVOID:tv COMMA list_externinvk_arg:lea RPAREN
-		{:	RESULT = new ExternInvkExpr(sl, tv, lea); :}
+		{:	RESULT = new ExternInvkExpr(sl, Type.TVOID, lea); :}
 	;
 
 location ::= 
@@ -362,7 +362,8 @@ expr ::=
 
 externinvk_arg ::=
 		expr:e1
-		{: RESULT = new ExternInvkArgExpr(e1); :}
+		{: RESULT = e1; :}
+		//{: RESULT = new ExternInvkArgExpr(e1); :}
 	|	STRING_LITERAL:s1
 		{: RESULT = new ExternInvkArgStringLit(s1); :}
 	;

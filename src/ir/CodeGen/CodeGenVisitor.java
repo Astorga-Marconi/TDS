@@ -27,6 +27,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	private List<Expression> jmpLabels;	// Lista que guarda los labels de los posibles saltos a realizarse
 										// al encontrar un BREAK o CONTINUE. Cada vez que se encuentra 
 										// con un ciclo se guarda el label inicio y fin de ciclo.
+	private int methodInstrIndex;		// Indice que especifica el principio de un metodo, es usado
+										// para definir los String usados en las invocaciones externas.
 
 	public CodeGenVisitor() {
 		
@@ -40,6 +42,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public void instrMethodLabel(FunctionDescriptor f) {
+		methodInstrIndex = instrList.size();	// Seteo el indice en la lista que especifica el comienzo de un metodo.
 		instrList.add(new InstrCode(Operator.METHODLABEL, null, null, (new IntLiteral(f.getName()) )));
 	}
 
@@ -185,6 +188,18 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(ExternInvkStmt stmt) {
+		List lParams = stmt.getParameters();
+		for (int i = lParams.size()-1; i >= 0 ; i--) {
+			Expression parameter = ((Expression)lParams.get(i)).accept(this);
+			instrList.add(new InstrCode(Operator.PUSH, parameter, null, null));
+		}
+		Expression nameMethod = new IntLiteral(stmt.getId());
+		instrList.add(new InstrCode(Operator.CALL, nameMethod, null, null));
+		if (stmt.getParameters().size() > 0) {
+			Expression  numParams = new IntLiteral(""+stmt.getParameters().size());
+			// DELPARAMS saca los parametros metidos en la pila con anterioridad.
+			instrList.add(new InstrCode(Operator.DELPARAMS, numParams, null, null));
+		}
 		return null;
 	}
 
@@ -213,7 +228,21 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(ExternInvkExpr expr) {
-		return null;
+		List lParams = expr.getParameters();
+		for (int i = lParams.size()-1; i >= 0 ; i--) {
+			Expression parameter = ((Expression)lParams.get(i)).accept(this);
+			instrList.add(new InstrCode(Operator.PUSH, parameter, null, null));
+		}
+		Expression nameMethod = new IntLiteral(expr.getId());
+		instrList.add(new InstrCode(Operator.CALL, nameMethod, null, null));
+		if (expr.getParameters().size() > 0) {
+			Expression  numParams = new IntLiteral(""+expr.getParameters().size());
+			// DELPARAMS saca los parametros metidos en la pila con anterioridad.
+			instrList.add(new InstrCode(Operator.DELPARAMS, numParams, null, null));
+		}
+		VarLocation res = new VarLocation("externInvkReturn" + Integer.toString(labelsIdGen++));
+		instrList.add(new InstrCode(Operator.METHODRET, null, null, res));
+		return res;
 	}
 	
 	public Expression visit(ExternInvkArgExpr expr) {
@@ -221,7 +250,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 	
 	public Expression visit(ExternInvkArgStringLit expr) {
-		return null;
+		Expression  stringLabel = new IntLiteral(".LC" + Integer.toString(labelsIdGen++));
+		Expression  stringLit = new IntLiteral(expr.getString());
+		instrList.add(methodInstrIndex, new InstrCode(Operator.STRING, stringLabel, stringLit, null));
+		return stringLabel;
 	}
 
 	public Expression visit(NegativeExpr expr) {

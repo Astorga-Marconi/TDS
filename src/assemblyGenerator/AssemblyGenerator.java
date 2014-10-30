@@ -53,7 +53,6 @@ public class AssemblyGenerator {
 
             /* -- Encabezado -- */  
             //pw.println("	.file 	" + nameFile +".ctds");
-            pw.println("	.text	");
 
             genInstrAssembly();
 
@@ -157,6 +156,9 @@ public class AssemblyGenerator {
 				case INC:
 					incInstrAssembly(instr);
 					break;
+				case STRING:
+					stringInstrAssembly(instr);
+					break;
 				case PUSH:
 					pushInstrAssembly(instr);
 					break;
@@ -174,6 +176,7 @@ public class AssemblyGenerator {
 	}
 
 	private void methodLabelInstrAssembly(InstrCode instr) {
+		pw.println("	.text	");
 		pw.println("	.globl	" + instr.getResult());
 		pw.println("	.type	" + instr.getResult() + ", @function");
 		pw.println(instr.getResult() + ":");
@@ -534,6 +537,11 @@ public class AssemblyGenerator {
 
 	private void incInstrAssembly(InstrCode instr) {
 		pw.println("	addl 	$1 ," + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)	# incremento la variable del for");
+	}
+
+	private void stringInstrAssembly(InstrCode instr) {
+		pw.println(instr.getLeftOperand() + ":");
+		pw.println("	.string " + '"' + instr.getRightOperand() + '"');
 	}
 
 	private void pushInstrAssembly(InstrCode instr) {

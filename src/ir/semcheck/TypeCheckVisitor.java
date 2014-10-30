@@ -105,6 +105,9 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	}
 
 	public Type visit(ExternInvkStmt stmt) {
+		if (stmt.getType() != Type.TVOID){
+    		addError(stmt,"La llama externa a " + stmt.getId() + " debe ser de tipo VOID.");  
+    	}
 		return null;
 	}
 
@@ -122,11 +125,11 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	}
 	
 	public Type visit(MethodCallExpr expr) {
-		return null;
+		return expr.getType();
 	}
 
 	public Type visit(ExternInvkExpr expr) {
-		return null;
+		return expr.getType();
 	}
 	
 	public Type visit(ExternInvkArgExpr expr) {

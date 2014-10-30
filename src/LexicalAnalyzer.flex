@@ -54,13 +54,9 @@ DecIntegerLiteral = 0 | [1-9][0-9]*
 
 FloatLiteral = [0-9]*"."[0-9]*
 
-%state STRING
-
 %%
    
 <YYINITIAL> {
-
-  \"                            { System.out.println(yytext()); yybegin(STRING); string.setLength(0); }
 
    "if"   			 	              { System.out.println(yytext());return new Symbol(sym.IF); }
    "int"   			 	              { System.out.println(yytext());return symbol(sym.TINT); }
@@ -115,10 +111,7 @@ FloatLiteral = [0-9]*"."[0-9]*
 
   {Identifier}                  { System.out.println(yytext());return symbol(sym.ID, yytext()); }  
 
-  .                             { System.out.println("NO RECONOCIDO");}
-}
+  \"[^\"]*\"                    { return new Symbol(sym.STRING_LITERAL, yyline, yycolumn, yytext().substring(1,yytext().length()-1));}
 
-<STRING> {
-  \"                            {yybegin(YYINITIAL);return new Symbol(sym.STRING_LITERAL,yyline+1,yycolumn+1,yytext());}
-  .                             {}
+  .                             { System.out.println("NO RECONOCIDO");}
 }

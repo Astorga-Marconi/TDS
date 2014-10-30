@@ -10,6 +10,14 @@ public class ExternInvkArgStringLit extends ExternInvkArg {
 		str = s;
 	}
 
+	public void setString(String s) {
+		this.str = s;
+	}
+
+	public String getString() {
+		return str;
+	}
+
 	@Override
 	public <T> T accept(ASTVisitor<T> v) {
 		return v.visit(this);

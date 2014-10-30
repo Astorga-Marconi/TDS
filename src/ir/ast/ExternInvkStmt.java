@@ -16,7 +16,7 @@ public class ExternInvkStmt extends Statement {
 
 	private String idInvk;
 	private Type type;
-	private LinkedList<Expression> largs;
+	private List<Expression> largs;
 
 	public ExternInvkStmt() {
 		
@@ -25,9 +25,10 @@ public class ExternInvkStmt extends Statement {
 	public ExternInvkStmt(String id, Type type) {
 		this.idInvk = id;
 		this.type = type;
+		largs = new LinkedList<Expression>();
 	}
 
-	public ExternInvkStmt(String id, Type type, LinkedList<Expression> args) {
+	public ExternInvkStmt(String id, Type type, List<Expression> args) {
 		this.idInvk = id;
 		this.type = type;
 		largs = args;
@@ -35,6 +36,22 @@ public class ExternInvkStmt extends Statement {
 
 	public String getId(){
 		return idInvk;
+	}
+
+	public void setType(Type t) {
+		type = t;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setParameters(List<Expression> newParams) {
+		largs = newParams;
+	}
+
+	public List<Expression> getParameters() {
+		return largs;
 	}
 
 	@Override
