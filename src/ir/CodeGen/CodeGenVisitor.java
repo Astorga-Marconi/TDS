@@ -305,6 +305,21 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			operator = Operator.MOD;
     			break;
     	}
+    		/**case FLOATPLUS:
+    			operator = Operator.FLOATPLUS;
+    			break;
+    		case FLOATMINUS:
+    			operator = Operator.FLOATMINUS;
+    			break;
+    		case FLOATMULT:
+    			operator = Operator.FLOATMULT;
+    			break;
+    		case FLOATDIV:
+    			operator = Operator.FLOATDIV;
+    			break;
+    		case FLOATMOD:
+    			operator = Operator.FLOATMOD;
+    			break;*/
     	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;

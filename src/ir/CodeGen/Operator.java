@@ -51,8 +51,9 @@ public enum Operator {
 	FLOATPLUS,
 	FLOATMINUS,
 	FLOATMULT,
-	FLOATDIV;
-	
+	FLOATDIV,
+	FLOATMOD;
+
 	@Override
 	public String toString() {
 		switch(this) {
@@ -128,6 +129,8 @@ public enum Operator {
 				return "FLOATMULT";
 			case FLOATDIV:
 				return "FLOATDIV";
+			case FLOATMOD:
+				return "FLOATMOD";
 		}
 		return null;
 	}
