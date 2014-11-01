@@ -288,38 +288,45 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 			rightOperand = resR;
   		}
     	Operator operator = null;
-    	switch (expr.getOperator()) {
-    		case PLUS:
-    			operator = Operator.PLUS;
-    			break;
-    		case MINUS:
-    			operator = Operator.MINUS;
-    			break;
-    		case MULT:
-    			operator = Operator.MULT;
-    			break;
-    		case DIV:
-    			operator = Operator.DIV;
-    			break;
-    		case MOD:
-    			operator = Operator.MOD;
-    			break;
+    	switch (expr.getType()) {
+    		case TINT:
+    			switch (expr.getOperator()) {
+    				case PLUS:
+    					operator = Operator.PLUS;
+    					break;
+    				case MINUS:
+    					operator = Operator.MINUS;
+    					break;
+    				case MULT:
+    					operator = Operator.MULT;
+    					break;
+    				case DIV:
+    					operator = Operator.DIV;
+    					break;
+    			case MOD:
+    				operator = Operator.MOD;
+    				break;
+    		}
+    		break;
+    		case TFLOAT:
+    			switch (expr.getOperator()) {
+    				case PLUS:
+    					operator = Operator.FLOATPLUS;
+    					break;
+    				case MINUS:
+    					operator = Operator.FLOATMINUS;
+    					break;
+    				case MULT:
+    					operator = Operator.FLOATMULT;
+    					break;
+    				case DIV:
+    					operator = Operator.FLOATDIV;
+    					break;
+    				case MOD:
+    					operator = Operator.FLOATMOD;
+    					break;
+    		} 
     	}
-    		/**case FLOATPLUS:
-    			operator = Operator.FLOATPLUS;
-    			break;
-    		case FLOATMINUS:
-    			operator = Operator.FLOATMINUS;
-    			break;
-    		case FLOATMULT:
-    			operator = Operator.FLOATMULT;
-    			break;
-    		case FLOATDIV:
-    			operator = Operator.FLOATDIV;
-    			break;
-    		case FLOATMOD:
-    			operator = Operator.FLOATMOD;
-    			break;*/
     	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
