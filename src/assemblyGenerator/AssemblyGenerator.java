@@ -171,6 +171,18 @@ public class AssemblyGenerator {
 				case DELPARAMS:
 					delparamsInstrAssembly(instr);
 					break;
+				case FLOATPLUS:
+					floatPlusInstrAssembly(instr);
+					break;
+				case FLOATMINUS:
+					floatMinusInstrAssembly(instr);
+					break;
+				case FLOATMULT:
+					floatMultInstrAssembly(instr);
+					break;
+				case FLOATDIV:
+					floatDivInstrAssembly(instr);
+					break;
 			}
 		}
 	}
@@ -563,6 +575,18 @@ public class AssemblyGenerator {
 	private void delparamsInstrAssembly(InstrCode instr) {
 		int num = Integer.parseInt(""+instr.getLeftOperand()) * 4;
 		pw.println("	addl 	$" + num + ", %esp");
+	}
+
+	private void floatPlusInstrAssembly(InstrCode instr) {		
+	}
+
+	private void floatMinusInstrAssembly(InstrCode instr) {
+	}
+
+	private void floatMultInstrAssembly(InstrCode instr) {
+	}
+
+	private void floatDivInstrAssembly(InstrCode instr) {
 	}
 
 }
