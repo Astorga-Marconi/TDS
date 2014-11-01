@@ -183,6 +183,9 @@ public class AssemblyGenerator {
 				case FLOATDIV:
 					floatDivInstrAssembly(instr);
 					break;
+				case FLOATMOD:
+					floatModInstrAssembly(instr);
+					break;
 			}
 		}
 	}
@@ -589,4 +592,6 @@ public class AssemblyGenerator {
 	private void floatDivInstrAssembly(InstrCode instr) {
 	}
 
+	private void floatModInstrAssembly(InstrCode instr) {
+	}
 }
