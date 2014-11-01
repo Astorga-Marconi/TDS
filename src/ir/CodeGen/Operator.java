@@ -47,7 +47,11 @@ public enum Operator {
 	METHODRET,
 	DELPARAMS,
 	METHODLABEL,
-	METHODEND;
+	METHODEND,
+	FLOATPLUS,
+	FLOATMINUS,
+	FLOATMULT,
+	FLOATDIV;
 	
 	@Override
 	public String toString() {
@@ -116,6 +120,14 @@ public enum Operator {
 				return "METHODLABEL";
 			case METHODEND:
 				return "METHODEND";
+			case FLOATPLUS:
+				return "FLOATPLUS";
+			case FLOATMINUS:
+				return "FLOATMINUS";
+			case FLOATMULT:
+				return "FLOATMULT";
+			case FLOATDIV:
+				return "FLOATDIV";
 		}
 		return null;
 	}
