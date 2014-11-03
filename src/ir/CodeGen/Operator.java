@@ -42,6 +42,8 @@ public enum Operator {
 	LABEL,   
 	INC,
 	STRING,
+	INITGLOBALVAR,
+	INITGLOBALARRAY,
 	PUSH,
 	CALL,
 	METHODRET,
@@ -109,6 +111,10 @@ public enum Operator {
 				return "LABEL";	
 			case STRING:
 				return "STRING";
+			case INITGLOBALVAR:
+				return "INITGLOBALVAR";
+			case INITGLOBALARRAY:
+				return "INITGLOBALARRAY";
 			case PUSH:
 				return "PUSH";
 			case CALL:

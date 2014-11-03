@@ -50,6 +50,25 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		instrList.add(new InstrCode(Operator.METHODEND, null, null, null));
 	}
 
+	public void initVar(Location loc) {
+		if (loc instanceof VarLocation) {
+			//System.out.println("se incializa una variable local");
+			instrList.add(new InstrCode(Operator.EQ, (new IntLiteral("0")), null, loc));
+		} else if (loc instanceof GlobalVarLocation) {
+			//System.out.println("se incializa una variable global");
+			instrList.add(new InstrCode(Operator.INITGLOBALVAR, loc, null, null));
+		}
+	}
+
+	public void initArray(Location loc) {
+		if (loc instanceof ArrayLocation) {
+			//System.out.println("se incializa un arreglo local");
+		} else if (loc instanceof GlobalArrayLocation) {
+			//System.out.println("se incializa un arreglo global");
+			instrList.add(new InstrCode(Operator.INITGLOBALARRAY, loc, null, null));
+		}
+	}
+
 	//			visit statements
 	
 	public Expression visit(AssignStmt stmt) {
@@ -60,6 +79,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		if (loc instanceof ArrayLocation) {
 			// Si el location es ArrayLocation la asignacion EQ tendra un operando mas, sino será null.
 			arrayExpr =  ((ArrayLocation)loc).getExpression().accept(this);
+		}
+		if (loc instanceof GlobalArrayLocation) {
+			// Si el location es GlobalArrayLocation la asignacion EQ tendra un operando mas, sino será null.
+			arrayExpr =  ((GlobalArrayLocation)loc).getExpression().accept(this);
 		}
 		switch (stmt.getOperator()) {
     		case EQ:
@@ -413,7 +436,22 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		return loc;	
 	}
 
+	public Expression visit(GlobalVarLocation loc) {
+		//System.out.println("CODEGEN global " + loc);
+		Expression res = new VarLocation("globalVar" + Integer.toString(labelsIdGen++));
+		instrList.add(new InstrCode(Operator.EQ, loc, null, res));
+		return res;	
+	}
+
 	public Expression visit(ArrayLocation loc) {
+		// Este metodo solo es llamado cuando el ArrayLocation es usado como Expression.
+		Expression expr = loc.getExpression().accept(this);
+		Expression res = new VarLocation("arrayValue" + Integer.toString(labelsIdGen++));
+		instrList.add(new InstrCode(Operator.ARRAYVALUE, loc, expr, res));
+    	return res;
+	}
+
+	public Expression visit(GlobalArrayLocation loc) {
 		// Este metodo solo es llamado cuando el ArrayLocation es usado como Expression.
 		Expression expr = loc.getExpression().accept(this);
 		Expression res = new VarLocation("arrayValue" + Integer.toString(labelsIdGen++));

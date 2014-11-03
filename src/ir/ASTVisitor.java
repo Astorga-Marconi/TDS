@@ -50,4 +50,6 @@ public interface ASTVisitor<T> {
 // visit locations	
 	T visit(VarLocation loc);
 	T visit(ArrayLocation loc);
+	T visit(GlobalVarLocation loc);
+	T visit(GlobalArrayLocation loc);
 }

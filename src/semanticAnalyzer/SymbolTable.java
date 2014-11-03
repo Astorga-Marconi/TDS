@@ -79,7 +79,15 @@ public class SymbolTable{
 
 	public void insertNewVar(VarDescriptor descriptor){
 		if (searchInCurrentLevel(descriptor.getName()) == null) {
-			levels.get(amountLevels-1).add(descriptor);
+			if (amountLevels > 1) {	// Se declara una variable local?
+				levels.get(amountLevels-1).add(descriptor);
+				VarLocation newArrayLoc = new VarLocation(descriptor.getName(), descriptor.getType());
+				search(descriptor.getName()).setLocation(newArrayLoc);
+			} else if (amountLevels == 1) {	// Se declara una variable global?
+				levels.get(amountLevels-1).add(descriptor);
+				GlobalVarLocation newArrayLoc = new GlobalVarLocation(descriptor.getName(), descriptor.getType());
+				search(descriptor.getName()).setLocation(newArrayLoc);
+			}
 		} else {
 			System.out.println("There is already a Variable with the same ID");
 		}
@@ -88,9 +96,15 @@ public class SymbolTable{
 	public void insertNewArrayVar(ArrayVarDescriptor descriptor){
 		if (searchInCurrentLevel(descriptor.getName()) == null) {
 			if (descriptor.getSize() > 0) {
-				levels.get(amountLevels-1).add(descriptor);
-				ArrayLocation newArrayLoc = new ArrayLocation(descriptor.getName(), descriptor.getType(), descriptor.getSize(), null);
-				search(descriptor.getName()).setLocation(newArrayLoc);
+				if (amountLevels > 1) {	// Es un arreglo local.
+					levels.get(amountLevels-1).add(descriptor);
+					ArrayLocation newArrayLoc = new ArrayLocation(descriptor.getName(), descriptor.getType(), descriptor.getSize(), null);
+					search(descriptor.getName()).setLocation(newArrayLoc);					
+				} else if (amountLevels == 1) {	// Es un arreglo global
+					levels.get(amountLevels-1).add(descriptor);
+					GlobalArrayLocation newArrayLoc = new GlobalArrayLocation(descriptor.getName(), descriptor.getType(), descriptor.getSize(), null);
+					search(descriptor.getName()).setLocation(newArrayLoc);
+				}
 			} else {
 				System.out.println("Es tamaño de el arreglo no es correcto.");
 			}

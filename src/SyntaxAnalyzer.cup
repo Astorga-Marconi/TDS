@@ -115,9 +115,13 @@ field_decl ::= type list_id_field_decl SEMICOLON;
 
 id_field_decl ::= 
 		ID:id1
-		{:	table.insertNewVar(new VarDescriptor(currentType, id1));	:}
+		{:	VarDescriptor newVar = new VarDescriptor(currentType, id1);
+			table.insertNewVar(newVar);
+			codeGen.initVar(newVar.getLocation());	:}
 	|	ID:id1 LBRACK INT_LITERAL:s RBRACK
-		{:	table.insertNewArrayVar(new ArrayVarDescriptor(currentType, id1, s));	:}
+		{:	ArrayVarDescriptor newArray = new ArrayVarDescriptor(currentType, id1, s);
+			table.insertNewArrayVar(newArray);
+			codeGen.initArray(newArray.getLocation());	:}
 	;
 
 list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
@@ -125,20 +129,22 @@ list_id_field_decl ::= list_id_field_decl COMMA id_field_decl | id_field_decl;
 method_decl ::= 
 		type:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
 		{:	currentMethodRetType = t1;
-			table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
+			FunctionDescriptor newFunction = new FunctionDescriptor(t1, id1, params);
+			table.insertNewMethod(newFunction);
+			codeGen.instrMethodLabel(newFunction);	:}
 		RPAREN block:b
 		{:	currentMethodRetType = null;
 			typeVisitor.visit(b);
-			codeGen.instrMethodLabel( new FunctionDescriptor(t1, id1, params));
 			codeGen.visit(b);
 			codeGen.instrMethodEnd();	:}
 	|	TVOID:t1 ID:id1 LPAREN zero_or_one_list_type_id_method_decl:params
 		{:	currentMethodRetType = Type.TVOID;
-			table.insertNewMethod( new FunctionDescriptor(t1, id1, params)); :}
+			FunctionDescriptor newFunction = new FunctionDescriptor(t1, id1, params);
+			table.insertNewMethod(newFunction);
+			codeGen.instrMethodLabel(newFunction);	:}
 		RPAREN block:b
 		{:	currentMethodRetType = null;
 			typeVisitor.visit(b);
-			codeGen.instrMethodLabel( new FunctionDescriptor(t1, id1, params));
 			codeGen.visit(b);
 			codeGen.instrMethodEnd();	:}
 	;
@@ -312,20 +318,18 @@ method_call_expr ::=
 location ::= 
 		ID:id1
 		{:	if (table.checkVar(id1)) {
-				if (table.search(id1).getLocation() != null) {	// Si la variable existe y a sido inicializada.
-					RESULT = (VarLocation) table.search(id1).getLocation();
-				} else {	// Si la variable existe pero no a sido inicializada.
-					VarLocation newVarLoc = new VarLocation(id1, table.search(id1).getType());
-					table.search(id1).setLocation(newVarLoc);
-					RESULT = newVarLoc;
-				}
+				RESULT = table.search(id1).getLocation();
 			} else {
 				RESULT = null;
 			}	:}
 	|	ID:id1 LBRACK expr:e1 RBRACK
 		{:	if (table.checkArrayVar(id1)) {
-				ArrayLocation loc = (ArrayLocation) table.search(id1).getLocation();
-				RESULT = (new ArrayLocation(loc, e1));	// Creo un nuevo VarLocation con la expression e1.
+				Location loc = table.search(id1).getLocation();
+				if (loc instanceof ArrayLocation) {
+					RESULT = (new ArrayLocation((ArrayLocation)loc, e1));
+				} else if (loc instanceof GlobalArrayLocation) {
+					RESULT = (new GlobalArrayLocation((GlobalArrayLocation)loc, e1));
+				}
 			} else {
 				RESULT = null;
 			}	:}

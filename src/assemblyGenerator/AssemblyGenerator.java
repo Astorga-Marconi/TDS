@@ -159,6 +159,12 @@ public class AssemblyGenerator {
 				case STRING:
 					stringInstrAssembly(instr);
 					break;
+				case INITGLOBALVAR:
+					initGlobalVarInstrAssembly(instr);
+					break;
+				case INITGLOBALARRAY:
+					initGlobalArrayInstrAssembly(instr);
+					break;
 				case PUSH:
 					pushInstrAssembly(instr);
 					break;
@@ -473,6 +479,22 @@ public class AssemblyGenerator {
 				pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
 				pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp,%eax,4)");
 			}
+
+		} else if (instr.getResult() instanceof GlobalArrayLocation) {	// Si se debe asignar a una direccion de un arreglo global.
+			//	Guardo la expression del GlobalArrayLocation en eax.
+			if (instr.getRightOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+			} else if (instr.getRightOperand() instanceof VarLocation) {
+				pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			}
+			//	Coloco la expression izquierda en el GlobalArrayLocation.
+			if (instr.getLeftOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getId() + "(,%eax,4)");
+			} else if (instr.getLeftOperand() instanceof VarLocation) {
+				pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
+				pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getId() + "(,%eax,4)");
+			}
+
 		} else if (instr.getResult() instanceof VarLocation) {	// Si se debe asignar a una variable.
 			if (instr.getLeftOperand() instanceof IntLiteral) {
 				pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
@@ -485,9 +507,25 @@ public class AssemblyGenerator {
 				} else if (((""+instr.getLeftOperand()).equals("false"))) {
 					pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 				}
+			} else if (instr.getLeftOperand() instanceof GlobalVarLocation) {
+				pw.println("	movl	" + instr.getLeftOperand() + ", " + "%eax");
+				pw.println("	movl	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 			} else {
 				// Supongo que valor a asignar esta en edx.
 				pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			}
+		} else if (instr.getResult() instanceof GlobalVarLocation) {
+			if (instr.getLeftOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getLeftOperand() + ", " + instr.getResult());
+			} else if (instr.getLeftOperand() instanceof VarLocation) {
+				pw.println("	movl 	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
+				pw.println("	movl 	%edx, " + instr.getResult());
+			} else if (instr.getLeftOperand() instanceof BoolLiteral){
+				//	FALTA
+			} else if (instr.getLeftOperand() instanceof GlobalVarLocation) {
+				//	FALTA
+			} else {
+				//	FALTA
 			}
 		}
 	}
@@ -533,13 +571,24 @@ public class AssemblyGenerator {
 	}
 
 	private void arrayValueInstrAssembly(InstrCode instr) {
-		if (instr.getRightOperand() instanceof IntLiteral) {
-			pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
-		} else if (instr.getRightOperand() instanceof VarLocation) {
-			pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+		if (instr.getLeftOperand() instanceof GlobalArrayLocation) {
+			if (instr.getRightOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+			} else if (instr.getRightOperand() instanceof VarLocation) {
+				pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			}
+			pw.println("	movl	" + ((Location)instr.getLeftOperand()).getId() + "(,%eax,4), %edx");
+			pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+
+		} else if (instr.getLeftOperand() instanceof ArrayLocation) {
+			if (instr.getRightOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+			} else if (instr.getRightOperand() instanceof VarLocation) {
+				pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			}
+			pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp,%eax,4), %edx");
+			pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		}
-		pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp,%eax,4), %edx");
-		pw.println("	movl 	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void labelInstrAssembly(InstrCode instr) {
@@ -557,6 +606,19 @@ public class AssemblyGenerator {
 	private void stringInstrAssembly(InstrCode instr) {
 		pw.println(instr.getLeftOperand() + ":");
 		pw.println("	.string " + '"' + instr.getRightOperand() + '"');
+	}
+
+	private void initGlobalVarInstrAssembly(InstrCode instr) {
+		pw.println("	.globl 	" + ((Location)instr.getLeftOperand()).getId());
+		pw.println("	.data");
+		pw.println("	.type 	" + ((Location)instr.getLeftOperand()).getId() + ", @object");
+		pw.println("	.size 	" + ((Location)instr.getLeftOperand()).getId() + ", 4");
+		pw.println(((Location)instr.getLeftOperand()).getId() + ":");
+		pw.println("	.zero 	4");
+	}
+
+	private void initGlobalArrayInstrAssembly(InstrCode instr) {
+		pw.println("	.comm	" + ((Location)instr.getLeftOperand()).getId() + "," + ((GlobalArrayLocation)instr.getLeftOperand()).getSizeArray()*4 + ",4");
 	}
 
 	private void pushInstrAssembly(InstrCode instr) {
