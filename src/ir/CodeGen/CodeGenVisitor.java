@@ -53,7 +53,9 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	public void initVar(Location loc) {
 		if (loc instanceof VarLocation) {
 			//System.out.println("se incializa una variable local");
-			instrList.add(new InstrCode(Operator.EQ, (new IntLiteral("0")), null, loc));
+			if (loc.getType() == Type.TINT || loc.getType() == Type.TBOOLEAN) {
+				instrList.add(new InstrCode(Operator.EQ, (new IntLiteral("0")), null, loc));
+			}
 		} else if (loc instanceof GlobalVarLocation) {
 			//System.out.println("se incializa una variable global");
 			instrList.add(new InstrCode(Operator.INITGLOBALVAR, loc, null, null));

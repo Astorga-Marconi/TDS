@@ -609,12 +609,14 @@ public class AssemblyGenerator {
 	}
 
 	private void initGlobalVarInstrAssembly(InstrCode instr) {
+		/* Codigo usado para inicializar con cero los valores, pero me dijo P que no hacia falta inicializarlo con 0
 		pw.println("	.globl 	" + ((Location)instr.getLeftOperand()).getId());
 		pw.println("	.data");
 		pw.println("	.type 	" + ((Location)instr.getLeftOperand()).getId() + ", @object");
 		pw.println("	.size 	" + ((Location)instr.getLeftOperand()).getId() + ", 4");
 		pw.println(((Location)instr.getLeftOperand()).getId() + ":");
-		pw.println("	.zero 	4");
+		pw.println("	.zero 	4");*/
+		pw.println("	.comm	" + ((Location)instr.getLeftOperand()).getId() + ",4,4");
 	}
 
 	private void initGlobalArrayInstrAssembly(InstrCode instr) {
