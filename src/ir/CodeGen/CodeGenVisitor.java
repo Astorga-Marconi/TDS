@@ -30,7 +30,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	private int methodInstrIndex;		// Indice que especifica el principio de un metodo, es usado
 										// para definir los String usados en las invocaciones externas.
 
-	private List<InstrCode> floatDecl;
+	private List<InstrCode> floatDecl;	// Lista usada para almacenar las declaraciones de los flotantes
+										// que luego seran escritas en labels al final del assembler del metodo.
 
 	public CodeGenVisitor() {
 		
@@ -342,7 +343,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			break;
     	}
     	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
-    	if (rightOperand.getType() == Type.TINT) {
+    	if (rightOperand.getType() == Type.TINT) {	// Defino el tipo de resultado, a partir de este sera el codigo assembler generado.
     		res.setType(Type.TINT);
     	} else if (rightOperand.getType() == Type.TFLOAT) {
     		res.setType(Type.TFLOAT);
@@ -425,7 +426,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(BoolLiteral lit) {
-		Expression res = new VarLocation("boolean" + Integer.toString(labelsIdGen++));	
+		Expression res = new VarLocation("boolean" + Integer.toString(labelsIdGen++));
+		res.setType(Type.TBOOLEAN);
 		instrList.add(new InstrCode(Operator.EQ, lit, null, res));
     	return res;
 	}
@@ -437,8 +439,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public Expression visit(GlobalVarLocation loc) {
-		//System.out.println("CODEGEN global " + loc);
 		Expression res = new VarLocation("globalVar" + Integer.toString(labelsIdGen++));
+		res.setType(loc.getType());
 		instrList.add(new InstrCode(Operator.EQ, loc, null, res));
 		return res;	
 	}
@@ -447,6 +449,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		// Este metodo solo es llamado cuando el ArrayLocation es usado como Expression.
 		Expression expr = loc.getExpression().accept(this);
 		Expression res = new VarLocation("arrayValue" + Integer.toString(labelsIdGen++));
+		res.setType(loc.getType());
 		instrList.add(new InstrCode(Operator.ARRAYVALUE, loc, expr, res));
     	return res;
 	}
@@ -455,6 +458,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		// Este metodo solo es llamado cuando el ArrayLocation es usado como Expression.
 		Expression expr = loc.getExpression().accept(this);
 		Expression res = new VarLocation("arrayValue" + Integer.toString(labelsIdGen++));
+		res.setType(loc.getType());
 		instrList.add(new InstrCode(Operator.ARRAYVALUE, loc, expr, res));
     	return res;
 	}

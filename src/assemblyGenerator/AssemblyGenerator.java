@@ -183,21 +183,6 @@ public class AssemblyGenerator {
 				case DELPARAMS:
 					delparamsInstrAssembly(instr);
 					break;
-				case FLOATPLUS:
-					floatPlusInstrAssembly(instr);
-					break;
-				case FLOATMINUS:
-					floatMinusInstrAssembly(instr);
-					break;
-				case FLOATMULT:
-					floatMultInstrAssembly(instr);
-					break;
-				case FLOATDIV:
-					floatDivInstrAssembly(instr);
-					break;
-				case FLOATMOD:
-					floatModInstrAssembly(instr);
-					break;
 			}
 		}
 	}
@@ -232,7 +217,7 @@ public class AssemblyGenerator {
 			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)	# suma de float");
 			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 			pw.println("	faddp 	%st, %st(1)");
-			pw.println("	fstps 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	fstps 	" + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else {
 			pw.println("SUMA: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
@@ -252,7 +237,7 @@ public class AssemblyGenerator {
 			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)	# resta de float");
 			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 			pw.println("	fsubrp 	%st, %st(1)");
-			pw.println("	fstps 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	fstps 	" + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else {
 			pw.println("RESTA: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
@@ -267,7 +252,7 @@ public class AssemblyGenerator {
 			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)	# multiplicacion de float");
 			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 			pw.println("	fmulp 	%st, %st(1)");
-			pw.println("	fstps 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	fstps 	" + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else {
 			pw.println("MULTIPLICACION: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
@@ -284,7 +269,7 @@ public class AssemblyGenerator {
 			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)	# division de float");
 			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 			pw.println("	fdivrp 	%st, %st(1)");
-			pw.println("	fstps 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	fstps 	" + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else {
 			pw.println("DIVISION: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
@@ -298,6 +283,8 @@ public class AssemblyGenerator {
 			pw.println("	movl    %edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else if (instr.getResult().getType() == Type.TFLOAT) {
 			
+		} else {
+			pw.println("MODULO: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
 	}
 
@@ -711,18 +698,4 @@ public class AssemblyGenerator {
 		pw.println("	addl 	$" + num + ", %esp");
 	}
 
-	private void floatPlusInstrAssembly(InstrCode instr) {		
-	}
-
-	private void floatMinusInstrAssembly(InstrCode instr) {
-	}
-
-	private void floatMultInstrAssembly(InstrCode instr) {
-	}
-
-	private void floatDivInstrAssembly(InstrCode instr) {
-	}
-
-	private void floatModInstrAssembly(InstrCode instr) {
-	}
 }
