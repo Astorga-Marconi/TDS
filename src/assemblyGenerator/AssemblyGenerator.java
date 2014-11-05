@@ -330,13 +330,12 @@ public class AssemblyGenerator {
 			pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 			pw.println("	." + labelEnd + ":");
 		} else {
-			//pw.println("	movl 	$" + instr.getLeftOperand() + ", (%ebp)");
-			//pw.println("	movl 	$" + instr.getRightOperand() + ", (%ebp)");
-			pw.println("	flds ");
-			pw.println("	fucommpp ");
+			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	fucompp ");
 			pw.println("	fnstsw	 %ax");
-			pw.println("	andb    $69,	%ah");
-			pw.println("	cmpb 	$1,		%ah");
+			pw.println("	andb    $69,  %ah");
+			pw.println("	cmpb 	$1,  %ah");
 			pw.println("	je 	.L");
 		}
 	}
