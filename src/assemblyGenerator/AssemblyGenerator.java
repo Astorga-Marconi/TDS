@@ -317,7 +317,7 @@ public class AssemblyGenerator {
 			if (instr.getRightOperand() instanceof IntLiteral) {
 				pw.println("	cmpl    $" + instr.getRightOperand() + ", %eax ");
 			} else if (instr.getRightOperand() instanceof Location){
-				pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+				pw.println("	cmpl 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax" );
 			}
 			String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 			String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
@@ -330,14 +330,14 @@ public class AssemblyGenerator {
 			pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 			pw.println("	." + labelEnd + ":");
 		} else {
-			/**pw.println("	movl 	$" + instr.getLeftOperand() + "(%ebp)");
-			pw.println("	movl 	$" + instr.getRightOperand() + "(%ebp)");
+			//pw.println("	movl 	$" + instr.getLeftOperand() + ", (%ebp)");
+			//pw.println("	movl 	$" + instr.getRightOperand() + ", (%ebp)");
 			pw.println("	flds ");
 			pw.println("	fucommpp ");
 			pw.println("	fnstsw	 %ax");
 			pw.println("	andb    $69,	%ah");
 			pw.println("	cmpb 	$1,		%ah");
-			pw.println("	je 	.L");*/
+			pw.println("	je 	.L");
 		}
 	}
 
