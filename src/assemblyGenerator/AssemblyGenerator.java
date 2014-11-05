@@ -277,11 +277,14 @@ public class AssemblyGenerator {
 
 	private void modInstrAssembly(InstrCode instr) {
 		if (instr.getResult().getType() == Type.TINT){
-			pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
-			pw.println("	cltd ");
-			pw.println("	idivl   " + ((Location)instr.getLeftOperand()).getOffset());
+			pw.println("	movl    " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("	movl    %eax, %edx");
+			pw.println("	sarl    $31, %edx");
+			pw.println("	idivl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
 			pw.println("	movl    %edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+
 		} else if (instr.getResult().getType() == Type.TFLOAT) {
+			
 			
 		} else {
 			pw.println("MODULO: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
