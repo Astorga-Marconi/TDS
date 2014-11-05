@@ -262,7 +262,7 @@ public class AssemblyGenerator {
 		if (instr.getResult().getType() == Type.TINT){
 			pw.println("	movl    " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
 			pw.println("	movl	%eax, %edx");
-			pw.println("	sarl	%31, %edx");
+			pw.println("	sarl	$31, %edx");
 			pw.println("	idivl   " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
 			pw.println("	movl     %eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		} else if (instr.getResult().getType() == Type.TFLOAT) {
@@ -282,10 +282,8 @@ public class AssemblyGenerator {
 			pw.println("	sarl    $31, %edx");
 			pw.println("	idivl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
 			pw.println("	movl    %edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
-
 		} else if (instr.getResult().getType() == Type.TFLOAT) {
-			
-			
+			// La división Modular no esta definida para Float.
 		} else {
 			pw.println("MODULO: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
