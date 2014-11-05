@@ -63,7 +63,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 			} else if(loc.getType() == Type.TFLOAT) {
 				Expression labelFloat = new IntLiteral("LC" + Integer.toString(labelsIdGen++)); // Usado como nombre no como entero
 				instrList.add(new InstrCode(Operator.INITFLOATLOCATION, labelFloat, loc, null));
-				floatDecl.add(new InstrCode(Operator.INITLOCALFLOAT, labelFloat, loc, null));
+				floatDecl.add(new InstrCode(Operator.INITLOCALFLOAT, labelFloat, loc, (new FloatLiteral("0.0"))));
 			}
 		} else if (loc instanceof GlobalVarLocation) {
 			//System.out.println("se incializa una variable global");
@@ -420,8 +420,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		res.setType(Type.TFLOAT);
 		Expression labelFloat = new IntLiteral("LC" + Integer.toString(labelsIdGen++)); // Usado como nombre no como entero
 		instrList.add(new InstrCode(Operator.INITFLOATLOCATION, labelFloat, res, null));
-		floatDecl.add(new InstrCode(Operator.INITLOCALFLOAT, labelFloat, res, null));
-		//instrList.add(new InstrCode(Operator.EQ, (new FloatLiteral (lit.getValue().toString())), null, res));
+		floatDecl.add(new InstrCode(Operator.INITLOCALFLOAT, labelFloat, res, lit));
     	return res;
 	}
 

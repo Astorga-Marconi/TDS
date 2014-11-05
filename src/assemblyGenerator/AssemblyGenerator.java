@@ -658,8 +658,7 @@ public class AssemblyGenerator {
 
 	private void initLocalFloatInstrAssembly(InstrCode instr) {
 		pw.println("." + instr.getLeftOperand() + ":");
-		//pw.println("	.long " + '"' + instr.getRightOperand() + '"');
-		pw.println("	.long " + "1082340147	# Numero usado como ejemplo");
+		pw.println("	.float " + instr.getResult());
 	}
 
 	private void initGlobalVarInstrAssembly(InstrCode instr) {
