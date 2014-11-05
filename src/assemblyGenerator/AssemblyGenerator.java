@@ -159,6 +159,12 @@ public class AssemblyGenerator {
 				case STRING:
 					stringInstrAssembly(instr);
 					break;
+				case INITFLOATLOCATION:
+					initFloatLocationInstrAssembly(instr);
+					break;
+				case INITLOCALFLOAT:
+					initLocalFloatInstrAssembly(instr);
+					break;
 				case INITGLOBALVAR:
 					initGlobalVarInstrAssembly(instr);
 					break;
@@ -213,56 +219,104 @@ public class AssemblyGenerator {
 	}
 
 	private void plusInstrAssembly(InstrCode instr) {
-		if (instr.getRightOperand() instanceof IntLiteral) {
-			pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+		if (instr.getResult().getType() == Type.TINT){
+			if (instr.getRightOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+			} else {
+				pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			}
+			pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
+			pw.println("	addl	%eax, %edx");
+			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else if (instr.getResult().getType() == Type.TFLOAT) {
+			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)	# suma de float");
+			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	faddp 	%st, %st(1)");
+			pw.println("	fstps 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 		} else {
-			pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("SUMA: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
-		pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
-		pw.println("	addl	%eax, %edx");
-		pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	} 
 
 	private void minusInstrAssembly(InstrCode instr) {
-		if (instr.getRightOperand() instanceof IntLiteral) {
-			pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+		if (instr.getResult().getType() == Type.TINT){
+			if (instr.getRightOperand() instanceof IntLiteral) {
+				pw.println("	movl	$" + instr.getRightOperand() + ", %eax");
+			} else {
+				pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			}
+			pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
+			pw.println("	subl	%eax, %edx");
+			pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else if (instr.getResult().getType() == Type.TFLOAT) {
+			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)	# resta de float");
+			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	fsubrp 	%st, %st(1)");
+			pw.println("	fstps 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 		} else {
-			pw.println("	movl	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("RESTA: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
-		pw.println("	movl	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %edx");
-		pw.println("	subl	%eax, %edx");
-		pw.println("	movl	%edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void multInstrAssembly(InstrCode instr) {
-		pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
-		pw.println("	imull   " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
-		pw.println("	movl    %eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		if (instr.getResult().getType() == Type.TINT){
+			pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("	imull   " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("	movl    %eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else if (instr.getResult().getType() == Type.TFLOAT) {
+			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)	# multiplicacion de float");
+			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	fmulp 	%st, %st(1)");
+			pw.println("	fstps 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		} else {
+			pw.println("MULTIPLICACION: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
+		}
 	}
 
 	private void divInstrAssembly(InstrCode instr) {
-		pw.println("	movl    " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
-		pw.println("	movl	%eax, %edx");
-		pw.println("	sarl	%31, %edx");
-		pw.println("	idivl   " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
-		pw.println("	movl     %eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		if (instr.getResult().getType() == Type.TINT){
+			pw.println("	movl    " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("	movl	%eax, %edx");
+			pw.println("	sarl	%31, %edx");
+			pw.println("	idivl   " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+			pw.println("	movl     %eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else if (instr.getResult().getType() == Type.TFLOAT) {
+			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)	# division de float");
+			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+			pw.println("	fdivrp 	%st, %st(1)");
+			pw.println("	fstps 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		} else {
+			pw.println("DIVISION: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
+		}
 	}
 
 	private void modInstrAssembly(InstrCode instr) {
-		pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
-		pw.println("	cltd ");
-		pw.println("	idivl   " + ((Location)instr.getLeftOperand()).getOffset());
-		pw.println("	movl    %edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		if (instr.getResult().getType() == Type.TINT){
+			pw.println("	movl    " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("	cltd ");
+			pw.println("	idivl   " + ((Location)instr.getLeftOperand()).getOffset());
+			pw.println("	movl    %edx, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else if (instr.getResult().getType() == Type.TFLOAT) {
+			
+		}
 	}
 
 	private void negInstrAssembly(InstrCode instr) {
-		if (instr.getLeftOperand() instanceof VarLocation) {
-			pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
-		} else if (instr.getLeftOperand() instanceof Literal) {
-			pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+		if (instr.getResult().getType() == Type.TINT){
+			if (instr.getLeftOperand() instanceof VarLocation) {
+				pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
+			} else if (instr.getLeftOperand() instanceof Literal) {
+				pw.println("	movl 	$" + instr.getLeftOperand() + ", %eax");
+			}
+			pw.println("	negl 	%eax");
+			pw.println("	movl 	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else if (instr.getResult().getType() == Type.TFLOAT) {
+			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)	# negacion de float");
+			pw.println("	fchs");
+			pw.println("	fstps 	" + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+		} else {
+			pw.println("NEGACION: LA OPERACION NO TIENE ASIGNADO UN TIPO DE RESULTADO");
 		}
-		pw.println("	negl 	%eax");
-		pw.println("	movl 	%eax, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 	}
 
 	private void ltInstrAssembly(InstrCode instr) {
@@ -496,7 +550,9 @@ public class AssemblyGenerator {
 			}
 
 		} else if (instr.getResult() instanceof VarLocation) {	// Si se debe asignar a una variable.
-			if (instr.getLeftOperand() instanceof IntLiteral) {
+			if (instr.getLeftOperand() instanceof FloatLiteral) {
+
+			} else if (instr.getLeftOperand() instanceof IntLiteral) {
 				pw.println("	movl	$" + instr.getLeftOperand() + ", " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 			} else if (instr.getLeftOperand() instanceof VarLocation) {
 				pw.println("	movl 	" + ((Location)instr.getLeftOperand() ).getOffset() + "(%ebp), %edx");
@@ -606,6 +662,17 @@ public class AssemblyGenerator {
 	private void stringInstrAssembly(InstrCode instr) {
 		pw.println(instr.getLeftOperand() + ":");
 		pw.println("	.string " + '"' + instr.getRightOperand() + '"');
+	}
+
+	private void initFloatLocationInstrAssembly(InstrCode instr) {
+		pw.println("	movl 	." + instr.getLeftOperand() + ", %eax");
+		pw.println("	movl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+	}
+
+	private void initLocalFloatInstrAssembly(InstrCode instr) {
+		pw.println("." + instr.getLeftOperand() + ":");
+		//pw.println("	.long " + '"' + instr.getRightOperand() + '"');
+		pw.println("	.long " + "1082340147	# Numero usado como ejemplo");
 	}
 
 	private void initGlobalVarInstrAssembly(InstrCode instr) {

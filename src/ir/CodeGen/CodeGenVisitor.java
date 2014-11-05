@@ -30,11 +30,14 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	private int methodInstrIndex;		// Indice que especifica el principio de un metodo, es usado
 										// para definir los String usados en las invocaciones externas.
 
+	private List<InstrCode> floatDecl;
+
 	public CodeGenVisitor() {
 		
 		errors = new LinkedList<Error>();
 		instrList = new LinkedList<InstrCode>();
 		jmpLabels = new LinkedList<Expression>();
+		floatDecl = new LinkedList<InstrCode>();
 	}
 
 	public List<InstrCode> getInstrList() {
@@ -48,6 +51,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 
 	public void instrMethodEnd() {
 		instrList.add(new InstrCode(Operator.METHODEND, null, null, null));
+		instrList.addAll(floatDecl);
 	}
 
 	public void initVar(Location loc) {
@@ -55,6 +59,10 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 			//System.out.println("se incializa una variable local");
 			if (loc.getType() == Type.TINT || loc.getType() == Type.TBOOLEAN) {
 				instrList.add(new InstrCode(Operator.EQ, (new IntLiteral("0")), null, loc));
+			} else if(loc.getType() == Type.TFLOAT) {
+				Expression labelFloat = new IntLiteral("LC" + Integer.toString(labelsIdGen++)); // Usado como nombre no como entero
+				instrList.add(new InstrCode(Operator.INITFLOATLOCATION, labelFloat, loc, null));
+				floatDecl.add(new InstrCode(Operator.INITLOCALFLOAT, labelFloat, loc, null));
 			}
 		} else if (loc instanceof GlobalVarLocation) {
 			//System.out.println("se incializa una variable global");
@@ -284,6 +292,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	public Expression visit(NegativeExpr expr) {
     	Expression oper = expr.getExpression().accept(this);
   		VarLocation res = new VarLocation("negRes" + Integer.toString(labelsIdGen++));
+  		res.setType(oper.getType());
 		instrList.add(new InstrCode(Operator.NEG, oper, null, res));
     	return res;
 	}
@@ -303,56 +312,41 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   		Expression leftOperand = expr.getLeftOperand().accept(this);
   		if (leftOperand instanceof IntLiteral) {	// Devuelve el literal, no la posicion en donde se guarda
   			Expression resL = new VarLocation("int" + Integer.toString(labelsIdGen++));
+  			resL.setType(Type.TINT);
 			instrList.add(new InstrCode(Operator.EQ, leftOperand, null, resL));
 			leftOperand = resL;
   		}
     	Expression rightOperand = expr.getRightOperand().accept(this);
     	if (rightOperand instanceof IntLiteral) {
   			Expression resR = new VarLocation("int" + Integer.toString(labelsIdGen++));
+  			resR.setType(Type.TINT);
 			instrList.add(new InstrCode(Operator.EQ, rightOperand, null, resR));
 			rightOperand = resR;
   		}
     	Operator operator = null;
-    	switch (expr.getType()) {
-    		case TINT:
-    			switch (expr.getOperator()) {
-    				case PLUS:
-    					operator = Operator.PLUS;
-    					break;
-    				case MINUS:
-    					operator = Operator.MINUS;
-    					break;
-    				case MULT:
-    					operator = Operator.MULT;
-    					break;
-    				case DIV:
-    					operator = Operator.DIV;
-    					break;
-    			case MOD:
-    				operator = Operator.MOD;
-    				break;
-    		}
-    		break;
-    		case TFLOAT:
-    			switch (expr.getOperator()) {
-    				case PLUS:
-    					operator = Operator.FLOATPLUS;
-    					break;
-    				case MINUS:
-    					operator = Operator.FLOATMINUS;
-    					break;
-    				case MULT:
-    					operator = Operator.FLOATMULT;
-    					break;
-    				case DIV:
-    					operator = Operator.FLOATDIV;
-    					break;
-    				case MOD:
-    					operator = Operator.FLOATMOD;
-    					break;
-    		} 
+    	switch (expr.getOperator()) {
+    		case PLUS:
+    			operator = Operator.PLUS;
+    			break;
+    		case MINUS:
+    			operator = Operator.MINUS;
+    			break;
+    		case MULT:
+    			operator = Operator.MULT;
+    			break;
+    		case DIV:
+    			operator = Operator.DIV;
+    			break;
+    		case MOD:
+    			operator = Operator.MOD;
+    			break;
     	}
     	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
+    	if (rightOperand.getType() == Type.TINT) {
+    		res.setType(Type.TINT);
+    	} else if (rightOperand.getType() == Type.TFLOAT) {
+    		res.setType(Type.TFLOAT);
+    	}
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
  	}
@@ -422,7 +416,11 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
 	public Expression visit(FloatLiteral lit) {
 		Expression res = new VarLocation("float" + Integer.toString(labelsIdGen++));
-		instrList.add(new InstrCode(Operator.EQ, (new FloatLiteral (lit.getValue().toString())), null, res));
+		res.setType(Type.TFLOAT);
+		Expression labelFloat = new IntLiteral("LC" + Integer.toString(labelsIdGen++)); // Usado como nombre no como entero
+		instrList.add(new InstrCode(Operator.INITFLOATLOCATION, labelFloat, res, null));
+		floatDecl.add(new InstrCode(Operator.INITLOCALFLOAT, labelFloat, res, null));
+		//instrList.add(new InstrCode(Operator.EQ, (new FloatLiteral (lit.getValue().toString())), null, res));
     	return res;
 	}
 

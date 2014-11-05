@@ -42,6 +42,8 @@ public enum Operator {
 	LABEL,   
 	INC,
 	STRING,
+	INITFLOATLOCATION,
+	INITLOCALFLOAT,
 	INITGLOBALVAR,
 	INITGLOBALARRAY,
 	PUSH,
@@ -111,6 +113,10 @@ public enum Operator {
 				return "LABEL";	
 			case STRING:
 				return "STRING";
+			case INITFLOATLOCATION:
+				return "INITFLOATLOCATION";
+			case INITLOCALFLOAT:
+				return "INITLOCALFLOAT";
 			case INITGLOBALVAR:
 				return "INITGLOBALVAR";
 			case INITGLOBALARRAY:
