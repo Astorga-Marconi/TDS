@@ -329,7 +329,7 @@ public class AssemblyGenerator {
 			pw.println("	." + labelFalse + ":");
 			pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 			pw.println("	." + labelEnd + ":");
-		} else {
+		} else if (instr.getLeftOperand().getType() == Type.TFLOAT) {
 			String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 			String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
 			String labelEnd = "endLt" + Integer.toString(labelsIdGen++);
