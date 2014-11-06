@@ -339,7 +339,7 @@ public class AssemblyGenerator {
 			pw.println("	fnstsw	 %ax");
 			pw.println("	andb    $69,  %ah");
 			pw.println("	cmpb 	$1,  %ah");
-			pw.println("	je 	." + labelFalse);
+			pw.println("	jne 	." + labelFalse);
 			pw.println("	." + labelTrue + ":");
 			pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 			pw.println("	jmp 	." + labelEnd);
