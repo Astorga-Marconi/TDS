@@ -330,13 +330,24 @@ public class AssemblyGenerator {
 			pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 			pw.println("	." + labelEnd + ":");
 		} else {
+			String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
+			String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
+			String labelEnd = "endLt" + Integer.toString(labelsIdGen++);
 			pw.println("	flds 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
 			pw.println("	flds 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 			pw.println("	fucompp ");
 			pw.println("	fnstsw	 %ax");
 			pw.println("	andb    $69,  %ah");
 			pw.println("	cmpb 	$1,  %ah");
-			pw.println("	je 	.L");
+			pw.println("	je 	." + labelFalse);
+			pw.println("	." + labelTrue + ":");
+			pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			pw.println("	jmp 	." + labelEnd);
+			pw.println("	." + labelFalse + ":");
+			pw.println("	movl 	$0, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
+			pw.println("	." + labelEnd + ":");
+		} else {
+			pw.println("<: LA OPERACION NO TIENE ASIGNADO UN TIPO DE OPERANDO");
 		}
 	}
 
