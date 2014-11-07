@@ -1,0 +1,11 @@
+class test_floatSuma{
+
+  void main(){ 
+    float x, y, z;
+    x = 6.982;
+    y = - 002.5;
+    z = x + y; 
+    
+    externinvk("printfloat", void, z);
+  }
+}
