@@ -30,6 +30,13 @@ public class VarLocation extends Location {
 		this.offset = maxoffset;
 		maxoffset = maxoffset - 4;
 	}
+
+	public VarLocation(String id, Type t, int offset) {
+		this.id = id;
+		this.type = t;
+		this.blockId = -1;
+		this.offset = offset;
+	}
 	
 	public int getBlockId() {
 		return blockId;

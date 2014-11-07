@@ -70,7 +70,7 @@ non terminal	program,
 			
 non terminal    Type type;
 non terminal    Literal literal;
-non terminal    Block block, _block;
+non terminal    Block block, _block, method_block;
 non terminal 	AssignOpType assign_op;
 non terminal 	LinkedList set_statement, list_expr, list_externinvk_arg, list_type_id_method_decl, zero_or_one_list_type_id_method_decl;
 non terminal 	Statement statement, method_call_stmt; // zero_or_one_else_block,
@@ -131,9 +131,12 @@ method_decl ::=
 		{:	currentMethodRetType = t1;
 			FunctionDescriptor newFunction = new FunctionDescriptor(t1, id1, params);
 			table.insertNewMethod(newFunction);
-			codeGen.instrMethodLabel(newFunction);	:}
-		RPAREN block:b
-		{:	currentMethodRetType = null;
+			codeGen.instrMethodLabel(newFunction);
+			table.insertNewBlock();
+			table.insertParameters(params);	:}
+		RPAREN method_block:b
+		{:	table.closeBlock();
+			currentMethodRetType = null;
 			typeVisitor.visit(b);
 			codeGen.visit(b);
 			codeGen.instrMethodEnd();	:}
@@ -141,9 +144,12 @@ method_decl ::=
 		{:	currentMethodRetType = Type.TVOID;
 			FunctionDescriptor newFunction = new FunctionDescriptor(t1, id1, params);
 			table.insertNewMethod(newFunction);
-			codeGen.instrMethodLabel(newFunction);	:}
-		RPAREN block:b
-		{:	currentMethodRetType = null;
+			codeGen.instrMethodLabel(newFunction);
+			table.insertNewBlock();
+			table.insertParameters(params);	:}
+		RPAREN method_block:b
+		{:	table.closeBlock();
+			currentMethodRetType = null;
 			typeVisitor.visit(b);
 			codeGen.visit(b);
 			codeGen.instrMethodEnd();	:}
@@ -172,8 +178,10 @@ list_type_id_method_decl ::=
 
 type_id_method_decl ::= 
 		type ID:id1
-		{:	table.insertSymbol(currentType, id1);
-			RESULT = new VarDescriptor(currentType, id1); :};
+		{:	VarDescriptor newVar = new VarDescriptor(currentType, id1);
+			RESULT = newVar; :};
+
+method_block ::= _block:b1 {:	RESULT = b1;	:};
 
 block ::= {:table.insertNewBlock();:} _block:b1 {:table.closeBlock(); RESULT = b1; :};
 
@@ -255,7 +263,7 @@ return_stmt ::=
 		RETURN expr:e 
 		{:	if (e.getType() != currentMethodRetType) {
 				System.out.println("La expresion de retorno no es del mismo tipo del metodo.");
-				System.out.println("el tipo de la expresion: " + e.getType() + ", tipo requerido: " + currentMethodRetType);
+				System.out.println("Tipo encontrado: " + e.getType() + ", tipo requerido: " + currentMethodRetType);
 			}
 			RESULT = new ReturnStmt(e); :}
 	|   RETURN

@@ -41,11 +41,6 @@ public class SymbolTable{
 		levels.remove(amountLevels);
 	}
 	
-	public void insertSymbol(Type type, String name){
-		Descriptor d = new VarDescriptor(type, name);
-		insertNewDescriptor(d);
-	}
-
 	/**
 	 * Insert the descriptor in the current level at the table.
 	 * The name Id of the descriptor must be unique in the level.
@@ -110,6 +105,21 @@ public class SymbolTable{
 			}
 		} else {
 			System.out.println("There is already a Variable with the same ID");
+		}
+	}
+
+	public void insertParameters(List<VarDescriptor> params){
+		int offsetParams = 8;
+		VarLocation newVarLoc = null;
+		for (VarDescriptor descriptor : params) {
+			if (searchInCurrentLevel(descriptor.getName()) == null) {
+				newVarLoc = new VarLocation(descriptor.getName(), descriptor.getType(), offsetParams);
+				descriptor.setLocation(newVarLoc);
+				levels.get(amountLevels-1).add(descriptor);
+				offsetParams = offsetParams + 4;
+			} else {
+				System.out.println("Ya existe una variable con el nombre: " + descriptor.getName());
+			}
 		}
 	}
 	
