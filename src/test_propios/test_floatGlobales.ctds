@@ -1,0 +1,12 @@
+class test_dario{
+
+  float w;
+  float m;
+  
+  void main(){
+     w = 4.0;
+     m = 2.6;
+     w = m + 5.1;
+     externinvk("printfloat", void, w);
+  }
+}
