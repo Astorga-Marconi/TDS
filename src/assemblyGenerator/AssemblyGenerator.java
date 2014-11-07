@@ -365,7 +365,7 @@ public class AssemblyGenerator {
 			}
 			String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 			String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
-			String labelEnd = "endEqEq" + Integer.toString(labelsIdGen++);
+			String labelEnd = "endGt" + Integer.toString(labelsIdGen++);
 			pw.println("	jle 	." + labelFalse);
 			pw.println("	." + labelTrue + ":");
 			pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
@@ -540,7 +540,7 @@ public class AssemblyGenerator {
 			}
 			String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 			String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
-			String labelEnd = "endEqEq" + Integer.toString(labelsIdGen++);
+			String labelEnd = "endNotEq" + Integer.toString(labelsIdGen++);
 			pw.println("	je 	." + labelFalse);
 			pw.println("	." + labelTrue + ":");
 			pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
@@ -589,7 +589,7 @@ public class AssemblyGenerator {
 	private void ororInstrAssembly(InstrCode instr) {
 		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
-		String labelEnd = "endAnd" + Integer.toString(labelsIdGen++);
+		String labelEnd = "endAndAnd" + Integer.toString(labelsIdGen++);
 		pw.println("	cmpl 	$1, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 		pw.println("	je 	." + labelTrue);
 		pw.println("	cmpl 	$1, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
