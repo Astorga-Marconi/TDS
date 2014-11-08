@@ -344,11 +344,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			break;
     	}
     	VarLocation res = new VarLocation("arithRes" + Integer.toString(labelsIdGen++));
-    	if (rightOperand.getType() == Type.TINT) {	// Defino el tipo de resultado, a partir de este sera el codigo assembler generado.
-    		res.setType(Type.TINT);
-    	} else if (rightOperand.getType() == Type.TFLOAT) {
-    		res.setType(Type.TFLOAT);
-    	}
+    	res.setType(rightOperand.getType());	// Defino el tipo de resultado a partir de los operandos
+    											// a partir de este sera el codigo assembler generado.
     	instrList.add(new InstrCode(operator, leftOperand, rightOperand, res));
     	return res;
  	}

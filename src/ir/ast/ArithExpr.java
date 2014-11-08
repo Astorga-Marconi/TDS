@@ -25,6 +25,11 @@ public class ArithExpr extends BinOpExpr {
 	}
 	
 	@Override
+	public Type getType() {
+		return this.getLeftOperand().getType();
+	}
+
+	@Override
 	public String toString() {
 		return lOperand + " " + operator.toString() + " " + rOperand;
 	}
