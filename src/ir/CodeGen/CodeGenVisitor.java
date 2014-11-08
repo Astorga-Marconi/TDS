@@ -23,7 +23,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	
 	private List<Error> errors;
 	private List<InstrCode> instrList ;
-	private Integer labelsIdGen = 0;
+	private Integer labelsIdGen;
 	private List<Expression> jmpLabels;	// Lista que guarda los labels de los posibles saltos a realizarse
 										// al encontrar un BREAK o CONTINUE. Cada vez que se encuentra 
 										// con un ciclo se guarda el label inicio y fin de ciclo.
@@ -34,7 +34,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 										// que luego seran escritas en labels al final del assembler del metodo.
 
 	public CodeGenVisitor() {
-		
+		labelsIdGen = 0;
 		errors = new LinkedList<Error>();
 		instrList = new LinkedList<InstrCode>();
 		jmpLabels = new LinkedList<Expression>();
@@ -52,7 +52,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 
 	public void instrMethodEnd() {
 		instrList.add(new InstrCode(Operator.METHODEND, null, null, null));
-		instrList.addAll(floatDecl);
+		instrList.addAll(floatDecl);	// Agrego los labels de los respectivos floats.
+		floatDecl = new LinkedList<InstrCode>();	// Limpio la lista con los float's ya agregados.
 	}
 
 	public void initVar(Location loc) {
