@@ -361,7 +361,7 @@ public class AssemblyGenerator {
 			if (instr.getRightOperand() instanceof IntLiteral) {
 				pw.println("	cmpl 	$" + instr.getRightOperand() + ", %eax");
 			} else if (instr.getRightOperand() instanceof Location){
-				pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+				pw.println("	cmpl 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
 			}
 			String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 			String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
@@ -404,7 +404,7 @@ public class AssemblyGenerator {
 			if (instr.getRightOperand() instanceof IntLiteral) {
 				pw.println("	cmpl 	$" + instr.getRightOperand() + ", %eax");
 			} else if (instr.getRightOperand() instanceof Location){
-				pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+				pw.println("	cmpl 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
 			}
 			String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 			String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
@@ -447,7 +447,7 @@ public class AssemblyGenerator {
 			if (instr.getRightOperand() instanceof IntLiteral) {
 				pw.println("	cmpl 	$" + instr.getRightOperand() + ", %eax");
 			} else if (instr.getRightOperand() instanceof Location){
-				pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+				pw.println("	cmpl 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
 			}
 			String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 			String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
