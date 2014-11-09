@@ -120,6 +120,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   			retExpr = stmt.getExpression().accept(this);
   		}
   		instrList.add(new InstrCode(Operator.RET, null, null, retExpr));
+  		instrList.add(new InstrCode(Operator.METHODEND, null, null, null));
   		return null;
   	}
 

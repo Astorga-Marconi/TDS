@@ -15,6 +15,7 @@ public class NegativeExpr extends Expression {
 
 	public NegativeExpr(Expression e){
 		this.expr = e;
+		this.setType(e.getType());
 	}
 
 	public Expression getExpression() {
