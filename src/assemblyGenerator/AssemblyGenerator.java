@@ -714,14 +714,19 @@ public class AssemblyGenerator {
 	}
 
 	private void cmpInstrAssembly(InstrCode instr) {
-		if (instr.getLeftOperand() instanceof Literal && instr.getRightOperand() instanceof Literal)
+		if (instr.getLeftOperand() instanceof IntLiteral && instr.getRightOperand() instanceof IntLiteral){
 			pw.println("	cmpl 	$" + instr.getLeftOperand() + ", $" + instr.getRightOperand());
-		if (instr.getLeftOperand() instanceof VarLocation && instr.getRightOperand() instanceof BoolLiteral){
+		} else if (instr.getLeftOperand() instanceof VarLocation && instr.getRightOperand() instanceof BoolLiteral){
 			if (((""+instr.getRightOperand()).equals("true"))) {
 				pw.println("	cmpl 	$1, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 			} else if (((""+instr.getRightOperand()).equals("false"))) {
 				pw.println("	cmpl 	$0, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 			}
+		} else if (instr.getLeftOperand() instanceof VarLocation && instr.getRightOperand() instanceof VarLocation) {
+			pw.println("	movl 	" + ((Location)instr.getRightOperand()).getOffset() + "(%ebp), %eax");
+			pw.println("	cmpl 	%eax, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		} else if (instr.getLeftOperand() instanceof VarLocation && instr.getRightOperand() instanceof IntLiteral) {
+			pw.println("	cmpl 	$" + instr.getRightOperand() + ", " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
 		}
 	}
 

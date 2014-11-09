@@ -157,7 +157,7 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 		instrList.add(new InstrCode(Operator.EQ, initialValExpr, null, loc));
 		instrList.add(new InstrCode(Operator.LABEL, null, null, forLabel));
 		instrList.add(new InstrCode(Operator.CMP, loc, forCondExpr, null));
-		instrList.add(new InstrCode(Operator.JLE, null, null, endForLabel));
+		instrList.add(new InstrCode(Operator.JGE, null, null, endForLabel));
 		// Genero las instrucciones del bloque for.
 		Expression forBlockInstrs = stmt.getForBlock().accept(this);
 		instrList.add(new InstrCode(Operator.INC, loc, null, null));
