@@ -359,7 +359,7 @@ public class AssemblyGenerator {
 				pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
 			}
 			if (instr.getRightOperand() instanceof IntLiteral) {
-				pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+				pw.println("	cmpl 	$" + instr.getRightOperand() + ", %eax");
 			} else if (instr.getRightOperand() instanceof Location){
 				pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
 			}
@@ -402,7 +402,7 @@ public class AssemblyGenerator {
 				pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
 			}
 			if (instr.getRightOperand() instanceof IntLiteral) {
-				pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+				pw.println("	cmpl 	$" + instr.getRightOperand() + ", %eax");
 			} else if (instr.getRightOperand() instanceof Location){
 				pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
 			}
@@ -445,7 +445,7 @@ public class AssemblyGenerator {
 				pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
 			}
 			if (instr.getRightOperand() instanceof IntLiteral) {
-				pw.println("	cmpl 	%eax, $" + instr.getRightOperand());
+				pw.println("	cmpl 	$" + instr.getRightOperand() + ", %eax");
 			} else if (instr.getRightOperand() instanceof Location){
 				pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
 			}
