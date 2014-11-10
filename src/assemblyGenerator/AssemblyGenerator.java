@@ -576,9 +576,11 @@ public class AssemblyGenerator {
 		String labelTrue = "isTrue" + Integer.toString(labelsIdGen++);
 		String labelFalse = "isFalse" + Integer.toString(labelsIdGen++);
 		String labelEnd = "endAnd" + Integer.toString(labelsIdGen++);
-		pw.println("	movl 	" + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp), %eax");
-		pw.println("	cmpl 	%eax, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
-		pw.println("	jne 	." + labelFalse);
+		pw.println("	cmpl 	$0, " + ((Location)instr.getLeftOperand()).getOffset() + "(%ebp)");
+		pw.println("	je 	." + labelFalse);
+		pw.println("	cmpl 	$0, " + ((Location)instr.getRightOperand()).getOffset() + "(%ebp)");
+		pw.println("	je 	." + labelFalse);
+		pw.println("	." + labelTrue + ":");
 		pw.println("	movl 	$1, " + ((Location)instr.getResult()).getOffset() + "(%ebp)");
 		pw.println("	jmp 	." + labelEnd);
 		pw.println("	." + labelFalse + ":");
