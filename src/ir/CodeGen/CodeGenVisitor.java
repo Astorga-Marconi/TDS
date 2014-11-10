@@ -310,8 +310,70 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
   	public Expression visit (ParentExpr expr) {
   		return expr.getExpression().accept(this);
   	}
-	
+
+  	/**
+  	 * Resuelve una expresion aritmetica compuesta por dos operandos de tipo IntLiteral.
+  	 * @param  expr, expresion aritmetica a resolver.
+  	 * @return un IntLiteral resultado de la operacion aritmetica.
+  	 */
+  	private IntLiteral solveArithIntExpr(ArithExpr expr){
+  		Integer lOper = ((IntLiteral)expr.getLeftOperand()).getValue();
+  		Integer rOper = ((IntLiteral)expr.getRightOperand()).getValue();
+  		int res = 0;
+  		switch (expr.getOperator()) {
+    		case PLUS:
+    			res = lOper + rOper;
+    			break;
+    		case MINUS:
+    			res = lOper - rOper;
+    			break;
+    		case MULT:
+    			res = lOper * rOper;
+    			break;
+    		case DIV:
+    			res = lOper / rOper;
+    			break;
+    		case MOD:
+    			res = lOper % rOper;
+    			break;
+    	}
+  		return (new IntLiteral(""+res));
+  	}
+
+  	/**
+  	 * Resuelve una expresion aritmetica compuesta por dos operandos de tipo FloatLiteral.
+  	 * @param  expr, expresion aritmetica a resolver.
+  	 * @return un FloatLiteral resultado de la operacion aritmetica.
+  	 */
+  	private FloatLiteral solveArithFloatExpr(ArithExpr expr){
+  		Float lOper = ((FloatLiteral)expr.getLeftOperand()).getValue();
+  		Float rOper = ((FloatLiteral)expr.getRightOperand()).getValue();
+  		Float res = null;
+  		switch (expr.getOperator()) {
+    		case PLUS:
+    			res = lOper + rOper;
+    			break;
+    		case MINUS:
+    			res = lOper - rOper;
+    			break;
+    		case MULT:
+    			res = lOper * rOper;
+    			break;
+    		case DIV:
+    			res = lOper / rOper;
+    			break;
+    	}
+  		return (new FloatLiteral(""+res));
+  	}
+
   	public Expression visit (ArithExpr expr) {
+  		// Si los operandos son dos literales Int/Float debo resolver el resultado aca.
+  		if (expr.getLeftOperand() instanceof IntLiteral && expr.getRightOperand() instanceof IntLiteral) {
+  			return solveArithIntExpr(expr);
+  		} else if (expr.getLeftOperand() instanceof FloatLiteral && expr.getRightOperand() instanceof FloatLiteral) {
+  			return solveArithFloatExpr(expr).accept(this);
+  		}
+  		// Si los operandos no son conjuntamente dos literales.
   		Expression leftOperand = expr.getLeftOperand().accept(this);
   		if (leftOperand instanceof IntLiteral) {	// Devuelve el literal, no la posicion en donde se guarda
   			Expression resL = new VarLocation("int" + Integer.toString(labelsIdGen++));

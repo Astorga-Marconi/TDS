@@ -13,6 +13,11 @@ public class IntLiteral extends Literal {
 	public IntLiteral(String val){
 		rawValue = val; // Will convert to int value in semantic check
 		value = null;
+		try {
+			value = Integer.parseInt(val);
+		} catch (Exception e) {
+			
+		}
 	}
 
 	public IntLiteral(IntLiteral e) {
