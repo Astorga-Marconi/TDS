@@ -32,6 +32,8 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 
 	private List<InstrCode> floatDecl;	// Lista usada para almacenar las declaraciones de los flotantes
 										// que luego seran escritas en labels al final del assembler del metodo.
+	
+	private Location offsetMethod;		// location usado determinar el espacio a reservar en la pila por cada metodo.
 
 	public CodeGenVisitor() {
 		labelsIdGen = 0;
@@ -46,11 +48,20 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
 	}
 
 	public void instrMethodLabel(FunctionDescriptor f) {
+		// Referencio al offsetMethod de este metodo, un VarLocation q contendra el offset,
+		// espacio asignado en la pila fijado en instrMethodEnd,
+		// y fijo el maxoffset como -4 para el metodo.
+		offsetMethod = new VarLocation("offsetMethodEnd", null, 0);	// Por cada metodo sera un objeto diferente.
+		offsetMethod.setMaxOffset(-4);
+		///////////////////////////////
 		methodInstrIndex = instrList.size();	// Seteo el indice en la lista que especifica el comienzo de un metodo.
-		instrList.add(new InstrCode(Operator.METHODLABEL, null, null, (new IntLiteral(f.getName()) )));
+		instrList.add(new InstrCode(Operator.METHODLABEL, offsetMethod, null, (new IntLiteral(f.getName()) )));
 	}
 
 	public void instrMethodEnd() {
+		// Seteo el offset ultimo, que va a asignar el espacio en la pila al principio del metodo.
+		offsetMethod.setOffset(-(new VarLocation("offsetEnd").getOffset()));
+
 		instrList.add(new InstrCode(Operator.METHODEND, null, null, null));
 		instrList.addAll(floatDecl);	// Agrego los labels de los respectivos floats.
 		floatDecl = new LinkedList<InstrCode>();	// Limpio la lista con los float's ya agregados.

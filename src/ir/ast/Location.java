@@ -21,4 +21,8 @@ public abstract class Location extends Expression {
 	public int getOffset() {
 		return this.offset;
 	}
+
+	public void setMaxOffset(int o) {
+		maxoffset = o;
+	}
 }
