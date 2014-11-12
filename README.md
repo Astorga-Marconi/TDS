@@ -11,7 +11,9 @@ Etapas:
 * Análizador Léxico y Sintáctico 
 * Análizador Semantico 
 * Generador de Código Intermedio
-
+* Interprete
+* Generador de Codigo Objeto
+* Optimizador
 
 Organizacion directorios
 ------------------------
