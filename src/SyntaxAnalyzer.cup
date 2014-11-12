@@ -37,7 +37,7 @@ action code {:
 		
 		// Generacion de codigo assembler.
 		assemblyGen = new AssemblyGenerator(codeGen.getInstrList());
-		System.out.println("Generando assembler...");
+		System.out.println("Generando assembler ...");
 		assemblyGen.generateAssembly("codigoAssemblerGenerado");
 		System.out.println("Test finalizado");
 	}
