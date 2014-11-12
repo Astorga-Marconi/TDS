@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# script para compilar el .cup, el .flex y los .java
+
 # compila cup
 cup SyntaxAnalyzer.cup
 
