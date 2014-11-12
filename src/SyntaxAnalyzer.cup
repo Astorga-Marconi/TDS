@@ -31,12 +31,14 @@ action code {:
 		for (Error e: typeVisitor.getErrors()) {	// Imprimo por pantalla los errores del checkeo de tipos.
 				System.out.println(e.toString());
 		}
-		codeGen.printInstrs();
+
+		// PARA VER EL CODIGO INTERMEDIO GENERADO DESCOMENTAR LA SIGUIENTE LINEA:
+		//codeGen.printInstrs();
 		
 		// Generacion de codigo assembler.
 		assemblyGen = new AssemblyGenerator(codeGen.getInstrList());
 		System.out.println("Generando assembler...");
-		assemblyGen.generateAssembly("prueba");
+		assemblyGen.generateAssembly("codigoAssemblerGenerado");
 		System.out.println("Test finalizado");
 	}
 :}
@@ -79,11 +81,7 @@ non terminal 	Location location;
 non terminal 	VarDescriptor type_id_method_decl;
 non terminal 	ReturnStmt return_stmt;
 non terminal    IfStmt if_stmt;
-non terminal    BinOpExpr bin_op;
-non terminal    ArithExpr arith_op;
-non terminal    RelExpr rel_op;
-non terminal    EqExpr eq_op;
-non terminal    CondExpr cond_op;
+non terminal 	BinOpExpr binOpExpr;
 
 /* Precedences */
 precedence left  EQ, ANDAND, NOT, NOTEQ;
@@ -189,11 +187,7 @@ _block ::=
 		LBRACE RBRACE
 		{:	RESULT = new Block(table.getCurrentLevel(), (new LinkedList<Statement>()));	:}
 	|	LBRACE  set_field_decl set_statement:ss RBRACE
-		{:	/*for (Statement stt : ss) {
-				System.out.println("_BLOCK: UN STATEMENT");
-			}*/
-			//System.out.println("BLOCK: " + ss.size() + " STATEMENT");
-		RESULT = new Block(table.getCurrentLevel(), ss); :}		// Usamos set_field_declaration??
+		{:	RESULT = new Block(table.getCurrentLevel(), ss);	:}
 	|	LBRACE set_statement:ss RBRACE
 		{: RESULT = new Block(table.getCurrentLevel(), ss); :} 
 	|	LBRACE set_field_decl RBRACE
@@ -233,8 +227,7 @@ statement ::=
 				}
 			} else {
 				RESULT = null;
-			}
-			//RESULT = (table.checkVar(id1)) ? (new ForStmt(id1, e1, e2, b1)) : null;	:}
+			}	:}
 	|	WHILE expr:e {:currentInLoop++;:} block:b
 		{:	currentInLoop--;
 			RESULT = new WhileStmt(e, (Block)b); :}
@@ -362,14 +355,43 @@ expr ::=
 		{: RESULT = m1; :}
 	|	literal:l1
 		{: RESULT = l1; :}
-	|	expr:e1 bin_op:b expr:e2 
-		{: b.setLeftOperand(e1); b.setRightOperand(e2); RESULT = b; :}
+	|	binOpExpr:b1
+		{: RESULT = b1; :}
 	|	MINUS expr:e1
 		{: RESULT = new NegativeExpr(e1); :}
 	|	NOT:n1 expr:e1 
 		{: RESULT = new NotExpr(n1, e1); :}
 	|	LPAREN:l expr:e RPAREN:r 
 		{:RESULT = new ParentExpr(e, e.getType());:}
+	;
+
+binOpExpr ::=
+		expr:e1 PLUS expr:e2
+		{:	RESULT = new ArithExpr(e1, BinOpType.PLUS, e2);	:}
+	|	expr:e1 MINUS expr:e2
+		{:	RESULT = new ArithExpr(e1, BinOpType.MINUS, e2);	:}
+	|	expr:e1 MULT expr:e2
+		{:	RESULT = new ArithExpr(e1, BinOpType.MULT, e2);	:}
+	|	expr:e1 DIV expr:e2
+		{:	RESULT = new ArithExpr(e1, BinOpType.PLUS, e2);	:}
+	|	expr:e1 MOD expr:e2
+		{:	RESULT = new ArithExpr(e1, BinOpType.MOD, e2);	:}
+	|	expr:e1 LT expr:e2
+		{:	RESULT = new RelExpr(e1, BinOpType.LT, e2);	:}
+	|	expr:e1 GT expr:e2
+		{:	RESULT = new RelExpr(e1, BinOpType.GT, e2);	:}
+	|	expr:e1 LTEQ expr:e2
+		{:	RESULT = new RelExpr(e1, BinOpType.LTEQ, e2);	:}
+	|	expr:e1 GTEQ expr:e2
+		{:	RESULT = new RelExpr(e1, BinOpType.GTEQ, e2);	:}
+	|	expr:e1 EQEQ expr:e2
+		{:	RESULT = new EqExpr(e1, BinOpType.EQEQ, e2);	:}
+	|	expr:e1 NOTEQ expr:e2
+		{:	RESULT = new EqExpr(e1, BinOpType.NOTEQ, e2);	:}
+	|	expr:e1 ANDAND expr:e2
+		{:	RESULT = new CondExpr(e1, BinOpType.ANDAND, e2);	:}
+	|	expr:e1 OROR expr:e2
+		{:	RESULT = new CondExpr(e1, BinOpType.OROR, e2);	:}
 	;
 
 externinvk_arg ::=
@@ -392,55 +414,6 @@ list_externinvk_arg ::=
 			RESULT = list_ei; :}
 	;
 
-bin_op ::=
-		arith_op:ao
-		{: RESULT = ao; :}
-	|	rel_op:ro
-		{: RESULT = ro; :}
-	|	eq_op:eo 
-		{: RESULT = eo; :}
-	|	cond_op:co
-		{: RESULT = co; :}
-	;
-
-arith_op ::=
-		PLUS
-		{: ArithExpr plus = new ArithExpr(BinOpType.PLUS);RESULT=plus; :} 
-	|	MINUS
-		{: ArithExpr minus = new ArithExpr(BinOpType.MINUS);RESULT=minus; :} 
-	|	MULT
-		{: ArithExpr mult = new ArithExpr(BinOpType.MULT);RESULT=mult; :} 
-	|	DIV
-		{: ArithExpr div = new ArithExpr(BinOpType.DIV);RESULT=div; :} 
-	|	MOD
-		{: ArithExpr mod = new ArithExpr(BinOpType.MOD);RESULT=mod; :} 
-	;
-
-rel_op ::=
-		LT
-		{: RelExpr lt = new RelExpr(BinOpType.LT);RESULT=lt; :} 
-	|	GT
-		{: RelExpr gt = new RelExpr(BinOpType.GT);RESULT=gt; :}
-	|	LTEQ
-		{: RelExpr lteq = new RelExpr(BinOpType.LTEQ);RESULT=lteq; :}
-	|	GTEQ
-		{: RelExpr gteq = new RelExpr(BinOpType.GTEQ);RESULT=gteq; :}
-	;
-
-eq_op ::=
-		EQEQ
-		{: EqExpr eqeq = new EqExpr(BinOpType.EQEQ);RESULT=eqeq; :} 
-	|	NOTEQ
-		{: EqExpr noteq = new EqExpr(BinOpType.NOTEQ);RESULT=noteq; :} 
-	;
-
-cond_op ::=
-		ANDAND 
-		{: CondExpr andand = new CondExpr(BinOpType.ANDAND);RESULT=andand; :} 
-	|	OROR
-		{: CondExpr oror = new CondExpr(BinOpType.OROR);RESULT=oror; :} 
-	;
-	
 literal ::=
 		INT_LITERAL:l
 		{:	RESULT = new IntLiteral(l);	:}
