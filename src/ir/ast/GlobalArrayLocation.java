@@ -2,10 +2,11 @@
  * Copyright (C) 2014
  * All rights reserved.
  *
- * File Name: ArrayLocation.java
+ * File Name: GlobalArrayLocation.java
  * Authors: Astorga Dario - Marconi Pablo
  */
 package ir.ast;
+
 import ir.ASTVisitor;
 
 public class GlobalArrayLocation extends Location {

@@ -7,6 +7,7 @@
  * Version: 0.1 
  */
 package ir.ast;
+
 public abstract class Expression extends AST {
 	protected Expression expr;
 	protected Type type;
