@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# script para compilar el .cup, el .flex y los .java
+# Script para compilar el .cup, el .flex y los .java
 
-# compila cup
+# Compila cup
 cup SyntaxAnalyzer.cup
 
-# compila jflex
+# Compila jflex
 jflex LexicalAnalyzer.flex
 
-# compila todos los archivos .java
+# Compila todos los archivos .java
 javac *.java
 
 exit 0
