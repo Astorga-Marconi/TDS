@@ -13,32 +13,31 @@ import ir.ast.*;
 
 public abstract class Descriptor {
 
-		public String name;
-		public Type type;
-
+	public String name;
+	public Type type;
 	private Location location;
 
-		public Descriptor(Type newType, String newName){
-			name = newName;
-			type = newType;
-			location = null;
-		}
+	public Descriptor(Type newType, String newName){
+		name = newName;
+		type = newType;
+		location = null;
+	}
 		
-		public void setName(String n){
-			name = n;
-		}
+	public void setName(String n){
+		name = n;
+	}
 		
-		public void setType(Type t){
-			type = t;
-		}
+	public void setType(Type t){
+		type = t;
+	}
 		
-		public String getName(){
-			return name;
-		}
+	public String getName(){
+		return name;
+	}
 		
-		public Type getType(){
-			return type;
-		}
+	public Type getType(){
+		return type;
+	}
 
 	public Location getLocation() {
 		return location;
