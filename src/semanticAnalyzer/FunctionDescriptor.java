@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2014
+ * All rights reserved.
+ *
+ * File Name: FunctionDescriptor.java
+ * Project: Compilador
+ * Authors: Astorga Dario - Marconi Pablo
+ * Version: 0.1 
+ */
 package semanticAnalyzer;
 
 import ir.ast.*;
