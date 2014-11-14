@@ -8,9 +8,11 @@
  * Version: 0.1 
  */
 package ir.ast;
+
 import ir.ASTVisitor;
 
 public class RelExpr extends BinOpExpr {
+	
     public RelExpr() {
         super();
         type = Type.TBOOLEAN;
