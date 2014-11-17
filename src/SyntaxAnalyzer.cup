@@ -39,7 +39,7 @@ action code {:
 		assemblyGen = new AssemblyGenerator(codeGen.getInstrList());
 		System.out.println("Generando assembler ...");
 		assemblyGen.generateAssembly("codigoAssemblerGenerado");
-		System.out.println("Test finalizado");
+		System.out.println("Assembler generado.");
 	}
 :}
 

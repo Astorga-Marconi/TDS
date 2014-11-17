@@ -89,7 +89,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	
 	public Type visit(Block stmt) {
 		if (stmt != null) {
-			System.out.println(stmt.toString());
+			//System.out.println(stmt.toString());
 		}else {
 			System.out.println("stmt es null");
 		}
