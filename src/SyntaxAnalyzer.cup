@@ -373,7 +373,7 @@ binOpExpr ::=
 	|	expr:e1 MULT expr:e2
 		{:	RESULT = new ArithExpr(e1, BinOpType.MULT, e2);	:}
 	|	expr:e1 DIV expr:e2
-		{:	RESULT = new ArithExpr(e1, BinOpType.PLUS, e2);	:}
+		{:	RESULT = new ArithExpr(e1, BinOpType.DIV, e2);	:}
 	|	expr:e1 MOD expr:e2
 		{:	RESULT = new ArithExpr(e1, BinOpType.MOD, e2);	:}
 	|	expr:e1 LT expr:e2

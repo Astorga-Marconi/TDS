@@ -184,7 +184,7 @@ public class SymbolTable{
 			if (f.getParameters().size() == params.size()) {
 				for (int i = 0; i < params.size(); i++) {
 					if (params.get(i).getType() != f.getParameters().get(i).getType()) {
-						System.out.println("La llamada al metodo tiene parametros de tipo equivocado.");
+						System.out.println("La llamada al metodo " + idMethod + " tiene parametros de tipo equivocado.");
 						return false;
 					}
 				}

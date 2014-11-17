@@ -105,7 +105,7 @@ FloatLiteral = [0-9]*"."[0-9]*
   
   {FloatLiteral}                { System.out.println(yytext());return symbol(sym.FLOAT_LITERAL, yytext()); }
  
-  {Comment}                     { System.out.println("COMMENT ");System.out.println(yytext()); }
+  {Comment}                     { /*System.out.println("COMMENT ");System.out.println(yytext());*/ }
 
   {WhiteSpace}                  { /* ignore */ }
 
