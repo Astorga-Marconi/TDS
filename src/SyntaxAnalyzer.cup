@@ -303,9 +303,23 @@ method_call_stmt ::=
 
 method_call_expr ::= 
 		ID:id LPAREN  RPAREN
-		{:	RESULT = (table.checkMethodCall(id, (new LinkedList<Expression>()) )) ? (new MethodCallExpr(id, (new LinkedList<Expression>()))) : null; :}
+		{:	if (table.checkMethodCall(id, (new LinkedList<Expression>()))) {
+				Descriptor f = table.search(id);
+				MethodCallExpr m = new MethodCallExpr(id, (new LinkedList<Expression>()));
+				m.setType(f.getType());
+				RESULT = m;
+			} else {
+				RESULT = null;
+			}	:}
 	|	ID:id LPAREN list_expr:le RPAREN
-		{:	RESULT = (table.checkMethodCall(id, le)) ? (new MethodCallExpr(id, le)) : null; :}
+		{:	if (table.checkMethodCall(id, le)) {
+				Descriptor f = table.search(id);
+				MethodCallExpr m = new MethodCallExpr(id, le);
+				m.setType(f.getType());
+				RESULT = m;
+			} else {
+				RESULT = null;
+			}	:}
 	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA type:t RPAREN
 		{:	RESULT = new ExternInvkExpr(sl, t); :}
 	|	EXTERNINVK LPAREN STRING_LITERAL:sl COMMA type:t COMMA list_externinvk_arg:lea RPAREN

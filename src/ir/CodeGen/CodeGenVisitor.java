@@ -113,11 +113,13 @@ public class CodeGenVisitor implements ASTVisitor<Expression> {
     			break;
     		case PLUSEQ:
     			resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
+    			resExpr.setType(loc.getType());
 	    		instrList.add(new InstrCode(Operator.PLUS, loc.accept(this), expr, resExpr));
 	    		instrList.add(new InstrCode(Operator.EQ, resExpr, arrayExpr, loc));
     			break;
     		case MINUSEQ:
 	    		resExpr = new VarLocation("assignRes" + Integer.toString(labelsIdGen++));
+	    		resExpr.setType(loc.getType());
 	    		instrList.add(new InstrCode(Operator.MINUS, loc.accept(this), expr, resExpr));
 	    		instrList.add(new InstrCode(Operator.EQ, resExpr, arrayExpr, loc));
     			break;
